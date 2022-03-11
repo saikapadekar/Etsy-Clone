@@ -1,0 +1,3 @@
+CREATE DATABASE IF NOT EXISTS `etsy`;
+
+GRANT ALL PRIVILEGES ON *.* TO 'etsyadmin'@'%';
