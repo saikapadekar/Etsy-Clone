@@ -7,8 +7,8 @@
     },
     "test": {
         "database_host": "localhost",
-        "database_user": "uberadmin",
-        "database_password": "uberadminpass",
+        "database_user": "etsyadmin",
+        "database_password": "etsyadminpass",
         "database_name": "auth_test"
     }
 }
