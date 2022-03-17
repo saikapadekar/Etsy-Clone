@@ -1,18 +1,19 @@
+import React, { Component } from 'react';
 import {createStore, combineReducers, applyMiddleware, compose } from 'redux'
 import thunk from 'redux-thunk'
-import userReducer from './reducers/userReducer'
 import logger from 'redux-logger'
 import { composeWithDevTools } from '@redux-devtools/extension';
 
+import rootReducer from './rootReducer';
+
+const initialState ={}
 
 
-const reducers = combineReducers({
-    user : userReducer
-})
 const middleware = [thunk]
-const store = createStore( reducers,compose(
-    applyMiddleware(...middleware),
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-))
+
+const store = createStore( 
+    rootReducer,
+    composeWithDevTools(applyMiddleware(logger, thunk))
+)
 
 export default store
