@@ -11,7 +11,8 @@ import { Link } from 'react-router-dom'
 import Button from '@material-ui/core/Button'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { LinkContainer } from "react-router-bootstrap";
-import { Paper,IconButton, SvgIcon } from '@mui/material';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 import faceMasks from './assets/masks.png'; 
 import wall_decor from './assets/wall_decor.png'; 
@@ -67,8 +68,11 @@ const styles = (theme) => ({
 class NavigationBar extends Component {
     
     state = {
-        delBg : 'white',
-        pickBg : '#e8e8e8'
+    }
+    handleChange = (event) => {
+        this.setState({
+            [event.target.name] : event.target.value 
+        })
     }
 
     render() {
@@ -89,9 +93,11 @@ class NavigationBar extends Component {
                             // onChange={this.handleChange}
                             startAdornment={<SearchIcon style={{color : '#2b2b2b'}} />}
                         />
-                        <Button className={classes.button} component = {Link} to="/login" >
-                                Sign in
-                            </Button>
+                        <Button startIcon={<FavoriteIcon />} component = {Link} to="/favs">
+</Button>
+<Button startIcon={<AccountCircleIcon />} component = {Link} to="/login">
+</Button>
+                        
                             <Button startIcon={<ShoppingCartIcon />} component = {Link} to="/cart">
 </Button>                         
                             
@@ -107,8 +113,7 @@ class NavigationBar extends Component {
                             <Button className={classes.button2} component = {Link} to="/products" >Craft Supplies</Button>
                             <Button className={classes.button2} component = {Link} to="/products" >Gifts & Gift Cards</Button>
                         {/* <Nav.Link login href="login" id="login">Sign in</Nav.Link> */}
-                </Container>
-            </Navbar>
+                
             <div className='blue-box'>
                 Find things you'll love. Support independent sellers. Only on Etsy.
                 <br/><br/>               
@@ -148,6 +153,8 @@ class NavigationBar extends Component {
                     </a>
                 </LinkContainer>&emsp;
                 </div>
+                </Container>
+            </Navbar>
             </div>
         );
     }

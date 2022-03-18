@@ -18,7 +18,7 @@
     "email-validator": "^2.0.4",
     "express": "^4.17.1",
     "express-swagger-generator": "^1.1.17",
-    "express-validator": "^6.12.1",
+    "express-validator": "^6.14.0",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
     "mocha": "^9.1.2",

@@ -88,7 +88,42 @@ const signUp = async (req, res) => {
   res.json({ token: accessToken });
 };
 
+const authenticatedUser  = async (req, res) => {
+  const email= req.body.email;
+  console.log(JSON.stringify("authenticatedUser function: "+email))
+  const getUser=User.findOne({ where: { email } });
+  if(getUser)
+  {
+    res.end(JSON.stringify(getUser))
+  }
+  else
+      res.end({error : "Incorrect username or password"})
+}
+
+const selectedUser = async (req, res) => {
+  const { id } = req.params;
+  if (!id || id === 0) {
+    res.status(400).json(errors.badRequest);
+    return;
+  }
+
+  if (id != req.headers.user) {
+    res.status(401).json(errors.unauthorized);
+    return;
+  }
+
+  const customer = await Customer.findOne({ where: { id } });
+  if (!customer) {
+    res.status(404).send(errors.notFound);
+    return;
+  }
+
+  res.status(200).json(customer);
+};
+
 module.exports = {
   getToken,
   signUp,
+  authenticatedUser,
+  selectedUser
 };

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import NavigationBar from './components/NavigationBar';
 import {BrowserRouter as Router, Route,Routes} from 'react-router-dom'
-import Login from './components/login';
+import Login from './pages/login';
 
 import store from './redux/store'
 import {Provider} from 'react-redux'
