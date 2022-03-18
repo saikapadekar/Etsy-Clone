@@ -7,30 +7,23 @@ import { Button } from '@material-ui/core'
 import InputBase from '@material-ui/core/InputBase'
 import '../../src/login.css'
 import { Link } from 'react-router-dom'
-
+import cookie from "react-cookies";
 //redux
 import {connect} from 'react-redux'
 import {loginUser} from '../redux/actions/userActions'
 
-const styles = theme => ({
-    textField: {
-        width: '90%',
-        marginLeft: 'auto',
-        marginRight: 'auto',            
-        paddingBottom: 0,
-        marginTop: 0,
-        fontWeight: 500
-    },
-    input: {
-        color: 'white'
-    }
-});
 class login extends React.Component {
     
-    state = {
-        email : '',
-        password : ''
-    }
+
+    constructor() {
+        super();
+        this.state = {
+            email : '',
+            password : '',
+            authenticated:''
+        };
+      }
+    
 
     handleChange = (event) => {
         this.setState({
@@ -39,20 +32,26 @@ class login extends React.Component {
     }
 
     handleSubmit = (event) => {
+        console.log("inside handleSubmit");
         event.preventDefault()
         var newUser = {
             email : this.state.email,
-            password : this.state.password
+            password : this.state.password,
+            authenticated:true
         }
+        console.log("email: "+newUser.email+"password"+newUser.password);
+        console.log("history: "+this.props.history);
         this.props.loginUser(newUser, this.props.history)
+        this.props.history.push('/')
+        event.preventDefault()
     }
 
     render() {
-        const { classes } = this.props;
+        
         return (
             
             <div>
-            <form noValidate onSubmit ={this.handleSubmit }>
+            <form noValidate >
                
                <header>
                   <h2>Sign in</h2>
@@ -83,7 +82,7 @@ class login extends React.Component {
                         </div>
                         <br/>
                         <div className='buttons'>
-                        <Button type="submit" variant="contained"  className="submit" >
+                        <Button type="submit" variant="contained"  className="submit" onClick ={this.handleSubmit } component = {Link} to="/">
                             Sign In
                         </Button>
                         <Button type="signup" variant="contained"  className="signup" component = {Link} to="/signup" >
@@ -97,8 +96,9 @@ class login extends React.Component {
 }
 
 const mapStateToProps = (state) => ({
-    user : state.user,
-    errors : state.errors
+    user : state.newUser,
+    errors : state.errors,
+    
 })
 
 export default connect(mapStateToProps, {loginUser} )((login))
