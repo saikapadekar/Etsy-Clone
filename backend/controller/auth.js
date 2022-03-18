@@ -33,7 +33,8 @@ const getToken = async (req, res) => {
     JWT_SECRET,
     { expiresIn: '1d' },
   );
-
+  // console.log("Inside gettoken value of user.email: "+JSON.stringify(req.body));
+  res.cookie('token', { token: accessToken },{maxAge: 900000, httpOnly: false, path : '/'});
   res.json({ token: accessToken });
 };
 

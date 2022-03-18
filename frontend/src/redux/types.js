@@ -1,3 +1,5 @@
+
+  
 //user reducer types
 export const LOGIN_USER = 'LOGIN_USER'
 export const SIGNUP_USER = 'SIGNUP_USER'
@@ -13,19 +15,19 @@ export const LOCATION_FILTER = 'LOCATION_FILTER'
 export const LOGOUT_USER = 'LOGOUT_USER'
 
 //Shop reducer types 
-export const LOGIN_Shop = 'LOGIN_Shop'
-export const SIGNUP_Shop = 'SIGNUP_Shop'
-export const GET_AUTHENTICATED_Shop = 'GET_AUTHENTICATED_Shop'
-export const GET_ALL_Shops = 'GET_ALL_Shops'
-export const GET_Shop_DATA = 'GET_Shop_DATA'
-export const EDIT_Shop_PROFILE = 'EDIT_Shop_PROFILE'
-export const ADD_DISH = 'ADD_DISH'
+export const LOGIN_SHOP = 'LOGIN_SHOP'
+export const SIGNUP_SHOP = 'SIGNUP_SHOP'
+export const GET_AUTHENTICATED_SHOP = 'GET_AUTHENTICATED_SHOP'
+export const GET_ALL_PRODUCTS = 'GET_ALL_PRODUCTS'
+export const GET_SHOP_DATA = 'GET_SHOP_DATA'
+export const EDIT_SHOP_PROFILE = 'EDIT_SHOP_PROFILE'
+export const ADD_PRODUCT = 'ADD_PRODUCT'
 export const ADD_TO_CART = 'ADD_TO_CART'
 export const EMPTY_CART = 'EMPTY_CART'
 export const GET_ALL_ORDERS = 'GET_ALL_ORDERS'
 export const CHANGE_ORDER_STATUS = 'CHANGE_ORDER_STATUS'
-export const EDIT_DISH = 'EDIT_DISH'
-export const LOGOUT_Shop = 'LOGOUT_Shop'
+export const EDIT_PRODUCT = 'EDIT_PRODUCT'
+export const LOGOUT_SHOP = 'LOGOUT_SHOP'
 
 //errors reducer types 
 export const SET_LOGIN_ERROR = 'SET_LOGIN_ERROR'

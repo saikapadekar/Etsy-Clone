@@ -83,7 +83,7 @@ const Order = global.DB.define('orders', {
     allowNull: false,
   },
 });
-const Customer = global.DB.define('customers', {
+const Buyer = global.DB.define('buyers', {
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -92,6 +92,11 @@ const Customer = global.DB.define('customers', {
   name: {
     type: DataTypes.STRING,
     allowNull: false,
+    },
+    email: {
+      type: DataTypes.STRING,
+      unique: true,
+      allowNull: false,
     },
   about: {
     type: DataTypes.STRING,
@@ -158,42 +163,46 @@ const OrderItem = global.DB.define('orderitems', {
     type: DataTypes.STRING,
   },
 });
-const Favourite = global.DB.define('favourites', {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-    unique: true,
-  },
-  productId: {
-    type: DataTypes.INTEGER,
-  },
-});
+// const Favourite = global.DB.define('favourites', {
+//   id: {
+//     type: DataTypes.INTEGER,
+//     autoIncrement: true,
+//     primaryKey: true,
+//     unique: true,
+//   },
+//   productId: {
+//     type: DataTypes.INTEGER,
+//   },
+// });
 
-Order.hasMany(OrderItem, {
-  onDelete: 'CASCADE',
-  onUpdate: 'CASCADE',
-});
-OrderItem.belongsTo(Order);
+// Order.hasMany(OrderItem, {
+//   onDelete: 'CASCADE',
+//   onUpdate: 'CASCADE',
+// });
+// OrderItem.belongsTo(Order);
 
-Customer.hasMany(Favourite, {
-  onDelete: 'CASCADE',
-  onUpdate: 'CASCADE',
-});
-Favourite.belongsTo(Customer);
+// Customer.hasMany(Favourite, {
+//   onDelete: 'CASCADE',
+//   onUpdate: 'CASCADE',
+// });
+// Favourite.belongsTo(Customer);
 
 const runMigration = async (force) => {
   if (!global.DB) {
     return Promise.reject(new Error('please initialize DB'));
   }
-  await User.sync();
-  await Customer.sync();
-  await Shop.sync();
-  await Product.sync();
-  await Favourite.sync();
-  await Order.sync();
-  await OrderItem.sync();
+  // removeConstraint(Customer,'ReferenceError: queryInterface')
+  await User.sync({ force });
+  await Buyer.sync({ force });
+  await Shop.sync({ force });
+  await Product.sync({ force });
+  // await Favourite.sync({ force });
+  // await Order.sync({ force });
+  // await OrderItem.sync({ force });
   return Promise.resolve(global.DB);
 };
 
-module.exports = { User,Customer,Shop,Product,Favourite,Order,OrderItem, runMigration };
+// module.exports = { User,Customer,Shop,Product,Favourite,Order,OrderItem, runMigration };
+
+module.exports = { User,Buyer,Shop,Product,Order,OrderItem, runMigration };
+

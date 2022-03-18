@@ -5,7 +5,7 @@ const customerController = require('../controller/customer');
 const router = express.Router();
 
 /**
- * @typedef Customer
+ * @typedef Buyer
  * @property {integer} id.required
  * @property {string} name.required
  * @property {string} about
@@ -39,8 +39,8 @@ const [, ...updateValidators] = bodyValidators();
  * @route POST /customers
  * @group Customers
  * @param {string} authorization.header.require
- * @param {Customer.model} Customer.body.require
- * @returns {Customer.model} 201 - Created Customer
+ * @param {Buyer.model} Buyer.body.require
+ * @returns {Buyer.model} 201 - Created Customer
  */
 router.post('/createcustomer', ...bodyValidators(), customerController.createCustomer);
 
@@ -50,21 +50,31 @@ router.post('/createcustomer', ...bodyValidators(), customerController.createCus
  * @group Customers
  * @param {string} authorization.header.require
  * @param {integer} id.path.require
- * @returns {Customer.model} 200 - Customer for given ID
+ * @returns {Buyer.model} 200 - Customer for given ID
  */
  router.get('/:id', customerController.getCustomerByID);
 
+/**
+ * Get Customer by Email
+ * @route GET /customers/{email}
+ * @group Customers
+ * @param {string} authorization.header.require
+ * @param {integer} id.path.require
+ * @returns {Buyer.model} 200 - Customer for given ID
+ */
+ router.get('/email/:email', customerController.getCustomerByEmail);
 
+ 
  /**
  * Update Customer by ID
  * @route PUT /customers/{id}
  * @group Customers
  * @param {string} authorization.header.require
  * @param {integer} id.path.require
- * @param {Customer.model} Customer.body.require
- * @returns {Customer.model} 200 - Updated Customer
+ * @param {Buyer.model} Buyer.body.require
+ * @returns {Buyer.model} 200 - Updated Customer
  */
-router.put('/:id', ...updateValidators, customerController.updateCustomerByID);
+router.put('/edit/:id', ...updateValidators, customerController.updateCustomerByID);
 
 
 module.exports = router;

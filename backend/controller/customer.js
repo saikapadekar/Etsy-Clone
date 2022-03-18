@@ -2,7 +2,7 @@ const { default: axios } = require('axios');
 const { validationResult } = require('express-validator');
 const { Op } = require('sequelize');
 const {
-  Customer
+  Buyer
 } = require('../model');
 const errors = require('../util/errors');
 
@@ -28,8 +28,8 @@ const createCustomer = async (req, res) => {
 
   const customer = req.body;
   try {
-    const createdCustomer = await Customer.create(customer);
-    const result = await Customer.findOne({ where: { id: createdCustomer.id } });//todo handle Media
+    const createdCustomer = await Buyer.create(customer);
+    const result = await Buyer.findOne({ where: { id: createdCustomer.id } });//todo handle Media
 
     res.status(201).json(result);
     return;
@@ -45,6 +45,7 @@ const createCustomer = async (req, res) => {
 
 const getCustomerByID = async (req, res) => {
     const { id } = req.params;
+    console.log("Inside getCustomerByID")
     console.log("Fetching customer with id:"+id);
     console.log(req.headers.user);//undefined
     if (!id || id === 0) {
@@ -57,7 +58,26 @@ const getCustomerByID = async (req, res) => {
     //   return;
     // }
   
-    const customer = await Customer.findOne({ where: { id } });//todo handle media
+    const customer = await Buyer.findOne({ where: { id } });//todo handle media
+    if (!customer) {
+      res.status(404).send(errors.notFound);
+      return;
+    }
+  
+    res.status(200).json(customer);
+  };
+
+  const getCustomerByEmail = async (req, res) => {
+    const { email } = req.params;
+    console.log("Fetching customer with email:"+email);
+    console.log(req.headers.user);//undefined
+    if (!email || email === '') {
+      res.status(400).json(errors.badRequest);
+      return;
+    }
+  
+  
+    const customer = await Buyer.findOne({ where: { email } });//todo handle media
     if (!customer) {
       res.status(404).send(errors.notFound);
       return;
@@ -90,7 +110,7 @@ const getCustomerByID = async (req, res) => {
   
     const customer = req.body;
   
-    const dbRes = await Customer.findOne({ where: { id } });
+    const dbRes = await Buyer.findOne({ where: { id } });
     if (!dbRes) {
       res.status(404).json(errors.notFound);
       return;
@@ -108,7 +128,7 @@ const getCustomerByID = async (req, res) => {
       dbRes.address = customer.address;//todo handle media
   
       const updatedRes = await dbRes.save();
-      const result = await Customer.findOne({ where: { id: updatedRes.id } });//handle media
+      const result = await Buyer.findOne({ where: { id: updatedRes.id } });//handle media
   
       res.status(200).json(result);
       return;
@@ -125,5 +145,6 @@ const getCustomerByID = async (req, res) => {
 module.exports = {
   createCustomer,
   getCustomerByID,
-  updateCustomerByID
+  updateCustomerByID,
+  getCustomerByEmail
 };

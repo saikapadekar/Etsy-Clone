@@ -6,7 +6,6 @@ const initialState = {
     selectedUser : {},
     authenticated : false,
 }
-
 // eslint-disable-next-line import/no-anonymous-default-export
 export default function(state = initialState , action){
     switch(action.type){
@@ -19,45 +18,20 @@ export default function(state = initialState , action){
         case LOGIN_USER :
             return {
                 ...state,
-                authenticatedUser : action.payload,
-                authenticated : true
-            } 
-
-        case GET_AUTHENTICATED_USER :
-            return {
-                ...state,
-                authenticatedUser : action.payload,
-                authenticated : true
-            } 
-
+                authenticatedUser: action.payload,
+                authenticated:true
+                // medium: action.payload.medium,
+              };
+        
         case GET_SELECTED_USER:
-            return {
-                ...state,
-                selectedUser : action.payload
-            } 
-
-        case EDIT_PROFILE :
-            return {
-                ...state, 
-                authenticatedUser : {
-                    ...action.payload
-                }
-            }
-          
-        case CREATE_ORDER: 
-            return {
-                ...state,
-            }
-        case LOGOUT_USER :
-            return {
-                ...state, 
-                authenticated : false,
-                authenticatedUser : {}
-            }   
+        return {
+            ...state,
+            selectedUser : action.payload
+        }
 
         default : 
-            return {
-                ...state
-            }
+        return {
+            ...state
+        }
     }
 }

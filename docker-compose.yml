@@ -5,7 +5,7 @@ services:
     image: mysql
     restart: unless-stopped
     ports:
-      - 3306:3306
+      - 3360:3360
     environment:
       - MYSQL_USER=etsyadmin
       - MYSQL_PASSWORD=etsyadminpass
