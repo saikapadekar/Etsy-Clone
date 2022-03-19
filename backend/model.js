@@ -64,31 +64,25 @@ const Product = global.DB.define('products', {
   },
 });
 
-// const Order = global.DB.define('orders', {
-//   order_id: {
-//     type: DataTypes.INTEGER,
-//     autoIncrement: true,
-//     primaryKey: true,
-//     unique: true,
-//   },
-//    user_id: {
-//     type: DataTypes.INTEGER,
-//     unique: false,
-//     allowNull: false,
-//   },
-//   order_date: {
-//     type: DataTypes.DATEONLY,
-//     allowNull: false,
-//   },
-//   item_id: {
-//     type: DataTypes.INTEGER,
-//     allowNull: false,
-//   },
-//   item_qty: {
-//     type: DataTypes.INTEGER,
-//     allowNull: false,
-//   },
-// });
+const Order = global.DB.define('orders', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+    unique: true,
+  },
+  amount: {
+    type: DataTypes.FLOAT,
+  },
+  date: {
+    type: DataTypes.DATE,
+    allowNull: false,
+  },
+  customerId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+});
 const Customer = global.DB.define('customers', {
   id: {
     type: DataTypes.INTEGER,
@@ -144,8 +138,49 @@ const Shop = global.DB.define('shops', {
         allowNull: false,
       },
 });
+const OrderItem = global.DB.define('orderitems', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    unique: true,
+    autoIncrement: true,
+  },
+  productId: {
+    type: DataTypes.INTEGER,
+  },
+  shopId: {
+    type: DataTypes.INTEGER,
+  },
+  quantity: {
+    type: DataTypes.INTEGER,
+  },
+  notes: {
+    type: DataTypes.STRING,
+  },
+});
+const Favourite = global.DB.define('favourites', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+    unique: true,
+  },
+  productId: {
+    type: DataTypes.INTEGER,
+  },
+});
 
+Order.hasMany(OrderItem, {
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+});
+OrderItem.belongsTo(Order);
 
+Customer.hasMany(Favourite, {
+  onDelete: 'CASCADE',
+  onUpdate: 'CASCADE',
+});
+Favourite.belongsTo(Customer);
 
 const runMigration = async (force) => {
   if (!global.DB) {
@@ -155,7 +190,10 @@ const runMigration = async (force) => {
   await Customer.sync();
   await Shop.sync();
   await Product.sync();
+  await Favourite.sync();
+  await Order.sync();
+  await OrderItem.sync();
   return Promise.resolve(global.DB);
 };
 
-module.exports = { User,Customer,Shop,Product, runMigration };
+module.exports = { User,Customer,Shop,Product,Favourite,Order,OrderItem, runMigration };
