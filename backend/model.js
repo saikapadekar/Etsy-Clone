@@ -145,14 +145,28 @@ const Customer = global.DB.define('customers', {
     allowNull: false,
     },
 });
+const Shop = global.DB.define('shops', {
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    unique: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+    unique: true,
+  },
+});
+
+
 
 const runMigration = async (force) => {
   if (!global.DB) {
     return Promise.reject(new Error('please initialize DB'));
   }
-  await User.sync({ force });
-  await Customer.sync({ force });
+  await User.sync();
+  await Customer.sync();
+  await Shop.sync();
   return Promise.resolve(global.DB);
 };
 
-module.exports = { User,Customer, runMigration };
+module.exports = { User,Customer,Shop, runMigration };

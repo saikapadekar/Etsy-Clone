@@ -11,6 +11,8 @@ const validate = require('./util/authValidator')
 const authRoutes = require('./routes/auth.routes');
 const productRoutes = require('./routes/product.routes')
 const customerRouter = require('./routes/customer.routes');
+const shopRouter = require('./routes/shop.routes');
+
 const app = express();
 
 const expressSwagger = require('express-swagger-generator')(app);
@@ -33,5 +35,7 @@ const validationMid = getAuthMiddleware(validate);
 app.use('/auth', authRoutes);
 app.use('/products', validationMid, productRoutes);
 app.use('/customers', customerRouter);
+app.use('/shops', shopRouter);
+
 
 module.exports = app;
