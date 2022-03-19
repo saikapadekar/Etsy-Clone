@@ -5,17 +5,17 @@ const express = require('express');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 const cors = require('cors');
-const {getAuthMiddleware} = require('u-server-utils');
+const {getAuthMiddleware, getAccessMiddleware} = require('u-server-utils');
 const validate = require('./util/authValidator')
 
 const authRoutes = require('./routes/auth.routes');
 const productRoutes = require('./routes/product.routes')
-
+const customerRouter = require('./routes/customer.routes');
 const app = express();
 
 const expressSwagger = require('express-swagger-generator')(app);
 
-// all middlewares
+// all middlewaress
 app.use(logger('dev'));
 app.use(cookieParser());
 app.use(bodyParser.json());
@@ -30,8 +30,8 @@ app.use((req, res, next) => {
 });
 
 const validationMid = getAuthMiddleware(validate);
-
 app.use('/auth', authRoutes);
 app.use('/products', validationMid, productRoutes);
+app.use('/customers', customerRouter);
 
 module.exports = app;

@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const emailValidator = require('email-validator');
 const { User } = require('../model');
 const { getPasswordHash, validatePassword, validatePassHash } = require('../util/passwords');
-
+const errors = require('../util/errors');
 const JWT_SECRET = 'myetsysuperdupersecret';
 
 const getToken = async (req, res) => {
@@ -100,30 +100,30 @@ const authenticatedUser  = async (req, res) => {
       res.end({error : "Incorrect username or password"})
 }
 
-const selectedUser = async (req, res) => {
-  const { id } = req.params;
-  if (!id || id === 0) {
-    res.status(400).json(errors.badRequest);
-    return;
-  }
+// const selectedUser = async (req, res) => {
+//   const { id } = req.params;
+//   if (!id || id === 0) {
+//     res.status(400).json(errors.badRequest);
+//     return;
+//   }
 
-  if (id != req.headers.user) {
-    res.status(401).json(errors.unauthorized);
-    return;
-  }
+//   if (id != req.headers.user) {
+//     res.status(401).json(errors.unauthorized);
+//     return;
+//   }
 
-  const customer = await Customer.findOne({ where: { id } });
-  if (!customer) {
-    res.status(404).send(errors.notFound);
-    return;
-  }
+//   const customer = await Customer.findOne({ where: { id } });
+//   if (!customer) {
+//     res.status(404).send(errors.notFound);
+//     return;
+//   }
 
-  res.status(200).json(customer);
-};
+//   res.status(200).json(customer);
+// };
 
 module.exports = {
   getToken,
   signUp,
-  authenticatedUser,
-  selectedUser
+  authenticatedUser
+  // selectedUser
 };

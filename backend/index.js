@@ -6,7 +6,7 @@ const { initDB } = require('./db');
 initDB()
   .then(() => {
     const { runMigration } = require('./model');
-    return runMigration(true);
+    return runMigration();
   })
   .then(() => {
     const app = require('./app');

@@ -1,10 +1,7 @@
 
 const express = require('express');
 const { body } = require('express-validator');
-const customerController = require('../controllers/customer');
-const favouriteRouter = require('./favourite.routes');
-const addressRouter = require('./address.routes');
-
+const customerController = require('../controller/customer');
 const router = express.Router();
 
 /**
@@ -18,7 +15,7 @@ const router = express.Router();
  * @property {string} state.required
  * @property {string} country.required
  * @property {string} contact_no.required
- * @property {integer} mediumId
+ * @property {string} address.required//todo media_id
  */
 
 const bodyValidators = () => [
@@ -30,26 +27,12 @@ const bodyValidators = () => [
   body('city').exists().isString().not().isIn(['']),
   body('state').exists().isString().not().isIn(['']),
   body('country').exists().isString().not().isIn(['']),
-  body('contact_no').exists().isString().not().isIn(['']),
+  body('contact_no').exists().isString(),//todo change datatype
   body('address').exists().isString().not().isIn(['']),
-  body('mediumId').optional({ nullable: true }).isInt().not().isIn([0]),
+  // body('mediumId').optional({ nullable: true }).isInt().not().isIn([0]),//todo
 ];
 
 const [, ...updateValidators] = bodyValidators();
-
-router.use('/favourites', favouriteRouter);
-router.use('/addresses', addressRouter);
-
-/**
- * Get list of Customers
- * @route GET /customers
- * @group Customers
- * @param {string} authorization.header.require
- * @param {integer} page.query.require
- * @param {integer} limit.query.require
- * @returns {Array.<Customer>} 200 - List of customer info
- */
-router.get('/', customerController.getAllCustomers);
 
 /**
  * Create a Customer
@@ -59,7 +42,7 @@ router.get('/', customerController.getAllCustomers);
  * @param {Customer.model} Customer.body.require
  * @returns {Customer.model} 201 - Created Customer
  */
-router.post('/', ...bodyValidators(), customerController.createCustomer);
+router.post('/createcustomer', ...bodyValidators(), customerController.createCustomer);
 
 /**
  * Get Customer by ID
@@ -69,9 +52,10 @@ router.post('/', ...bodyValidators(), customerController.createCustomer);
  * @param {integer} id.path.require
  * @returns {Customer.model} 200 - Customer for given ID
  */
-router.get('/:id', customerController.getCustomerByID);
+ router.get('/:id', customerController.getCustomerByID);
 
-/**
+
+ /**
  * Update Customer by ID
  * @route PUT /customers/{id}
  * @group Customers
@@ -82,14 +66,5 @@ router.get('/:id', customerController.getCustomerByID);
  */
 router.put('/:id', ...updateValidators, customerController.updateCustomerByID);
 
-/**
- * Delete Customer by ID
- * @route DELETE /customers/{id}
- * @group Customers
- * @param {string} authorization.header.require
- * @param {integer} id.path.require
- * @returns {null} 200 - Delete Customer
- */
-router.delete('/:id', customerController.deleteCustomerByID);
 
 module.exports = router;
