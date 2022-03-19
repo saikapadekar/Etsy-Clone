@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
 import SearchIcon from '@material-ui/icons/Search'
-import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import InputBase from '@material-ui/core/InputBase'
 import { withStyles } from '@material-ui/core/styles';
-import {Navbar, Nav, NavItem, NavLink} from 'react-bootstrap';
+import {Navbar} from 'react-bootstrap';
 import { Container } from 'react-bootstrap';
 import {connect} from 'react-redux'
 import store from '../redux/store'
@@ -14,12 +13,6 @@ import { LinkContainer } from "react-router-bootstrap";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
-import faceMasks from './assets/masks.png'; 
-import wall_decor from './assets/wall_decor.png'; 
-import gift from './assets/gift.png'; 
-import garden from './assets/garden.png'; 
-import self_care from './assets/self_care.png'; 
-import craft from './assets/craft.png'; 
 
 
 const styles = (theme) => ({
@@ -114,45 +107,7 @@ class NavigationBar extends Component {
                             <Button className={classes.button2} component = {Link} to="/products" >Gifts & Gift Cards</Button>
                         {/* <Nav.Link login href="login" id="login">Sign in</Nav.Link> */}
                 
-            <div className='blue-box'>
-                Find things you'll love. Support independent sellers. Only on Etsy.
-                <br/><br/>               
-                <LinkContainer to="/products">
-                    <a classname="img_links" href='' className="faceMasks">
-                        <img className="faceMasks" src={faceMasks} alt=""/>
-                    </a>
-                    
-                </LinkContainer>  &emsp;
-                <LinkContainer to="/products">
-                    <a href='' className="wall_decor">
-                        <img className="wall_decor" src={wall_decor} alt=""/> 
-                    </a>
-                </LinkContainer>&emsp;
-                <LinkContainer to="/products">
-                    <a href='' className="gift">
-                        <img className="gift" src={gift} alt=""/> 
-                       
-                    </a>
-                </LinkContainer>&emsp;
-                <LinkContainer to="/products">
-                    <a href='' className="garden">
-                        <img className="garden" src={garden} alt=""/> 
-                       
-                    </a>
-                </LinkContainer>&emsp;
-                <LinkContainer to="/products">
-                    <a href='' className="self_care">
-                        <img className="self_care" src={self_care} alt=""/>
-                        
-                    </a>
-                </LinkContainer>&emsp;
-                <LinkContainer to="/products">
-                    <a href='' className="craft">
-                        <img className="craft" src={craft} alt=""/> 
-                       
-                    </a>
-                </LinkContainer>&emsp;
-                </div>
+            
                 </Container>
             </Navbar>
             </div>
