@@ -20,66 +20,50 @@ const User = global.DB.define('users', {
     type: DataTypes.ENUM('customer', 'owner'),
   },
 });
-// const Item = global.DB.define('items', {
-//   item_id: {
-//     type: DataTypes.INTEGER,
-//     autoIncrement: true,
-//     primaryKey: true,
-//     unique: true,
-//   },
-//   item_name: {
-//     type: DataTypes.STRING,
-//     unique: false,
-//     allowNull: false,
-//   },
-//   item_category: {
-//     type: DataTypes.STRING,
-//     unique: false,
-//     allowNull: false,
-//   },
-//   item_description: {
-//     type: DataTypes.STRING,
-//     unique: false,
-//     allowNull: true,
-//   },
-//   price: {
-//     type: DataTypes.INTEGER,
-//     unique: false,
-//     allowNull: false,
-//   },
-//   qty_available: {
-//     type: DataTypes.INTEGER,
-//     unique: false,
-//     allowNull: false,
-//   },
-//   shop_id: {
-//     type: DataTypes.INTEGER,
-//     unique: false,
-//     allowNull: false,
-//   },
-//   sold: {
-//     type: DataTypes.INTEGER,
-//     unique: false,
-//     allowNull: true,
-//   },
-// });
-// const Shop = global.DB.define('shops', {
-//   shop_id: {
-//     type: DataTypes.INTEGER,
-//     autoIncrement: true,
-//     primaryKey: true,
-//     unique: true,
-//   },
-//   shop_name: {
-//     type: DataTypes.STRING,
-//     unique: true,
-//     allowNull: false,
-//   },
-//   owner_details: {
-//     type: DataTypes.STRING,
-//     allowNull: false,
-//   },
-// });
+const Product = global.DB.define('products', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    primaryKey: true,
+    unique: true,
+  },
+  name: {
+    type: DataTypes.STRING,
+    unique: false,
+    allowNull: false,
+  },
+  category: {
+    type: DataTypes.STRING,
+    unique: false,
+    allowNull: false,
+  },
+  description: {
+    type: DataTypes.STRING,
+    unique: false,
+    allowNull: true,
+  },
+  price: {
+    type: DataTypes.INTEGER,
+    unique: false,
+    allowNull: false,
+  },
+  qty_available: {
+    type: DataTypes.INTEGER,
+    unique: false,
+    allowNull: false,
+  },
+  shopId: {
+    type: DataTypes.INTEGER,
+    unique: false,
+    allowNull: false,
+  },
+  sold: {
+    type: DataTypes.INTEGER,
+    unique: false,
+    allowNull: true,
+  },
+});
+
 // const Order = global.DB.define('orders', {
 //   order_id: {
 //     type: DataTypes.INTEGER,
@@ -155,6 +139,10 @@ const Shop = global.DB.define('shops', {
     type: DataTypes.STRING,
     unique: true,
   },
+  owner_details: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
 });
 
 
@@ -166,7 +154,8 @@ const runMigration = async (force) => {
   await User.sync();
   await Customer.sync();
   await Shop.sync();
+  await Product.sync();
   return Promise.resolve(global.DB);
 };
 
-module.exports = { User,Customer,Shop, runMigration };
+module.exports = { User,Customer,Shop,Product, runMigration };

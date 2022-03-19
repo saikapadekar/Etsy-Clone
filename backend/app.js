@@ -9,9 +9,9 @@ const {getAuthMiddleware, getAccessMiddleware} = require('u-server-utils');
 const validate = require('./util/authValidator')
 
 const authRoutes = require('./routes/auth.routes');
-const productRoutes = require('./routes/product.routes')
 const customerRouter = require('./routes/customer.routes');
 const shopRouter = require('./routes/shop.routes');
+const productRouter = require('./routes/product.routes');
 
 const app = express();
 
@@ -33,9 +33,9 @@ app.use((req, res, next) => {
 
 const validationMid = getAuthMiddleware(validate);
 app.use('/auth', authRoutes);
-app.use('/products', validationMid, productRoutes);
 app.use('/customers', customerRouter);
 app.use('/shops', shopRouter);
+app.use('/products',productRouter);
 
 
 module.exports = app;
