@@ -1,5 +1,5 @@
 import { SIGNUP_USER, LOGIN_USER, EDIT_PROFILE, GET_AUTHENTICATED_USER, 
-    CREATE_ORDER, GET_SELECTED_USER, LOGOUT_USER} from '../types'
+    CREATE_ORDER, GET_SELECTED_USER, LOGOUT_USER,CREATE_CUSTOMER} from '../types'
 
 const initialState = {
     authenticatedUser : {},
@@ -24,6 +24,11 @@ export default function(state = initialState , action){
               };
         
         case GET_SELECTED_USER:
+        return {
+            ...state,
+            selectedUser : action.payload
+        }
+        case CREATE_CUSTOMER:
         return {
             ...state,
             selectedUser : action.payload

@@ -13,6 +13,7 @@ export const MARK_FAVORITE = 'MARK_FAVORITE'
 export const MARK_UNFAVORITE = 'MARK_UNFAVORITE'
 export const LOCATION_FILTER = 'LOCATION_FILTER'
 export const LOGOUT_USER = 'LOGOUT_USER'
+export const CREATE_CUSTOMER='CREATE_CUSTOMER'
 
 //Shop reducer types 
 export const LOGIN_SHOP = 'LOGIN_SHOP'

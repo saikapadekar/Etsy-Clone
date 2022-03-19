@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getCookie } from 'react-use-cookie';
-// import notify from '../../utils/notify';
-import {LOGIN_USER,SIGNUP_USER,GET_SELECTED_USER,EDIT_PROFILE} from '../types'
+import notify from '../../utils/notify';
+import {LOGIN_USER,SIGNUP_USER,GET_SELECTED_USER,EDIT_PROFILE,CREATE_CUSTOMER} from '../types'
 
 // export const loginUser = (data) => {
 //     return (dispatch) => {
@@ -95,3 +95,21 @@ export const editProfile = (userid,userDetails) => (dispatch) => {
             console.log(err)
         })
 }
+
+export const createCustomer = (data) => (dispatch) =>{
+    console.log("Inside createCustomer userAction"+JSON.stringify(data));
+
+    axios.post(`http://localhost:7000/customers/createcustomer`,data)
+        .then(res => {
+          dispatch({
+            type: CREATE_CUSTOMER,
+            payload:  res.data,
+          })
+          notify({ type: 'info', description: 'Created Customer' });
+        })
+        .catch((err) => {
+          notify({ type: 'error', description: JSON.stringify(err.response.data.message) });
+        });
+    }
+
+    

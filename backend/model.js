@@ -106,6 +106,7 @@ const Buyer = global.DB.define('buyers', {
     },
   dob: {
     type: DataTypes.DATEONLY,
+    allowNull: true,
     },
   city: {
     type: DataTypes.STRING,
