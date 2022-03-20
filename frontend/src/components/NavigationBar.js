@@ -15,14 +15,6 @@ import MuiLink from '@material-ui/core/Link'
 import FaceIcon from '@mui/icons-material/Face';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import faceMasks from '../pages/assets/masks.png'; 
-import wall_decor from '../pages/assets/wall_decor.png'; 
-import gift from '../pages/assets/gift.png'; 
-import garden from '../pages/assets/garden.png'; 
-import self_care from '../pages/assets/self_care.png'; 
-import craft from '../pages/assets/craft.png'; 
-
-
 const styles = (theme) => ({
     ...theme.spread,
     button: {
@@ -127,46 +119,6 @@ class NavigationBar extends Component {
                         {/* <Nav.Link login href="login" id="login">Sign in</Nav.Link> */}
                 </Container>
             </Navbar>
-            <div className='blue-box'>
-                Find things you'll love. Support independent sellers. Only on Etsy.
-                <br/><br/>               
-                <MuiLink to="/products">
-                    <a classname="img_links" href='' className="faceMasks">
-                        <img className="faceMasks" src={faceMasks} alt=""/>
-                    </a>
-                    
-                </MuiLink>  &emsp;
-                <MuiLink to="/products">
-                    <a href='' className="wall_decor">
-                        <img className="wall_decor" src={wall_decor} alt=""/> 
-                    </a>
-                </MuiLink>&emsp;
-                <MuiLink to="/products">
-                    <a href='' className="gift">
-                        <img className="gift" src={gift} alt=""/> 
-                       
-                    </a>
-                </MuiLink>&emsp;
-                <MuiLink to="/products">
-                    <a href='' className="garden">
-                        <img className="garden" src={garden} alt=""/> 
-                       
-                    </a>
-                </MuiLink>&emsp;
-                <MuiLink to="/products">
-                    <a href='' className="self_care">
-                        <img className="self_care" src={self_care} alt=""/>
-                        
-                    </a>
-                </MuiLink>&emsp;
-                <MuiLink to="/products">
-                    <a href='' className="craft">
-                        <img className="craft" src={craft} alt=""/> 
-                       
-                    </a>
-                </MuiLink>&emsp;
-                
-                </div>
             </div>
         );
     }

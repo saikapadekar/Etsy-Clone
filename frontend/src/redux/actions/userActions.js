@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { getCookie } from 'react-use-cookie';
-import notify from '../../utils/notify';
+// import notify from '../../utils/notify';
 import {LOGIN_USER,SIGNUP_USER,GET_SELECTED_USER,EDIT_PROFILE} from '../types'
 
 // export const loginUser = (data) => {

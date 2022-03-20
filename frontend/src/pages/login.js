@@ -44,6 +44,7 @@ class login extends React.Component {
         this.props.loginUser(newUser, this.props.history)
         this.props.history.push('/')
         event.preventDefault()
+        const loggedin_user=React.createContext();
     }
 
     render() {
