@@ -1,10 +1,11 @@
 import { SIGNUP_USER, LOGIN_USER, EDIT_PROFILE, GET_AUTHENTICATED_USER, 
-    CREATE_ORDER, GET_SELECTED_USER, LOGOUT_USER,CREATE_CUSTOMER} from '../types'
+    CREATE_ORDER, GET_SELECTED_USER, LOGOUT_USER,CREATE_CUSTOMER,CREATE_SHOP} from '../types'
 
 const initialState = {
     authenticatedUser : {},
     selectedUser : {},
     authenticated : false,
+    shopdetails:{}
 }
 // eslint-disable-next-line import/no-anonymous-default-export
 export default function(state = initialState , action){
@@ -33,6 +34,11 @@ export default function(state = initialState , action){
             ...state,
             selectedUser : action.payload
         }
+        case CREATE_SHOP:
+            return{
+                ...state,
+                shopdetails:action.payload
+            }
 
         default : 
         return {

@@ -5,7 +5,10 @@ const { Op } = require('sequelize');
 const { Shop} = require('../model');
 const errors = require('../util/errors');
 const getPagination = require('../util/pagination');
+
 const createShop = async (req, res) => {
+  console.log(`inside createShop backend`)
+  console.log(`printing req data`,JSON.stringify(req.params))
     const { user } = req.headers;//todo handle
     // if (user !== req.body.id) {
     //   res.status(400).json({
@@ -24,21 +27,18 @@ const createShop = async (req, res) => {
   
     const shop = req.body;
   
-    const t = await global.DB.transaction();
+    // const t = await global.DB.transaction();
     try {
-      const createdRes = await Shop.create(shop, { transaction: t });
+      const createdRes = await Shop.create(shop);
  
-      await t.commit();
   
       const result = await Shop.findOne(
-        { where: { id: createdRes.id } },//todo handle media
-        { transaction: t },
+        { where: { id: createdRes.id } }//todo handle media
       );
   
       res.status(201).json(result);
       return;
     } catch (err) {
-      await t.rollback();
       console.error(err);
       if (err.original) {
         res.status(500).json({ status: 500, message: err.original.sqlMessage });
@@ -49,6 +49,7 @@ const createShop = async (req, res) => {
   };
 
   const getShopByID = async (req, res) => {
+    
     const { id } = req.params;
     if (!id || id == 0) {
       res.status(400).json(errors.badRequest);

@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { getCookie } from 'react-use-cookie';
 import notify from '../../utils/notify';
-import {LOGIN_USER,SIGNUP_USER,GET_SELECTED_USER,EDIT_PROFILE,CREATE_CUSTOMER} from '../types'
+import {LOGIN_USER,SIGNUP_USER,GET_SELECTED_USER,EDIT_PROFILE,CREATE_CUSTOMER,CREATE_SHOP} from '../types'
 
 // export const loginUser = (data) => {
 //     return (dispatch) => {
@@ -111,5 +111,19 @@ export const createCustomer = (data) => (dispatch) =>{
           notify({ type: 'error', description: JSON.stringify(err.response.data.message) });
         });
     }
+export const createShop = (data,history) => (dispatch) =>{
+    console.log("Inside createCustomer userAction"+JSON.stringify(data));
 
-    
+    axios.post(`http://localhost:7000/shops/createshop`,data)
+        .then(res => {
+            dispatch({
+            type: CREATE_SHOP,
+            payload:  res.data,
+            })
+            notify({ type: 'info', description: 'Created Shop' });
+            history.push('/shop')
+        })
+        .catch((err) => {
+            notify({ type: 'error', description: JSON.stringify(err.response.data.message) });
+        });
+    }

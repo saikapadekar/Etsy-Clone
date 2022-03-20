@@ -203,7 +203,5 @@ const runMigration = async (force) => {
   return Promise.resolve(global.DB);
 };
 
-// module.exports = { User,Customer,Shop,Product,Favourite,Order,OrderItem, runMigration };
-
 module.exports = { User,Buyer,Shop,Product,Order,OrderItem, runMigration };
 
