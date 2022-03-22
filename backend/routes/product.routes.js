@@ -35,9 +35,31 @@ const router = express.Router({ mergeParams: true });
  * @param {string} authorization.header.require//todo handle shopid from path
  * @param {integer} page.query.require
  * @param {integer} limit.query.require
+ * @param {integer} id.path.require
+ * @returns {Array.<Product>} 200 - List of products info
+ */
+ router.get('/getall/:id', productController.getProductsForShop);
+
+ /**
+ * Get product by id
+ * @route GET /products
+ * @group Product
+ * @param {string} authorization.header.require
+ * @param {integer} id.path.require
+ * @returns {Product} 200 - product
+ */
+  router.get('/product/:id', productController.getProductsById);
+
+ /**
+ * Get list of Products for shop
+ * @route GET /products
+ * @group Products
+ * @param {string} authorization.header.require//todo handle shopid from path
+ * @param {integer} page.query.require
+ * @param {integer} limit.query.require
  * @returns {Array.<Product>} 200 - List of dishes info
  */
- router.get('/getall', productController.getProductsForShop);
+  router.get('/getallitem/', productController.getAllProducts);
 
  /**
  * Delete Product by ID

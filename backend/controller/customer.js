@@ -44,9 +44,17 @@ const createCustomer = async (req, res) => {
 };
 
 const getCustomerByID = async (req, res) => {
-    const { id } = req.params;
-    console.log("Inside getCustomerByID")
-    console.log("Fetching customer with id:"+id);
+    let { id } = req.params;
+    console.log(`Inside getCustomerByID, data: `,req.params)
+    if(typeof(id)=='undefined')
+    {
+      console.log("Got undefined customer_id")
+        id=1;
+    }
+    else{
+      console.log("Fetching customer with id:"+id);
+    }
+    
     console.log(req.headers.user);//undefined
     if (!id || id === 0) {
       res.status(400).json(errors.badRequest);

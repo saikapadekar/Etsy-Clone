@@ -1,5 +1,20 @@
 const { DataTypes } = require('sequelize');
 
+// const Media = global.DB.define('media',{
+// id:{
+//   type: DataTypes.INTEGER,
+//     autoIncrement: true,
+//     primaryKey: true,
+//     unique: true,
+// },
+// url:{
+//   type:DataTypes.STRING,
+// },
+// alt_text:{
+//   type:DataTypes.STRING,
+// },
+
+// });
 const User = global.DB.define('users', {
   id: {
     type: DataTypes.INTEGER,
@@ -21,16 +36,14 @@ const User = global.DB.define('users', {
   },
 });
 const Product = global.DB.define('products', {
-  id: {
-    type: DataTypes.INTEGER,
-    autoIncrement: true,
-    primaryKey: true,
-    unique: true,
-  },
   name: {
     type: DataTypes.STRING,
     unique: false,
     allowNull: false,
+  },
+  url:{
+    type:DataTypes.STRING(1234),
+    allowNull: true
   },
   category: {
     type: DataTypes.STRING,
@@ -89,6 +102,10 @@ const Buyer = global.DB.define('buyers', {
     primaryKey: true,
     unique: true,
   },
+  url:{
+    type:DataTypes.STRING(1234),
+    allowNull: true
+  },
   name: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -134,6 +151,10 @@ const Shop = global.DB.define('shops', {
     type: DataTypes.INTEGER,
     primaryKey: true,
     unique: true,
+  },
+  url:{
+    type:DataTypes.STRING(1234),
+    allowNull: true
   },
   name: {
     type: DataTypes.STRING,
@@ -188,6 +209,11 @@ const OrderItem = global.DB.define('orderitems', {
 // });
 // Favourite.belongsTo(Customer);
 
+// Media.hasMany(Buyer,
+//   {
+//     onDelete:'SET NULL',
+//   });
+// Buyer.belongsTo(Media);
 const runMigration = async (force) => {
   if (!global.DB) {
     return Promise.reject(new Error('please initialize DB'));
@@ -197,6 +223,7 @@ const runMigration = async (force) => {
   await Buyer.sync({ force });
   await Shop.sync({ force });
   await Product.sync({ force });
+
   // await Favourite.sync({ force });
   // await Order.sync({ force });
   // await OrderItem.sync({ force });
