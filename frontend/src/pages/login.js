@@ -1,16 +1,12 @@
 import React, { Component } from 'react'
-import withStyles from '@material-ui/core/styles/withStyles'    
-import Grid from '@material-ui/core/Grid'
 import TextField from '@material-ui/core/TextField'
-import Typography from '@material-ui/core/Typography'
 import { Button } from '@material-ui/core'
-import InputBase from '@material-ui/core/InputBase'
 import '../../src/login.css'
 import { Link } from 'react-router-dom'
-import cookie from "react-cookies";
 //redux
 import {connect} from 'react-redux'
 import {loginUser} from '../redux/actions/userActions'
+import notify from '../utils/notify';
 
 class login extends React.Component {
     
@@ -32,7 +28,7 @@ class login extends React.Component {
     }
 
     handleSubmit = (event) => {
-        console.log("inside handleSubmit");
+        console.log("inside handleSubmit login.js");
         event.preventDefault()
         var newUser = {
             email : this.state.email,
@@ -42,9 +38,13 @@ class login extends React.Component {
         console.log("email: "+newUser.email+"password"+newUser.password);
         console.log("history: "+this.props.history);
         this.props.loginUser(newUser, this.props.history)
+        .then(()=>console.log( `inside then of getShopdetails`))
+        .catch((err) => {
+            notify({ type: 'error', description: JSON.stringify(err.response.data.message) });
+        });
         this.props.history.push('/')
         event.preventDefault()
-        const loggedin_user=React.createContext();
+        const loggedin_user=React.createContext();//todo
     }
 
     render() {

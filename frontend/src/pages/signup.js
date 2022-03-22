@@ -3,6 +3,7 @@ import {signupUser} from '../redux/actions/userActions'
 import {connect} from 'react-redux'
 import TextField from '@material-ui/core/TextField'
 import { Button } from '@material-ui/core'
+import notify from '../utils/notify';
 
 class signup extends Component {
     state = {
@@ -31,7 +32,11 @@ class signup extends Component {
         console.log("email: "+newUser.email+" password: "+newUser.password+" role: "+newUser.role);
         // console.log("history: "+this.props.history);
         const {history}=this.props;
-        this.props.signupUser(newUser, history);
+        this.props.signupUser(newUser, history)
+        .then(()=>console.log( `inside then of getShopdetails`))
+        .catch((err) => {
+            notify({ type: 'error', description: JSON.stringify(err.response.data.message) });
+        });
         history.push('/login'); 
         console.log(JSON.stringify(history))
 

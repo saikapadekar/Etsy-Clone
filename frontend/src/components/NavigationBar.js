@@ -4,6 +4,7 @@ import CircleOutlinedIcon from '@mui/icons-material/CircleOutlined';
 import InputBase from '@material-ui/core/InputBase'
 import { withStyles } from '@material-ui/core/styles';
 import {Navbar, Nav, NavItem, NavLink} from 'react-bootstrap';
+import { LinkContainer } from "react-router-bootstrap";
 import { Container } from 'react-bootstrap';
 import {connect} from 'react-redux'
 import store from '../redux/store'
@@ -15,6 +16,9 @@ import MuiLink from '@material-ui/core/Link'
 import FaceIcon from '@mui/icons-material/Face';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import ShopIcon from '@mui/icons-material/Shop';
+import { MenuItem,Menu } from '@mui/material';
+import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 const styles = (theme) => ({
     ...theme.spread,
     button: {
@@ -66,44 +70,97 @@ const styles = (theme) => ({
         paddingRight: '42px !important',
         paddingLeft: '18px',
         fontFamily:'-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif'
+    },
+    brand:{
+        color:'rgb(240, 92, 38)',
+        fontSize:'32px',
+        fontFamily:'Graphik Webfont,-apple-system,Helvetica Neue,Droid Sans,Arial,sans-serif',
+        fontWeight:'bold',
+        textTransform:'none',
+        marginLeft:'20px'
+
     }
 })
 
 class NavigationBar extends Component {
     
-    state = {
-        delBg : 'white',
-        pickBg : '#e8e8e8'
+    constructor() {
+        super();
+        this.state = {
+            keyword:''
+        };
+      }
+    
+    handleSearch = () => {
+        this.setState({
+            keyword:this.state.keyword,
+        })
+        console.log(`Keyword is: `,this.state.keyword)
     }
-
     render() {
         const { classes } = this.props
-        const {authenticated, authenticatedUser} = this.props.user
+        const {authenticated, authenticatedUser,shopdetails} = this.props.user
         console.log(`inside NavigationBar.js Is user authenticated? `,authenticated)
 
         return (
             <div>
             <Navbar bg='light'>
                 <Container>
-                    <Navbar.Brand href='/'>Etsy</Navbar.Brand>
+                    {/* <LinkContainer onClick={this.handleSubmit} component = {Link} to="/"> */}
+                    <Button className={classes.brand} component = {Link} to="/">Etsy</Button>
+                    {/* <Navbar.Brand >Etsy</Navbar.Brand> */}
+                   
                     <InputBase
                             id="item"
                             name="item"
+                            type="name"
                             className={classes.item}
                             placeholder='Search for anything'
                             // onChange={this.handleChange}
                             startAdornment={<SearchIcon style={{color : '#2b2b2b'}} />}
+                            onChange={this.handleSearch}
+                            value={this.state.keyword} 
                         />
-                        <Button size="large" startIcon={<FavoriteIcon />}>
+                        <Button size="large" startIcon={<FavoriteIcon />} component = {Link} to="/favorite">
                         </Button>
-                       {(!authenticated && <Button size="large" startIcon={<FaceIcon />}  component = {Link} to="/login">
+                        {(!authenticated && <PopupState variant="popover" popupId="demo-popup-menu">
+  {(popupState) => (
+    <React.Fragment>
+        {(!authenticated && <Button size="large" startIcon={<FaceIcon />} {...bindTrigger(popupState)}>
+                        </Button>)}
+      <Menu {...bindMenu(popupState)}>
+        <MenuItem onClick={popupState.close} component = {Link} to="/login">Login</MenuItem>
+        {!shopdetails && (<MenuItem onClick={popupState.close} component = {Link} to="/shopname">Sell On Etsy</MenuItem>)}
+        {shopdetails && (<MenuItem onClick={popupState.close} component = {Link} to="/shop">Sell On Etsy</MenuItem>)}
+        <MenuItem onClick={popupState.close} component = {Link} to="/logout">Logout</MenuItem>
+      </Menu>
+    </React.Fragment>
+  )}
+</PopupState>)}
+{(authenticated && <PopupState variant="popover" popupId="demo-popup-menu">
+  {(popupState) => (
+    <React.Fragment>
+        {(authenticated && <Button size="large" startIcon={<AccountCircleIcon />} {...bindTrigger(popupState)}>
+                        </Button>)}
+      <Menu {...bindMenu(popupState)}>
+        <MenuItem onClick={popupState.close} component = {Link} to="/userprofile">Profile</MenuItem>
+        <MenuItem onClick={popupState.close} component = {Link} to="/shopname">Sell On Etsy</MenuItem>
+        <MenuItem onClick={popupState.close} component = {Link} to="/shop">My Shop</MenuItem>
+        <MenuItem onClick={popupState.close}><a href="/">Logout</a></MenuItem>
+      </Menu>
+    </React.Fragment>
+  )}
+</PopupState>)}
+                       {/* {(!authenticated && <Button size="large" startIcon={<FaceIcon />}  component = {Link} to="/login">
                         </Button>)}
                         {authenticated && (<Button size="large" startIcon={<AccountCircleIcon />}  component = {Link} to="/userprofile">
-                        </Button>)}
+                        </Button>)} */}
                             <Button startIcon={<ShoppingCartIcon />} component = {Link} to="/cart">
-                            </Button>  
-                            {authenticated && (<Button className={classes.logout}  size="small" startIcon={<LogoutIcon />}  component = {Link} to="/logout">
-                        </Button>)}                       
+                            </Button> 
+                            {/* {authenticated && (<Button className={classes.logout}  size="small" startIcon={<ShopIcon />}  component = {Link} to="/logout">
+                        </Button>)}   
+                            {authenticated && (<Button className={classes.logout}  size="small" startIcon={<LogoutIcon />}  component = {Link} to="/shopname">
+                        </Button>)}                        */}
                             
                             <br/>
                             <br/>
