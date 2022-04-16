@@ -17,6 +17,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.26.1",
     "buffer": "^6.0.3",
+    "clean": "^4.0.2",
     "crypto": "^1.0.1",
     "crypto-browserify": "^3.12.0",
     "font-awesome": "^4.7.0",

@@ -118,6 +118,9 @@ import { MenuItem,Menu } from '@mui/material';
 import PopupState, { bindTrigger, bindMenu } from 'material-ui-popup-state';
 import FaceIcon from '@mui/icons-material/Face';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import {useSelector} from 'react-redux'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
+
 
 const useStyles = makeStyles({
     brand:{
@@ -182,6 +185,11 @@ const useStyles = makeStyles({
 
 const NavigationBar = () => {
     const classes = useStyles();
+    const user=useSelector(state=>state.user)
+    const {
+      token,
+      authenticated
+    } = user;
     return (
         <div>
             <Navbar bg='light'>
@@ -200,10 +208,10 @@ const NavigationBar = () => {
                         />
                         <Button size="large" startIcon={<FavoriteIcon />} component = {Link} to="/favorite">
                         </Button>
-                        {(<PopupState variant="popover" popupId="demo-popup-menu">
+                        {(!authenticated && <PopupState variant="popover" popupId="demo-popup-menu">
   {(popupState) => (
     <React.Fragment>
-        {(<Button size="large" startIcon={<FaceIcon />} {...bindTrigger(popupState)}>
+        {(!authenticated && <Button size="large" startIcon={<FaceIcon />} {...bindTrigger(popupState)}>
                         </Button>)}
       <Menu {...bindMenu(popupState)}>
         <MenuItem onClick={popupState.close} component = {Link} to="/login">Login</MenuItem>
@@ -214,10 +222,10 @@ const NavigationBar = () => {
     </React.Fragment>
   )}
 </PopupState>)}
-                        {/* {( <PopupState variant="popover" popupId="demo-popup-menu">
+                        {(authenticated && <PopupState variant="popover" popupId="demo-popup-menu">
   {(popupState) => (
     <React.Fragment>
-        {( <Button size="large" startIcon={<AccountCircleIcon />} {...bindTrigger(popupState)}>
+        {(authenticated &&  <Button size="large" startIcon={<AccountCircleIcon />} {...bindTrigger(popupState)}>
                         </Button>)}
       <Menu {...bindMenu(popupState)}>
         <MenuItem onClick={popupState.close} component = {Link} to="/userprofile">Profile</MenuItem>
@@ -227,7 +235,7 @@ const NavigationBar = () => {
       </Menu>
     </React.Fragment>
   )}
-</PopupState>)} */}
+</PopupState>)}
 <Button startIcon={<ShoppingCartIcon />} component = {Link} to="/cart">
                             </Button> 
                             <br/>

@@ -32,6 +32,7 @@ constructor(props) {
     this.state={
         edit:false,
         id:'',
+        url:'',
         name:'',
         email:this.props.user.email,
         about:'',

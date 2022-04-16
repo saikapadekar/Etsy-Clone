@@ -1,7 +1,10 @@
-import React from 'react';
+import React,{useEffect} from 'react';
+import {useSelector} from 'react-redux'
 import PinkBox from "../components/PinkBox";
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles"
+import {  Navigate } from "react-router-dom";
+// import getLoginDetails from '../utils/getLoginDetails'
 
 const useStyles = makeStyles({
     main:{
@@ -10,6 +13,17 @@ const useStyles = makeStyles({
 });
 
 const Home = () => {
+
+    const user=useSelector(state=>state.user)
+    console.log(`Printing user value from store`,JSON.stringify(user))
+    const {
+        token,
+        authenticated
+      } = user;
+    useEffect(() => {
+        // const loginDetails = getLoginDetails();
+        // console.log(JSON.stringify(loginDetails))
+      }, []);
     const classes = useStyles();
     return (
         <div>

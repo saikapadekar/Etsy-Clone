@@ -1,14 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, {  useState } from 'react';
 import {  useNavigate } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField'
 import { Button } from '@material-ui/core'
 import '../../src/login.css'
 import { Link } from 'react-router-dom'
+import {signupUser} from '../redux'
+import { connect,useDispatch } from 'react-redux';
 
 const Signup = () => {
 
-    const [user, setUser] = useState({ email: '', password: '', role:'customer', isAuthenticated: false })
-    // const dispatch = useDispatch();
+    const [user, setUser] = useState({ email: '', password: '', role:'customer'})
+    const [isAuthenticated,setAuthenticated]=useState({isAuthenticated: false})
+    const dispatch = useDispatch();
     const navigate = useNavigate();
 
     const handleChange=(event)=>{
@@ -18,6 +21,34 @@ const Signup = () => {
                 [event.target.name] : event.target.value
             }
         )
+    };
+
+    // const signupUser =(user)=>{
+    //     axios
+	// 		.post('http://localhost:7000/auth/signup', user)
+	// 		.then(response => {
+	// 			// const { token } = response.data;
+    //             setCookie({ path: '/login' });
+    //             // setAuthenticated({
+    //             //     isAuthenticated:true
+    //             // })
+    //             console.log('Signup successful')
+    //             navigate('/login')
+	// 		})
+	// 		.catch(error => {
+	// 			console.log(error)
+	// 		})
+
+    // };
+
+    // useEffect(() => {
+    //     signupUser(user)
+    //   }, [])
+
+    const handleSubmit=(event)=>{
+        event.preventDefault()
+        console.log('Inside HandleSubmit Signup.js')
+        dispatch(signupUser(user))
     };
 
     return (
@@ -56,7 +87,7 @@ const Signup = () => {
                         <br/><br/><br/>
                         <div className='buttons'>
                         <Button type="signup" variant="contained"  className="signup" 
-                        // onClick={this.handleSubmit}
+                        onClick={handleSubmit} component = {Link} to="/login"
                         >
                             Sign Up
                         </Button>
@@ -65,5 +96,16 @@ const Signup = () => {
             </div>
     );
 };
-
-export default Signup;
+const mapStateToProps = (state) => {
+    return {
+      userData: state.user
+    }
+  }
+  
+  const mapDispatchToProps = dispatch => {
+    return {
+        signupUser: (user) => dispatch(signupUser(user))
+    }
+  }
+  
+export default connect(mapStateToProps,mapDispatchToProps)(Signup);

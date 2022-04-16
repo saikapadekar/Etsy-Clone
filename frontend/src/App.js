@@ -3,12 +3,12 @@ import './App.css';
 import {BrowserRouter as Router, Route,Routes,Switch} from 'react-router-dom'
 import NavigationBar from './components/NavigationBar';
 
-// import userprofile from './pages/userprofile';
+import Userprofile from './pages/Userprofile';
 import Login from './pages/Login';
 import Home from './pages/Home';
 import Signup from './pages/Signup';
-// import store from './redux/store'
-// import {Provider} from 'react-redux'
+import store from './redux/store'
+import {Provider} from 'react-redux'
 // import shopname from './pages/shopname'
 // import shop from './pages/shop'
 // import AddItem from './components/AddItem';
@@ -63,6 +63,7 @@ import Signup from './pages/Signup';
 
 function App(props) {
   return (
+    <Provider store={store}>
     <div>
       
       <Router>
@@ -72,10 +73,13 @@ function App(props) {
 
       <Route exact path="/login" element={<Login/>} />
       <Route exact path="/signup" element={<Signup/>} />
+      <Route exact path="/userprofile" element={<Userprofile/>} />
+
 
       </Routes>
       </Router>
     </div>
+    </Provider>
   );
 }
 
