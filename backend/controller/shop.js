@@ -91,9 +91,29 @@ const getShopByName = async (req, res) => {
   return;
 };
 
+const getShopByNameTwo = async (req, res) => {
+  console.log(`inside getShopByNameTwo, name: `, req.params);
+  const { name } = req.params;
+  // if (!id || id == 0) {
+  //   res.status(400).json(errors.badRequest);
+  //   return;
+  // }
+
+  const shop = await Shop.findOne({
+    where: { name },
+  });
+  if (shop) {
+    res.status(200).json(shop);
+    return;
+  }
+  res.status(404).send();
+  return;
+};
+
 module.exports = {
   createShop,
   getShopByID,
   allShops,
   getShopByName,
+  getShopByNameTwo,
 };

@@ -5,6 +5,10 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField'
 import { Divider } from '@mui/material'
+import {connect, useSelector,useDispatch} from 'react-redux'
+import jwt_decode from "jwt-decode";
+import {createCustomer} from '../redux'
+
 const useStyles = makeStyles({
     avatar : {
         height :'200px',
@@ -20,6 +24,13 @@ const useStyles = makeStyles({
 
 const Userprofile = (props) => {
     const classes = useStyles();
+    const user=useSelector(state=>state.user)
+    console.log(`Printing user value from store`,JSON.stringify(user))
+    const {
+        authenticatedUser,
+        authenticated,
+        userLogindetails
+      } = user;
 
     const handleChange=(event)=>{
         setProfile(
@@ -30,9 +41,10 @@ const Userprofile = (props) => {
         )
     };
 
-    const [profile, setProfile] = useState({id:'',
+    const [profile, setProfile] = useState({
+    id:'',
     name:'',
-    email:'',//to handle
+    email:'',
     about:'',
     gender:'',
     dob:'',
@@ -41,8 +53,23 @@ const Userprofile = (props) => {
     country:'',
     contact_no:'',
     address:'' })
-    // const dispatch = useDispatch();
+    
+    const dispatch = useDispatch();
     const navigate = useNavigate();
+
+    var decoded = jwt_decode(authenticatedUser.token);
+    profile.id=decoded.id;
+
+    const handleSubmit =(event) =>{
+        event.preventDefault()
+    console.log('Inside HandleSubmit Userprofile.js')
+    dispatch(createCustomer(profile))
+    navigate('/')
+    };
+
+    console.log(`Printing from props`,JSON.stringify(props))
+
+
     return (
         <div>
             Hello from userprofile.js
@@ -69,11 +96,12 @@ const Userprofile = (props) => {
                     </TextField>
                     <br/><br/><br/>
                     <Divider />
-                    <TextField id="email" name="email" className ={classes.field} placeholder="email address"
+                    {/* <TextField id="email" name="email" className ={classes.field} placeholder="email address"
                             value={profile.email} 
                             onChange={handleChange} variant="outlined">
                     
-                    </TextField>
+                    </TextField> */}
+                    {userLogindetails.email}
                     <br/><br/><br/>
                     <Divider />
 
@@ -129,7 +157,7 @@ const Userprofile = (props) => {
                     <br/><br/><br/>
 
                     <Button variant="contained" color="success" 
-                    // onClick ={this.handleSubmit }
+                    onClick ={handleSubmit }
                     >
                     Save
                     </Button>
@@ -141,4 +169,18 @@ const Userprofile = (props) => {
     );
 };
 
-export default Userprofile;
+
+const mapStateToProps = (state) => {
+    return {
+        customer: state.profile
+      
+    }
+  }
+  
+  const mapDispatchToProps = dispatch => {
+    return {
+        createCustomer: (profile) => dispatch(createCustomer(profile)),
+    }
+  }
+
+export default connect(mapStateToProps,mapDispatchToProps)(Userprofile);

@@ -39,7 +39,7 @@ export const insertShopProduct = (data) => (dispatch) =>{
 
 
 export const getShopProducts = (id) => (dispatch) =>{
-    console.log(`Inside getShopProducts, Shop id: `,id);
+    console.log(`Inside getShopProducts by Shop id: `,id);
 
     axios.get(`http://localhost:7000/products/getall/${id}`,id)
         .then(res => {

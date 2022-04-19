@@ -1,4 +1,4 @@
-import { LOGIN_USER, SIGNUP_USER } from './userTypes'
+import { LOGIN_USER, SIGNUP_USER ,ADD_LOGIN_DETAILS} from './userTypes'
 import axios from 'axios'
 import { setCookie } from 'react-use-cookie';
 
@@ -50,3 +50,10 @@ export const signupUser = (newUser) => {
         }
     }
 }
+
+export const addLoginDetails = (user) => {
+    return {
+      type: ADD_LOGIN_DETAILS,
+      payload: user
+    }
+  }

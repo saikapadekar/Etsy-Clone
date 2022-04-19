@@ -61,5 +61,16 @@ router.get('/all', shopController.allShops);
  router.get('/name/:name', shopController.getShopByName);
 
 
+ /**
+ * Get Shop by Name
+ * @route GET /shops/{name}
+ * @group Shops
+ * @param {string} authorization.header.require
+ * @param {string} name.path.require
+ * @returns {Shop.model} 200 - Shop for given name
+ */
+  router.get('/nametwo/:name', shopController.getShopByNameTwo);
+
+
 
  module.exports = router;

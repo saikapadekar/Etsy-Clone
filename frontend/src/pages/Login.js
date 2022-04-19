@@ -7,7 +7,7 @@ import '../../src/login.css'
 import { Link } from 'react-router-dom'
 import axios from 'axios'
 import { setCookie,getCookie } from 'react-use-cookie';
-import {loginUser} from '../redux'
+import {loginUser,addLoginDetails} from '../redux'
 import {  Navigate } from "react-router-dom";
 import {useSelector} from 'react-redux'
 
@@ -73,12 +73,15 @@ const handleSubmit =(event) => {
     event.preventDefault()
     console.log('Inside HandleSubmit Login.js')
     dispatch(loginUser(user))
+    dispatch(addLoginDetails(user))
     setAuthenticated(true)
     navigate('/')
 };
 
 console.log(`Printing the value of authentication`,authentication)
 console.log(`Printing the value of user`,user)
+// console.log(`Printing the value of state.user`,state.user)
+
 console.log(`Printing from props`,JSON.stringify(props))
 // let redirectVar=null;
 //         if(user.email !== ''){//to figure out
@@ -141,13 +144,15 @@ console.log(`Printing from props`,JSON.stringify(props))
 const mapStateToProps = (state) => {
     return {
       userData: state.user,
-      authenticated: state.authentication
+      authenticated: state.authentication,
+      
     }
   }
   
   const mapDispatchToProps = dispatch => {
     return {
-        loginUser: (user) => dispatch(loginUser(user))
+        loginUser: (user) => dispatch(loginUser(user)),
+        addLoginDetails:(user) => dispatch(addLoginDetails(user))
     }
   }
   
