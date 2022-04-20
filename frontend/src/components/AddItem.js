@@ -1,8 +1,7 @@
 /**Things to handle:
  * 1. Navigation to -1 page(ie shop page) --done
- * 2. Adding category dynamically
- * 3. Handle that page is accessible only if owner is logged in
- * 4. Sending shopid to insert product  --done
+ * 2. Adding category dynamically --remaining 
+ * 3. Sending shopid to insert product  --done
  */
 import React, { useEffect, useState } from 'react';
 import { connect,useDispatch } from 'react-redux';

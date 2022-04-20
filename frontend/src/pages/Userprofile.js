@@ -1,3 +1,10 @@
+/**
+ * Things to do:
+ * 1. Call useEffect to load userprofile data if already present--remaining
+ * 2. Red asterisk to show address is mandatory --remaining
+ * 3. Dropdown for country_name --remaining
+ */
+
 import React, { useEffect, useState } from 'react';
 import {  useNavigate } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';

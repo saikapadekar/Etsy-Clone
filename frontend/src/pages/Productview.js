@@ -1,7 +1,9 @@
 /**Things to do
- * 1. Get product id from URL params
- * 2. call useEffect to get data for that id
- * 3. Display shopname and add hyperlink
+ * 1. Get product id from URL params -- done
+ * 2. call useEffect to get data for that id --done
+ * 3. Display shopname and add hyperlink --remaining
+ * 4. Display Currency symbol --remaining
+ * 5. Select qty while add to cart --remaining
  */
 
 

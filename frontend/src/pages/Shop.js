@@ -1,9 +1,15 @@
 /**
  * Things to do:
- * Get Shop details according to shopname: Write useEffect()--done
- * Get Products of that particular shop --done
- * Display products of that particular shop
- * Display add item button, only if logged in user is Shop Owner --done
+ * 1. Get Shop details according to shopname: Write useEffect()--done
+ * 2. Get Products of that particular shop --done
+ * 3. Display products of that particular shop --remaining
+ * 4. Display products sales count --remaining
+ * 
+ * Owner:
+ * 1.Display add item button, only if logged in user is Shop Owner --done
+ * 2. Edit item -- remaining
+ * 3. Edit shop image -- remaining
+ * 4. Display total sales of all items in that shop -- remaining
  */
 
 
@@ -12,8 +18,6 @@ import { connect,useDispatch } from 'react-redux';
 import {  useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@material-ui/core'
 import { Link ,Outlet} from 'react-router-dom'
-import axios from 'axios'
-import {  Navigate } from "react-router-dom";
 import {useSelector} from 'react-redux'
 import {getShopProducts,getShopDataByNameTwo} from '../redux'
 import { makeStyles } from '@material-ui/core/styles';

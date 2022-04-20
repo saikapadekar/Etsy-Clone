@@ -1,111 +1,8 @@
-
-
-// class NavigationBar extends Component {
-    
-//     constructor() {
-//         super();
-//         this.state = {
-//             keyword:''
-//         };
-//       }
-    
-//     handleSearch = () => {
-//         this.setState({
-//             keyword:this.state.keyword,
-//         })
-//         console.log(`Keyword is: `,this.state.keyword)
-//     }
-//     render() {
-//         const { classes } = this.props
-//         const {authenticated, authenticatedUser,shopdetails} = this.props.user
-//         console.log(`inside NavigationBar.js Is user authenticated? `,authenticated)
-
-//         return (
-//             <div>
-//             <Navbar bg='light'>
-//                 <Container>
-//                     {/* <LinkContainer onClick={this.handleSubmit} component = {Link} to="/"> */}
-//                     <Button className={classes.brand} component = {Link} to="/">Etsy</Button>
-//                     {/* <Navbar.Brand >Etsy</Navbar.Brand> */}
-                   
-//                     <InputBase
-//                             id="item"
-//                             name="item"
-//                             type="name"
-//                             className={classes.item}
-//                             placeholder='Search for anything'
-//                             // onChange={this.handleChange}
-//                             startAdornment={<SearchIcon style={{color : '#2b2b2b'}} />}
-//                             onChange={this.handleSearch}
-//                             value={this.state.keyword} 
-//                         />
-//                         <Button size="large" startIcon={<FavoriteIcon />} component = {Link} to="/favorite">
-//                         </Button>
-//                         {(!authenticated && <PopupState variant="popover" popupId="demo-popup-menu">
-//   {(popupState) => (
-//     <React.Fragment>
-//         {(!authenticated && <Button size="large" startIcon={<FaceIcon />} {...bindTrigger(popupState)}>
-//                         </Button>)}
-//       <Menu {...bindMenu(popupState)}>
-//         <MenuItem onClick={popupState.close} component = {Link} to="/login">Login</MenuItem>
-//         {!shopdetails && (<MenuItem onClick={popupState.close} component = {Link} to="/shopname">Sell On Etsy</MenuItem>)}
-//         {shopdetails && (<MenuItem onClick={popupState.close} component = {Link} to="/shop">Sell On Etsy</MenuItem>)}
-//         <MenuItem onClick={popupState.close} component = {Link} to="/logout">Logout</MenuItem>
-//       </Menu>
-//     </React.Fragment>
-//   )}
-// </PopupState>)}
-// {(authenticated && <PopupState variant="popover" popupId="demo-popup-menu">
-//   {(popupState) => (
-//     <React.Fragment>
-//         {(authenticated && <Button size="large" startIcon={<AccountCircleIcon />} {...bindTrigger(popupState)}>
-//                         </Button>)}
-//       <Menu {...bindMenu(popupState)}>
-//         <MenuItem onClick={popupState.close} component = {Link} to="/userprofile">Profile</MenuItem>
-//         <MenuItem onClick={popupState.close} component = {Link} to="/shopname">Sell On Etsy</MenuItem>
-//         <MenuItem onClick={popupState.close} component = {Link} to="/shop">My Shop</MenuItem>
-//         <MenuItem onClick={popupState.close}><a href="/">Logout</a></MenuItem>
-//       </Menu>
-//     </React.Fragment>
-//   )}
-// </PopupState>)}
-//                        {/* {(!authenticated && <Button size="large" startIcon={<FaceIcon />}  component = {Link} to="/login">
-//                         </Button>)}
-//                         {authenticated && (<Button size="large" startIcon={<AccountCircleIcon />}  component = {Link} to="/userprofile">
-//                         </Button>)} */}
-//                             <Button startIcon={<ShoppingCartIcon />} component = {Link} to="/cart">
-//                             </Button> 
-//                             {/* {authenticated && (<Button className={classes.logout}  size="small" startIcon={<ShopIcon />}  component = {Link} to="/logout">
-//                         </Button>)}   
-//                             {authenticated && (<Button className={classes.logout}  size="small" startIcon={<LogoutIcon />}  component = {Link} to="/shopname">
-//                         </Button>)}                        */}
-                            
-//                             <br/>
-//                             <br/>
-//                             <Button className={classes.button2} component = {Link} to="/products" >Home Favorites</Button>
-//                             <Button className={classes.button2} component = {Link} to="/products" >Jewelry & Accessories</Button>
-//                             <Button className={classes.button2} component = {Link} to="/products" >Clothing & Shoes</Button>
-//                             <Button className={classes.button2} component = {Link} to="/products" >Home & Living</Button>
-//                             <Button className={classes.button2} component = {Link} to="/products" >Wedding & Party</Button>
-//                             <Button className={classes.button2} component = {Link} to="/products" >Toys & Entertainment</Button>
-//                             <Button className={classes.button2} component = {Link} to="/products" >Art & Collectibles</Button>
-//                             <Button className={classes.button2} component = {Link} to="/products" >Craft Supplies</Button>
-//                             <Button className={classes.button2} component = {Link} to="/products" >Gifts & Gift Cards</Button>
-//                         {/* <Nav.Link login href="login" id="login">Sign in</Nav.Link> */}
-//                 </Container>
-//             </Navbar>
-//             </div>
-//         );
-//     }
-// }
-// const mapStateToProps = (state) => ({
-//     user : state.user
-// })
-
-
-// export default connect(mapStateToProps, {} )(withStyles(styles)(NavigationBar))
-
-import React from 'react';
+/**Things to do:
+ * 1. Change URL for sell on etsy /shop/:shopname
+ * 2. Dispatch method to get shop of logged in user
+ */
+import React,{useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Navbar} from 'react-bootstrap';
 import { Container } from 'react-bootstrap';
@@ -120,7 +17,9 @@ import FaceIcon from '@mui/icons-material/Face';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {useSelector} from 'react-redux'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-
+import { connect,useDispatch } from 'react-redux';
+import jwt_decode from "jwt-decode";
+import {getAuthenticatedShopData} from '../redux'
 
 const useStyles = makeStyles({
     brand:{
@@ -185,11 +84,27 @@ const useStyles = makeStyles({
 
 const NavigationBar = () => {
     const classes = useStyles();
+    const dispatch=useDispatch();
     const user=useSelector(state=>state.user)
+    const store_shop=useSelector(state=>state.shop)
+    const {shopdetails}=store_shop;
     const {
-      token,
-      authenticated
+      authenticatedUser,
+      authenticated,
+      userLogindetails
     } = user;
+    
+    let flag=false; let shop_id=1;
+      if(typeof(authenticatedUser.token)!='undefined' )
+      {
+        var decoded = jwt_decode(authenticatedUser.token);
+
+        shop_id=decoded.id;
+     }
+    useEffect(() => {
+      dispatch(getAuthenticatedShopData(shop_id))
+  }, [])
+
     return (
         <div>
             <Navbar bg='light'>
@@ -215,9 +130,9 @@ const NavigationBar = () => {
                         </Button>)}
       <Menu {...bindMenu(popupState)}>
         <MenuItem onClick={popupState.close} component = {Link} to="/login">Login</MenuItem>
-        { (<MenuItem onClick={popupState.close} component = {Link} to="/shopname">Sell On Etsy</MenuItem>)}
-        { (<MenuItem onClick={popupState.close} component = {Link} to="/shop">Sell On Etsy</MenuItem>)}
-        <MenuItem onClick={popupState.close} component = {Link} to="/logout">Logout</MenuItem>
+        {/* { (<MenuItem onClick={popupState.close} component = {Link} to="/shopname">Sell On Etsy</MenuItem>)}
+        { (<MenuItem onClick={popupState.close} component = {Link} to="/shop">Sell On Etsy</MenuItem>)} */}
+        <MenuItem onClick={popupState.close} ><a href="/">Logout</a></MenuItem>
       </Menu>
     </React.Fragment>
   )}
@@ -230,7 +145,7 @@ const NavigationBar = () => {
       <Menu {...bindMenu(popupState)}>
         <MenuItem onClick={popupState.close} component = {Link} to="/userprofile">Profile</MenuItem>
         <MenuItem onClick={popupState.close} component = {Link} to="/shopname">Sell On Etsy</MenuItem>
-        <MenuItem onClick={popupState.close} component = {Link} to="/shop">My Shop</MenuItem>
+        <MenuItem onClick={popupState.close} component = {Link} to={`/shop/${shopdetails.name}`}>My Shop</MenuItem>
         <MenuItem onClick={popupState.close}><a href="/">Logout</a></MenuItem>
       </Menu>
     </React.Fragment>
@@ -255,4 +170,12 @@ const NavigationBar = () => {
     );
 };
 
-export default NavigationBar;
+const mapDispatchToProps = dispatch => {
+  return {
+      
+    getAuthenticatedShopData: (shop_id) => dispatch(getAuthenticatedShopData(shop_id))
+
+  }
+}
+
+export default connect(mapDispatchToProps)(NavigationBar);
