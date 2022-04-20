@@ -1,4 +1,3 @@
-
 /**
  * Things to do:
  * Get Shop details according to shopname: Write useEffect()--done
@@ -12,7 +11,7 @@ import React, { useEffect, useState } from 'react';
 import { connect,useDispatch } from 'react-redux';
 import {  useNavigate, useParams } from 'react-router-dom';
 import { Button } from '@material-ui/core'
-import { Link } from 'react-router-dom'
+import { Link ,Outlet} from 'react-router-dom'
 import axios from 'axios'
 import {  Navigate } from "react-router-dom";
 import {useSelector} from 'react-redux'
@@ -21,6 +20,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid'
 import { Divider } from '@mui/material'
 import jwt_decode from "jwt-decode";
+
 
 const useStyles = makeStyles({
     nameLoc : {
@@ -143,9 +143,10 @@ const Shop = () => {
                         </div>
                         <Divider></Divider>
                         <br/><br/>
-                        {flag && <Button variant="contained" className={classes.button}  
+                        { <Button variant="contained" className={classes.button}  
                         component = {Link} 
-                        to="/additem">Add Item </Button>}
+                        to='additem'>Add Item </Button>}
+                        <Outlet />
                         
                 </div>
                 <Divider></Divider>

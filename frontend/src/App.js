@@ -11,7 +11,8 @@ import store from './redux/store'
 import {Provider} from 'react-redux'
 import Shopname from './pages/Shopname'
 import Shop from './pages/Shop'
-
+import AddItem from './components/AddItem'
+import Productview from './pages/Productview';
 
 // Things to do
 // 1. Add item page
@@ -32,7 +33,12 @@ function App(props) {
       <Route exact path="/signup" element={<Signup/>} />
       <Route exact path="/userprofile" element={<Userprofile/>} />
       <Route exact path="/shopname" element={<Shopname/>} />
-      <Route exact path="/shop/:shopname" element={<Shop/>} />
+
+      <Route exact path="/shop/:shopname" element={<Shop/>} >
+        <Route exact path="additem" element={<AddItem />} />
+      </Route>
+      <Route exact path="/productview/:product_id" element={<Productview/>} />
+
 
 
 

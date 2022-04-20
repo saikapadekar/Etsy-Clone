@@ -1,75 +1,96 @@
-import React, { Component } from 'react';
-import {insertShopProduct,getAllShopProducts} from '../redux/actions/userActions'
+/**Things to handle:
+ * 1. Navigation to -1 page(ie shop page) --done
+ * 2. Adding category dynamically
+ * 3. Handle that page is accessible only if owner is logged in
+ * 4. Sending shopid to insert product  --done
+ */
+import React, { useEffect, useState } from 'react';
+import { connect,useDispatch } from 'react-redux';
+import {  useNavigate } from 'react-router-dom';
 import TextField from '@material-ui/core/TextField'
 import { Button } from '@material-ui/core'
+import '../../src/login.css'
+import {insertShopProduct,getShopDataByNameTwo} from '../redux'
+import {  useParams } from "react-router-dom";
+import {useSelector} from 'react-redux'
 import jwt_decode from "jwt-decode";
-import {connect} from 'react-redux'
-class AddItem extends Component {
-constructor(props) {
-    super(props);
-    this.state={
-                url:'',
-                name:'',
-                category:'',
-                description:'',
-                price:'',
-                qty_available:'',
-                shopId:'',
-                sold:'0'
-                };
-}
-handleChange = (event) => {
-    this.setState({
-        [event.target.name] : event.target.value
-    })
-}
 
-    handleSubmit = (event) => {
-        console.log("inside handleSubmit AddItem.js");
-        event.preventDefault()
 
-        var productData = {
-            url:this.state.url,
-            name:this.state.name,
-            category:this.state.category,
-            description:this.state.description,
-            price:this.state.price,
-            qty_available:this.state.qty_available,
-            shopId:this.state.shopId,
-            sold:'0'            
-        }
-        console.log(productData)
+const AddItem = (props) => {
 
-        this.props.insertShopProduct(productData,this.props.history)
-        // this.props.getAllShopProducts()
+    const [item, setItem] = useState({ shopId:'',url:'',name: '', description: '',price:'',qty_available:'',category:''})
+    const { shopname } = useParams();
+    console.log(`Received shopname from URL params`,shopname)
 
-        this.props.history.push('/productview')
-//todo handle image
-        event.preventDefault()
-    }
-    render() {
-        const {classes} = this.props
-        const {authenticated, authenticatedUser,selectedUser} = this.props.user
+    const user=useSelector(state=>state.user)
+    console.log(`Printing user value from store`,JSON.stringify(user))
+    const {
+        authenticatedUser,
+        authenticated,
+        userLogindetails
+      } = user;
 
-        console.log(`inside AddItem.js Is user authenticated? `,authenticated)
-        
+      const store_shop=useSelector(state=>state.shop)
+
+    const {shopdetails, shopbyname}=store_shop;
+
+
+    
+
+
+    const dispatch = useDispatch()
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        dispatch(getShopDataByNameTwo(shopname))
+    }, [shopname])
+
+
+
+    const handleChange=(event)=>{
+        setItem(
+            {
+                ...item,
+                [event.target.name] : event.target.value
+            }
+        )
+    };
+    let flag=false;
+    if(typeof(authenticatedUser.token)!='undefined' && typeof(shopbyname.id)!='undefined')
+    {
         var decoded = jwt_decode(authenticatedUser.token);
- 
-        console.log(`decoded`,decoded.id);
-        // this.state.id=decoded.id;
-        this.state.shopId=decoded.id
-        return (
-            <div>
+        if(decoded.id==shopbyname.id)
+            {
+                flag=true;
+                console.log('Logged in user is owner of shop')
+            }
+    }
+
+    item.shopId=shopbyname.id; //To set shop_id(Product is inserted for specific shop)
+
+const handleSubmit =(event) => {
+    event.preventDefault()
+    console.log('Inside HandleSubmit AddItem.js')
+    dispatch(insertShopProduct(item))
+    navigate(-1)
+};
+
+
+console.log(`Printing from props`,JSON.stringify(props))
+
+    return (
+        
+        <div>
             <form noValidate >
                
-               <header>
-                  <h2>Add Product</h2>
-               </header>
-               <br/>
-               <div className='input'></div>
-               <TextField id="url" name="url" className ="textField" placeholder="Image"
-                            value={this.state.url} 
-                            onChange={this.handleChange} variant="outlined"></TextField>
+  <header>
+      <h2>Add Product</h2>
+  </header>
+<br/>
+ <div className='input'>
+ <TextField id="url" name="url" className ="textField" placeholder="Image"
+                            value={item.url} 
+                            onChange={handleChange} variant="outlined"></TextField>
                <TextField 
                             id ="name" 
                             name="name" 
@@ -77,8 +98,8 @@ handleChange = (event) => {
                             type="name"
                             className="textField"
                             variant="outlined"
-                            value={this.state.name} 
-                            onChange= {this.handleChange}
+                            value={item.name} 
+                            onChange= {handleChange}
                         />
                         <TextField 
                             id ="description" 
@@ -87,8 +108,8 @@ handleChange = (event) => {
                             type="description"
                             className="textField"
                             variant="outlined"
-                            value={this.state.description} 
-                            onChange= {this.handleChange}
+                            value={item.description} 
+                            onChange= {handleChange}
                         />
                         <TextField 
                             id ="price" 
@@ -97,8 +118,8 @@ handleChange = (event) => {
                             type="price"
                             className="textField"
                             variant="outlined"
-                            value={this.state.price} 
-                            onChange= {this.handleChange}
+                            value={item.price} 
+                            onChange= {handleChange}
                         />
                         <TextField 
                             id ="qty_available" 
@@ -106,8 +127,8 @@ handleChange = (event) => {
                             placeholder="Quantity"
                             className="textField"
                             variant="outlined"
-                            value={this.state.qty_available} 
-                            onChange= {this.handleChange}
+                            value={item.qty_available} 
+                            onChange= {handleChange}
                         />
                         <TextField 
                             id ="category" 
@@ -116,24 +137,39 @@ handleChange = (event) => {
                             type="category"
                             className="textField"
                             variant="outlined"
-                            value={this.state.category} 
-                            onChange= {this.handleChange}
+                            value={item.category} 
+                            onChange= {handleChange}
                         />
-                        <br/> <br/>
-                        <Button type="submit" variant="contained"  className="submit" onClick ={this.handleSubmit }>
+                        </div>
+                        <br/>
+                        <div className='buttons'>
+                        <Button type="submit" variant="contained"  className="submit" onClick ={handleSubmit }>
                             Add Product
                         </Button>
-               </form>
-               </div>
-        );
+                        </div>
+            </form>
+        </div>
+    );
+};
+
+
+const mapStateToProps = (state) => {
+    return {
+      userData: state.user,
+      authenticated: state.authentication,
+      
     }
-}
+  }
+  
+  const mapDispatchToProps = dispatch => {
+    return {
+        insertShopProduct: (item) => dispatch(insertShopProduct(item)),
+        getShopDataByNameTwo: (shopname) => dispatch(getShopDataByNameTwo(shopname)),
 
-// export default AddItem;
+    }
+  }
+  
 
-const mapStateToProps = (state) => ({
-    user : state.user
-    
-})
-
-export default connect(mapStateToProps, {insertShopProduct,getAllShopProducts} )((AddItem));
+export default connect(mapStateToProps
+    ,mapDispatchToProps
+    )(AddItem);

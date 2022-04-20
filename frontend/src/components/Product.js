@@ -1,23 +1,29 @@
-import React, { Component } from "react";
-import withStyles from "@material-ui/core/styles/withStyles";
+import React,{useEffect} from 'react';
 import Grid from "@material-ui/core/Grid";
-import MuiLink from "@material-ui/core/Link";
+import { makeStyles } from '@material-ui/core/styles';
 import { Link } from "react-router-dom";
-import { connect } from "react-redux";
-import tile from "./assets/user.png";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
-import FavoriteIcon from "@material-ui/icons/Favorite";
-import { Divider } from "@material-ui/core";
-import Avatar from "@material-ui/core/Avatar";
 import Card from "react-bootstrap/Card";
 import { CardContent, CardMedia, Box, Button } from "@mui/material";
+import { connect,useDispatch,useSelector } from 'react-redux';
+import {getAllShopProducts} from '../redux'
 
-const styles = (theme) => ({
-  ...theme.spread,
+
+const useStyles = makeStyles({
+  avatar : {
+      height :'200px',
+      width :'200px',
+  },
+  field : {
+      paddingTop : '15px',
+      fontSize : '22px',
+      width : '300px',
+      fontWeight : '700'
+  },
   root: {
     display: "flex",
     flexGrow: 1,
-    padding: theme.spacing(2),
+    // padding: theme.spacing(2),
   },
   card: {
     width: "300px",
@@ -35,19 +41,6 @@ const styles = (theme) => ({
     // backgroundPosition: 'center',
     // margin:'10px'
   },
-  // link : {
-  //     "&:hover": {
-  //         textDecoration : 'none',
-  //     },
-  //     marginRight : '26px',
-  //     marginTop : '30px',
-  // },
-  // card : {
-  //     width : '300px',
-  //     height : '190px',
-  //     position: 'relative',
-  //     display : 'flex',
-  // },
   name: {
     fontSize: "15px",
     fontWeight: "600",
@@ -65,75 +58,60 @@ const styles = (theme) => ({
     fontSize: "13px",
   },
 });
-class Product extends Component {
-  state = {
-    spacing: "16",
-  };
 
-  render() {
-    const { classes } = this.props;
-    const {
-      id,
-      url,
-      name,
-      category,
-      description,
-      price,
-      qty_available,
-      shopId,
-      sold,
-    } = this.props.product;
-    console.log(`Inside product`);
-    return (
-      <div>
+const Product = (prod) => {
+
+  const classes = useStyles();
+  console.log(`Printing data for`,JSON.stringify(prod))
+
+  return (
+    <div>
         <Grid container className={classes.card}>
           <Grid container item xs={12} sm={12}>
             <Box sx={{ width: 350, height: 300, borderColor: "orange" }}>
               <Card className={classes.cardSize}>
                 <CardContent>
-                  <Link to={`/productview/${id}`}>
-                    <div key={id} className="productStyle">
-                      <CardMedia
-                        component="img"
-                        image={url}
-                        className={classes.image}
-                      />
-                      <Grid container item xs={12} className={classes.name}>
-                        {name} *
-                      </Grid>
-                      <Grid container item xs={12} className={classes.name}>
-                        {price}
-                      </Grid>
-                    </div>
-                  </Link>
-                  <Grid container item xs={12}>
-                    <Button
-                      className={classes.button}
-                      component={Link}
-                      to="/buy"
-                    >
-                      Buy Now
-                    </Button>
-                    <Button
-                      size="large"
-                      startIcon={<FavoriteBorderIcon></FavoriteBorderIcon>}
-                      className={classes.button}
-                      component={Link}
-                      to="/fav"
-                    ></Button>
-                  </Grid>
+                    <Link to={`/productview/${prod.id}`}>
+                        <div key={prod.id} className="productStyle">
+                          <CardMedia
+                            component="img"
+                            image={prod.url}
+                            className={classes.image}
+                          />
+                          <Grid container item xs={12} className={classes.name}>
+                            {prod.name} *
+                          </Grid>
+                          <Grid container item xs={12} className={classes.name}>
+                            {prod.price}
+                          </Grid>
+                        </div>
+                    </Link>
+                    <Grid container item xs={12}>
+                        <Button
+                          className={classes.button}
+                          component={Link}
+                          to="/buy"
+                        >
+                          Buy Now
+                        </Button>
+                        <Button
+                          size="large"
+                          startIcon={<FavoriteBorderIcon></FavoriteBorderIcon>}
+                          className={classes.button}
+                          component={Link}
+                          to="/fav"
+                        ></Button>
+                    </Grid>
                 </CardContent>
               </Card>
             </Box>
           </Grid>
         </Grid>
       </div>
-    );
-  }
-}
+  );
+};
 
-const mapStateToProps = (state) => ({
-  user: state.user,
-});
 
-export default connect(mapStateToProps, {})(withStyles(styles)(Product));
+
+
+export default (Product);

@@ -18,6 +18,8 @@ const createProductForShop = async (req, res) => {
     console.log(`Got shopID: `, shopID);
   } else {
     shopID = 1;
+    console.log(`Inserting for default shopid 1`);
+
   }
   //todo handle
   // if (!shopID || shopID == 0) {
