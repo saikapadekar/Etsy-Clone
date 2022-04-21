@@ -1,14 +1,7 @@
 {
     "development": {
-        "database_host": "mysqldb",
-        "database_user": "etsyadmin",
-        "database_password": "etsyadminpass",
-        "database_name": "etsy"
-    },
-    "test": {
-        "database_host": "localhost",
-        "database_user": "etsyadmin",
-        "database_password": "etsyadminpass",
-        "database_name": "auth_test"
+      "database_conn": "mongodb+srv://etsyadmin:etsyadminpass@lab2.sdi1q.mongodb.net/etsy?retryWrites=true&w=majority"
     }
-}
+
+ }
+  

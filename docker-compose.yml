@@ -1,24 +1,23 @@
 version: "3.7"
 
 services:
-  mysqldb:
-    image: mysql
+  mongodb:
+    image: mongo:4.4.0-rc7
     restart: unless-stopped
-    ports:
-      - 3360:3360
     environment:
-      - MYSQL_USER=etsyadmin
-      - MYSQL_PASSWORD=etsyadminpass
-      - MYSQL_ROOT_PASSWORD=mysqlrootpassword
+      MONGO_INITDB_ROOT_USERNAME: etsyadmin
+      MONGO_INITDB_ROOT_PASSWORD: etsyadminpass
     volumes: 
-      - ./data:/var/lib/mysql
+      - ./data:/data/db
       - ./db-init-scripts:/docker-entrypoint-initdb.d
+    ports:
+      - 27017:27017
     networks: 
       - etsy
 
   backend:
     depends_on: 
-      - mysqldb
+      - mongodb
     build:
       context: ./backend
       dockerfile: Dockerfile
