@@ -6,18 +6,14 @@
 
 */
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { connect,useDispatch } from 'react-redux';
-import {  useNavigate, useParams } from 'react-router-dom';
-import { Button } from '@material-ui/core'
-import { Link ,Outlet} from 'react-router-dom'
 import {useSelector} from 'react-redux'
 import {getfavoriteByUserid} from '../redux'
 import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid'
-import Product from '../components/Product';
-import { Container, Row, Col } from "react-bootstrap";
-import FavoriteIcon from '@mui/icons-material/Favorite';
+import { Col } from "react-bootstrap";
+import ProductFav from '../components/ProductFav';
 
 
 const useStyles = makeStyles({
@@ -81,26 +77,33 @@ const Favorite = () => {
 
    const {userfavs} = user_favs;
    console.log(`Received nodes for userfavs: `,JSON.stringify(userfavs))
-   var flag=false;
-   if(JSON.stringify(authenticatedUserDetails)!='{}')
-       {
-           flag=true;
-       }
+   var fav_flag=false;
+  
+    if(JSON.stringify(userfavs)!='{}')
+        {
+            fav_flag=true;
+        }
+        else{
+            fav_flag=false;
+        }
 
 
    useEffect(()=>{
+    if(JSON.stringify(userfavs)!='{}')
+    {
+        fav_flag=true;
+    }
+    else{
+        fav_flag=false;
+    }
        if(JSON.stringify(authenticatedUserDetails)!='{}')
        {
-           flag=true;
+           fav_flag=true;
            const userid=authenticatedUserDetails._id;
            dispatch(getfavoriteByUserid(userid));
        }
-   },[authenticatedUserDetails])
+   },[fav_flag])
 
-   
-
-
-   
    return (
        <div>
            <Grid direction="row" container className={classes.main}>
@@ -116,13 +119,13 @@ const Favorite = () => {
                     spacing={0.5}
                     xs={12}
                 >
-                {flag &&
+                {fav_flag &&
                     (userfavs?.map((fav) => {
                     console.log(`Should print product cards name: `, fav.name);
                     return (
                         <Col md={3}>
                         {" "}
-                        <Product
+                        <ProductFav
                             key={fav.id}
                             id={fav.id}
                             name={fav.name}

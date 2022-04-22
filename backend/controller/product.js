@@ -98,6 +98,7 @@ const getProductsById = async (req, res) => {
   const product = await Product.findOne({
     _id: id 
   });
+  console.log(product)
 
   res.status(200).json(product);
 };

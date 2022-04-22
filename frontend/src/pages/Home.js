@@ -4,9 +4,8 @@ import PinkBox from "../components/PinkBox";
 import Product from '../components/Product';
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles"
-import {  Navigate } from "react-router-dom";
 import {getAllShopProducts} from '../redux'
-import { Container, Row, Col } from "react-bootstrap";
+import { Col } from "react-bootstrap";
 
 
 const useStyles = makeStyles({
@@ -78,6 +77,7 @@ const Home = () => {
                             id={prod.id}
                             name={prod.name}
                             price={prod.price}
+                            url={prod.url}
                             product={prod}
                         />{" "}
                         </Col>

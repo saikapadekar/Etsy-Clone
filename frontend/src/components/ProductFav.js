@@ -3,11 +3,13 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from "react-router-dom";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import Card from "react-bootstrap/Card";
 import { CardContent, CardMedia, Box, Button } from "@mui/material";
 import { connect,useDispatch,useSelector } from 'react-redux';
-import {insertfavorite} from '../redux'
-import {  useNavigate } from 'react-router-dom';
+import {  useNavigate, useParams } from 'react-router-dom';
+import {deletefavorite} from '../redux'
+// remove from fav
 
 const useStyles = makeStyles({
   avatar : {
@@ -50,56 +52,39 @@ const useStyles = makeStyles({
     maxWidth: "300px",
     textDecoration: "none",
   },
-  button: {
-    color: "black",
-    fontFamily:
-      "Graphik Webfont,-apple-system,Helvetica Neue,Droid Sans,Arial,sans-serif",
-    fontWeight: "50",
-    fontSize: "13px",
-  },
+//   button: {
+//     // color: "Orange",
+//     // fontFamily:
+//     //   "Graphik Webfont,-apple-system,Helvetica Neue,Droid Sans,Arial,sans-serif",
+//     // fontWeight: "50",
+//     // fontSize: "13px",
+//   },
 });
 
-const Product = (prod) => {
+const ProductFav = (prod) => {
+    console.log(`Inside ProductFav Component`)
+    const navigate=useNavigate();
 
   const classes = useStyles();
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   console.log(`Printing data for`,JSON.stringify(prod))
   const{name,price,product}=prod;
+  console.log(`ProductFav product: `,JSON.stringify(product))//object of favorite
 
-  // const [favorite, setfavorite] = useState({ userid:'',shopId:'',productId:'',url:'',name: '', description: '',price:'',qty_available:'',category:''})
-  var favorite={ userid:'',shopId:'',productId:'',url:'',name: '', description: '',price:'',qty_available:'',category:''};
-  const user=useSelector(state=>state.user)
+    const user=useSelector(state=>state.user)
     const {
         authenticatedUser,
         authenticated,
         userLogindetails,
         authenticatedUserDetails
       } = user;
-      
-  const insertFav = () =>{
-    //Should be able to add only if user is logged in
-    console.log(`Inside insert fav`)
-    if(JSON.stringify(authenticatedUserDetails)!='{}')
-    {
-      favorite={
-        userid:authenticatedUserDetails._id,
-        shopId:product.shopId,
-        productId:product._id,
-        url:product.url,
-        name:product.name,
-        description:product.description,
-        price:product.price,
-        qty_available:product.qty_available,
-        category:product.category
-      }
-      console.log(`Dispatching insertFavorite fav: `, favorite)
-      dispatch(insertfavorite(favorite));
-      // navigate('/favorite')  
-    }
-  };
+      var data={userid:product.userid,productId:product.productId}
 
+    const removeFav = () =>{
+        console.log(`Dispatching deletefavorite for data: `, data)
+        dispatch(deletefavorite(data))
+        navigate('/')
+    };
   return (
     <div>
         <Grid container className={classes.card}>
@@ -107,7 +92,7 @@ const Product = (prod) => {
             <Box sx={{ width: 350, height: 300, borderColor: "orange" }}>
               <Card className={classes.cardSize}>
                 <CardContent>
-                    <Link to={`/productview/${product._id}`}>
+                    <Link to={`/productview/${product.productId}`}>
                         <div key={prod.id} className="productStyle">
                           <CardMedia
                             component="img"
@@ -130,13 +115,13 @@ const Product = (prod) => {
                         >
                           Buy Now
                         </Button>
-                       { (<Button
+                        {(<Button
                           size="large"
-                          startIcon={<FavoriteBorderIcon></FavoriteBorderIcon>}
+                          startIcon={<FavoriteIcon></FavoriteIcon>}
                           className={classes.button}
                           // component={Link}
                           // to="/fav"
-                          onClick={insertFav}
+                          onClick={removeFav}
                         ></Button>)}
                     </Grid>
                 </CardContent>
@@ -150,10 +135,10 @@ const Product = (prod) => {
 
 const mapDispatchToProps = dispatch => {
   return {
-    insertfavorite: (favorite) => dispatch(insertfavorite(favorite)),
+    deletefavorite: (data) => dispatch(deletefavorite(data)),
 
   }
 }
 
 
-export default connect(mapDispatchToProps)(Product);
+export default connect(mapDispatchToProps)(ProductFav);

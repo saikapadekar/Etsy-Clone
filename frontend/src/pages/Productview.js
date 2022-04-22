@@ -7,18 +7,15 @@
  */
 
 
- import React, { useEffect, useState } from 'react';
+ import React, { useEffect } from 'react';
  import { connect,useDispatch } from 'react-redux';
- import {  useNavigate, useParams } from 'react-router-dom';
+ import { useParams } from 'react-router-dom';
  import { Button } from '@material-ui/core'
- import { Link ,Outlet} from 'react-router-dom'
+ import { Link } from 'react-router-dom'
  import {useSelector} from 'react-redux'
  import {getProductbyId} from '../redux'
  import { makeStyles } from '@material-ui/core/styles';
  import Grid from '@material-ui/core/Grid'
- import { Divider } from '@mui/material'
- import jwt_decode from "jwt-decode";
-import { Container, Row, Col } from "react-bootstrap";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 
 
@@ -77,7 +74,9 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
     }, [product_id])
 
     const store_products=useSelector(state=>state.product)
+    console.log(store_products)
     const {product}=store_products;
+    // console.log(`To check url`,JSON.stringify(product.url))
 
      return (
          <div><br/>
@@ -85,9 +84,12 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
                  
                  <Grid container item xs={6}>
                  <div className={classes.image}>
-                    <img src={product.url} alt={product.name} className={classes.tile} />
+                    <img src={product.url} 
+                    alt={product.name} 
+                    className={classes.tile} />
                     
-                    <Button variant="contained" className={classes.button}  startIcon={<FavoriteIcon />} component = {Link} to="/favorite"> Add to Collection
+                    <Button variant="contained" className={classes.button}  
+                    startIcon={<FavoriteIcon />} component = {Link} to="/favorite"> Add to Collection
                         </Button>
                         </div>
                  </Grid>

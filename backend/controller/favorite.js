@@ -82,8 +82,22 @@ const checkFavProdForUser = async (req, res) => {
   res.status(404).send();
   return;
 };
+const deleteFav = async (req, res) => {
+  const { userid,productId } = req.body;
+
+  console.log(`inside deleteFav: `,req.body);
+  const deleted=await Favorite.deleteOne({userid: userid, productId:productId})
+  // const favorites = await Favorite.find({userid: userid, productId:productId});
+  if (deleted) {
+    res.status(200).send();
+    return;
+  }
+  res.status(404).send();
+  return;
+};
 module.exports = {
     insertFavorite,
     getFavoriteByUserId,
-    checkFavProdForUser
+    checkFavProdForUser,
+    deleteFav
   };

@@ -18,8 +18,7 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {useSelector} from 'react-redux'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { connect,useDispatch } from 'react-redux';
-import jwt_decode from "jwt-decode";
-import {getShopDataByUserId,getAuthenticatedUser} from '../redux'
+import {getShopDataByUserId} from '../redux'
 
 const useStyles = makeStyles({
     brand:{
@@ -96,30 +95,17 @@ const NavigationBar = () => {
     console.log(`Printing value from store User`, JSON.stringify(user))
     console.log(`Printing value from store Shop`, JSON.stringify(store_shop))
 
-    // let userid=''
-    // if(authenticated==true){
-    //   userid=authenticatedUserDetails._id
-    // }
-    
-    // let flag=false; let shop_id=1;
-    //   if(typeof(authenticatedUser.token)!='undefined' )
-    //   {
-    //     var decoded = jwt_decode(authenticatedUser.token);
-
-    //     shop_id=decoded.id;
-    //  }
-
-
     useEffect(() => {
 
       console.log(`Printing value of userid: `,authenticatedUserDetails._id)
+      console.log(`UseEffect called from NavigationBar.js`)
 
       if(authenticated==true && (JSON.stringify(authenticatedUserDetails)!='{}')){
         console.log(`Dispatching getShopDataByUserId for userid: `, authenticatedUserDetails._id)
 
       dispatch(getShopDataByUserId(authenticatedUserDetails._id))
       }
-  },[user])
+  },[authenticated])
 
       
 

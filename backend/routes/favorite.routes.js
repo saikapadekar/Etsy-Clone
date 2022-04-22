@@ -31,5 +31,12 @@ const router = express.Router({ mergeParams: true });
  */
   router.get('/checkfav',favoriteController.checkFavProdForUser);
   
-
+/**
+ * Insert Favorite for a user
+ * @route POST /favorites
+ * @group Favorites
+ * @param {Favorite.model} Favorite.body.require
+ * @returns {Favorite.model} 201 - Deleted Favorite
+ */
+ router.post('/delete',favoriteController.deleteFav);
 module.exports = router;

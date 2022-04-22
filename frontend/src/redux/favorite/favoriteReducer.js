@@ -1,4 +1,4 @@
-import {INSERT_FAVORITE,GET_FAVORITE_BY_USER_ID} from './favoriteTypes'
+import {INSERT_FAVORITE,GET_FAVORITE_BY_USER_ID,DELETE_FAVORITE} from './favoriteTypes'
 
 const initialState = {
     favs:{},
@@ -16,6 +16,10 @@ const favoriteReducer = (state = initialState, action) =>{
             return{
                 ...state,
                 userfavs:action.payload
+            }
+        case DELETE_FAVORITE:
+            return{
+                ...state
             }
         default : 
               return {
