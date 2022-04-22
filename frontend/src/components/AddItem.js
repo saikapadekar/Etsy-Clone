@@ -17,7 +17,7 @@ import jwt_decode from "jwt-decode";
 
 const AddItem = (props) => {
 
-    const [item, setItem] = useState({ shopId:'',url:'',name: '', description: '',price:'',qty_available:'',category:''})
+    const [item, setItem] = useState({ shopId:'',url:'',name: '', description: '',price:'',qty_available:'',category:'',sold:0})
     const { shopname } = useParams();
     console.log(`Received shopname from URL params`,shopname)
 
@@ -26,16 +26,13 @@ const AddItem = (props) => {
     const {
         authenticatedUser,
         authenticated,
-        userLogindetails
+        userLogindetails,
+        authenticatedUserDetails
       } = user;
 
       const store_shop=useSelector(state=>state.shop)
 
     const {shopdetails, shopbyname}=store_shop;
-
-
-    
-
 
     const dispatch = useDispatch()
     const navigate = useNavigate();
@@ -47,6 +44,7 @@ const AddItem = (props) => {
 
 
     const handleChange=(event)=>{
+        item.shopId=shopbyname._id  //To set shop_id(Product is inserted for specific shop)
         setItem(
             {
                 ...item,
@@ -55,21 +53,21 @@ const AddItem = (props) => {
         )
     };
     let flag=false;
-    if(typeof(authenticatedUser.token)!='undefined' && typeof(shopbyname.id)!='undefined')
+    if(JSON.stringify(authenticatedUserDetails)!='{}' && typeof(shopbyname._id)!='undefined')
     {
-        var decoded = jwt_decode(authenticatedUser.token);
-        if(decoded.id==shopbyname.id)
+        // var decoded = jwt_decode(authenticatedUser.token);
+        if(authenticatedUserDetails._id==shopbyname.userid)
             {
                 flag=true;
                 console.log('Logged in user is owner of shop')
             }
     }
 
-    item.shopId=shopbyname.id; //To set shop_id(Product is inserted for specific shop)
+    // item.shopId=shopbyname.id;
 
 const handleSubmit =(event) => {
     event.preventDefault()
-    console.log('Inside HandleSubmit AddItem.js')
+    console.log(`Dispatching  AddItem.js with item: `,item)
     dispatch(insertShopProduct(item))
     navigate(-1)
 };

@@ -78,29 +78,29 @@ const Shop = () => {
     const {
         authenticatedUser,
         authenticated,
-        userLogindetails
+        userLogindetails,
+        authenticatedUserDetails
       } = user;
       
       const {shopdetails, shopbyname}=store_shop;
 
       const {shop_products}=store_products; //to display as individual product card
 
-      let flag=false;
-      if(typeof(authenticatedUser.token)!='undefined' && typeof(shopbyname.id)!='undefined')
-      {
-        var decoded = jwt_decode(authenticatedUser.token);
-
-        if(decoded.id==shopbyname.id)
-        {
-            flag=true;
-            console.log('Logged in user is owner of shop')
-        }
+     let flag=false;
+     if(JSON.stringify(authenticatedUserDetails)!='{}' && typeof(shopbyname._id)!='undefined')
+     {
+         // var decoded = jwt_decode(authenticatedUser.token);
+         if(authenticatedUserDetails._id==shopbyname.userid)
+             {
+                 flag=true;
+                 console.log('Logged in user is owner of shop')
+             }
      }
 
-     let id=1
-     if(typeof(shopbyname.id)!='undefined'){
-        id=shopbyname.id
-     }
+    //  let id=1
+    //  if(typeof(shopbyname.id)!='undefined'){
+    //     id=shopbyname.id
+    //  }
 
     //Get Shop details according to shopname
     useEffect(() => {
@@ -108,11 +108,12 @@ const Shop = () => {
     }, [shopname])
 
     useEffect(() => {
-        console.log(`Fetching products of shop id:`,id)
-        let products=dispatch(getShopProducts(id))
-        console.log(`Printing products object`,JSON.stringify(products))
+        if(JSON.stringify(shopbyname)!='{}'){
+        console.log(`Fetching products of shop id:`,shopbyname._id)
+        dispatch(getShopProducts(shopbyname._id))
+        console.log(`Printing products object`,JSON.stringify(shop_products))}
 
-    }, [id])
+    }, [shopbyname._id])
 
     return (
         <div>
@@ -147,9 +148,9 @@ const Shop = () => {
                         </div>
                         <Divider></Divider>
                         <br/><br/>
-                        { <Button variant="contained" className={classes.button}  
+                        { flag && (<Button variant="contained" className={classes.button}  
                         component = {Link} 
-                        to='additem'>Add Item </Button>}
+                        to='additem'>Add Item </Button>)}
                         <Outlet />
                         
                 </div>

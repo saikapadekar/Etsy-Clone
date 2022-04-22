@@ -5,7 +5,7 @@ import Product from '../components/Product';
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles"
 import {  Navigate } from "react-router-dom";
-// import {getAllShopProducts} from '../redux'
+import {getAllShopProducts} from '../redux'
 import { Container, Row, Col } from "react-bootstrap";
 
 
@@ -35,11 +35,11 @@ const Home = () => {
        flag = true;
     }
 
-//     useEffect(() => {
-//     console.log(`Fetching all products of shop id:`)
-//     dispatch(getAllShopProducts())
+    useEffect(() => {
+    console.log(`dispatching getAllShopProducts`)
+    dispatch(getAllShopProducts())
 
-// }, [])
+}, [])
     return (
         <div>
             <PinkBox/>
@@ -91,7 +91,7 @@ const Home = () => {
 
 const mapDispatchToProps = dispatch => {
     return {
-    //   getAllShopProducts: () => dispatch(getAllShopProducts()),
+      getAllShopProducts: () => dispatch(getAllShopProducts()),
     }
   }
   
