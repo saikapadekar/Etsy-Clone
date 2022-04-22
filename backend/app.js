@@ -12,6 +12,8 @@ const authRoutes = require('./routes/auth.routes');
 const customerRouter = require('./routes/customer.routes');
 const shopRouter = require('./routes/shop.routes');
 const productRouter = require('./routes/product.routes');
+const favoriteRouter = require('./routes/favorite.routes');
+
 
 const app = express();
 
@@ -37,6 +39,8 @@ app.use('/auth', authRoutes);
 app.use('/customers', customerRouter);
 app.use('/shops', shopRouter);
 app.use('/products',productRouter);
+app.use('/favorites',favoriteRouter);
+
 
 
 module.exports = app;

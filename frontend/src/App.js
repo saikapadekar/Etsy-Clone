@@ -13,6 +13,7 @@ import Shopname from './pages/Shopname'
 import Shop from './pages/Shop'
 import AddItem from './components/AddItem'
 import Productview from './pages/Productview';
+import Favorite from './pages/Favorite';
 
 // Things to do
 // 1. Add item page
@@ -38,6 +39,8 @@ function App(props) {
         <Route exact path="additem" element={<AddItem />} />
       </Route>
       <Route exact path="/productview/:product_id" element={<Productview/>} />
+      <Route exact path="/favorite" element={<Favorite/>} />
+
 
 
 

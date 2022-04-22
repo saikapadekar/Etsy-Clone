@@ -1,13 +1,16 @@
-import React,{useEffect} from 'react';
+import React,{useEffect,useState} from 'react';
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from "react-router-dom";
 import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import Card from "react-bootstrap/Card";
 import { CardContent, CardMedia, Box, Button } from "@mui/material";
 import { connect,useDispatch,useSelector } from 'react-redux';
-import {getAllShopProducts} from '../redux'
-
+import {insertfavorite} from '../redux'
+import axios from 'axios'
+// check if fav exists - set flag to true, if true call removefromFav
+// else - insertFavorite
 
 const useStyles = makeStyles({
   avatar : {
@@ -62,8 +65,56 @@ const useStyles = makeStyles({
 const Product = (prod) => {
 
   const classes = useStyles();
+  const dispatch = useDispatch();
   console.log(`Printing data for`,JSON.stringify(prod))
   const{name,price,product}=prod;
+
+  // const [favorite, setfavorite] = useState({ userid:'',shopId:'',productId:'',url:'',name: '', description: '',price:'',qty_available:'',category:''})
+  var favorite={ userid:'',shopId:'',productId:'',url:'',name: '', description: '',price:'',qty_available:'',category:''};
+  const user=useSelector(state=>state.user)
+    const {
+        authenticatedUser,
+        authenticated,
+        userLogindetails,
+        authenticatedUserDetails
+      } = user;
+      var data={userid:'',productId:''}; var flag_for_fav=false;
+      data={
+          userid:authenticatedUserDetails._id,
+          productId:product._id
+      }
+      axios
+        .get(`http://localhost:7000/favorites/checkfav`, data)
+        .then((response) => {
+            console.log("Status Code : ", response.status);
+            if (response.status === 200) {
+              flag_for_fav=true;
+            }
+        })
+        .catch((e) => {
+            console.error(e);
+            // Not present in fav
+        });
+  const insertFav = () =>{
+    //Should be able to add only if user is logged in
+    console.log(`Inside insert fav`)
+    if(JSON.stringify(authenticatedUserDetails)!='{}')
+    {
+      favorite={
+        userid:authenticatedUserDetails._id,
+        shopId:product.shopId,
+        productId:product._id,
+        url:product.url,
+        name:product.name,
+        description:product.description,
+        price:product.price,
+        qty_available:product.qty_available,
+        category:product.category
+      }
+      console.log(`Dispatching insertFavorite fav: `, favorite)
+      dispatch(insertfavorite(favorite));  
+    }
+  };
 
   return (
     <div>
@@ -95,13 +146,22 @@ const Product = (prod) => {
                         >
                           Buy Now
                         </Button>
-                        <Button
+                       {!flag_for_fav && (<Button
                           size="large"
                           startIcon={<FavoriteBorderIcon></FavoriteBorderIcon>}
                           className={classes.button}
-                          component={Link}
-                          to="/fav"
-                        ></Button>
+                          // component={Link}
+                          // to="/fav"
+                          onClick={insertFav}
+                        ></Button>)}
+                        {flag_for_fav && (<Button
+                          size="large"
+                          startIcon={<FavoriteIcon></FavoriteIcon>}
+                          className={classes.button}
+                          // component={Link}
+                          // to="/fav"
+                          onClick={insertFav}
+                        ></Button>)}
                     </Grid>
                 </CardContent>
               </Card>
@@ -112,7 +172,12 @@ const Product = (prod) => {
   );
 };
 
+const mapDispatchToProps = dispatch => {
+  return {
+    insertfavorite: (favorite) => dispatch(insertfavorite(favorite)),
+
+  }
+}
 
 
-
-export default (Product);
+export default connect(mapDispatchToProps)(Product);

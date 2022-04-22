@@ -32,14 +32,13 @@ const useStyles = makeStyles({
 
 const Userprofile = (props) => {
     const classes = useStyles();
-    const user=useSelector(state=>state.user)
     const customer=useSelector(state=>state.customer)
 
     console.log(`Printing user value from store`,JSON.stringify(user))
     console.log(`Printing customer value from store`,JSON.stringify(customer))
     const {selectedCustomer} =customer;
     
-
+    const user=useSelector(state=>state.user)
     const {
         authenticatedUser,
         authenticated,

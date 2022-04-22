@@ -119,7 +119,7 @@ const NavigationBar = () => {
 
       dispatch(getShopDataByUserId(authenticatedUserDetails._id))
       }
-  }, [authenticatedUserDetails._id])
+  },[user])
 
       
 
