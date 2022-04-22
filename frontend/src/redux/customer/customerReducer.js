@@ -1,7 +1,8 @@
-import { GET_SELECTED_USER,    EDIT_PROFILE,    CREATE_CUSTOMER } from './customerTypes'
+import { GET_SELECTED_USER,    EDIT_PROFILE,    CREATE_CUSTOMER, GET_CUSTOMER } from './customerTypes'
 
 const initialState = {
-    selectedCustomer : {}, //for entire profile
+    createdCustomer:{},
+    selectedCustomer : {} //for entire profile
 }
 
 const customerReducer = (state = initialState, action) =>{
@@ -10,10 +11,16 @@ const customerReducer = (state = initialState, action) =>{
         case CREATE_CUSTOMER:
         return {
             ...state,
-            selectedCustomer : action.payload
+            createdCustomer : action.payload
         }
 
         case GET_SELECTED_USER:
+        return {
+            ...state,
+            selectedCustomer : action.payload
+        }
+
+        case GET_CUSTOMER:
         return {
             ...state,
             selectedCustomer : action.payload

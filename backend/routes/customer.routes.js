@@ -19,7 +19,7 @@ const router = express.Router();
  */
 
 const bodyValidators = () => [
-  body('id').exists().isInt().not().isIn([0]),
+  // body('id').exists().isString(),
   body('name').exists().isString().not().isIn(['']),
   body('about').isString(),
   body('gender').isString(),

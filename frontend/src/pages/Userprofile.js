@@ -3,6 +3,7 @@
  * 1. Call useEffect to load userprofile data if already present--remaining
  * 2. Red asterisk to show address is mandatory --remaining
  * 3. Dropdown for country_name --remaining
+ * 4. Figure out a way to store userid along with customer
  */
 
 import React, { useEffect, useState } from 'react';
@@ -14,7 +15,7 @@ import TextField from '@material-ui/core/TextField'
 import { Divider } from '@mui/material'
 import {connect, useSelector,useDispatch} from 'react-redux'
 import jwt_decode from "jwt-decode";
-import {createCustomer} from '../redux'
+import {createCustomer,getCustomerByEmail} from '../redux'
 
 const useStyles = makeStyles({
     avatar : {
@@ -32,54 +33,76 @@ const useStyles = makeStyles({
 const Userprofile = (props) => {
     const classes = useStyles();
     const user=useSelector(state=>state.user)
+    const customer=useSelector(state=>state.customer)
+
     console.log(`Printing user value from store`,JSON.stringify(user))
+    console.log(`Printing customer value from store`,JSON.stringify(customer))
+    const {selectedCustomer} =customer;
+    
+
     const {
         authenticatedUser,
         authenticated,
-        userLogindetails
+        userLogindetails,
+        authenticatedUserDetails
       } = user;
 
+      const [profile, setProfile] = useState({
+        userid:'',
+        url:'',
+        name:'',
+        email:'',
+        about:'',
+        gender:'',
+        dob:'',
+        city:'',
+        state:'',
+        country:'',
+        contact_no:'',
+        address:'' })
+        
+
     const handleChange=(event)=>{
+        profile.email=authenticatedUserDetails.email
+        profile.userid=authenticatedUserDetails._id
         setProfile(
             {
                 ...profile,
-                [event.target.name] : event.target.value
+                [event.target.name] : event.target.value,
+                
             }
         )
     };
 
-    const [profile, setProfile] = useState({
-    id:'',
-    name:'',
-    email:'',
-    about:'',
-    gender:'',
-    dob:'',
-    city:'',
-    state:'',
-    country:'',
-    contact_no:'',
-    address:'' })
+    useEffect(() => {
+            profile.email=authenticatedUserDetails.email
+            profile.userid=authenticatedUserDetails._id
+            console.log("Dispatching getCustomerByEmail" +profile.email)
+            console.log(`Obtained userid:`, profile.userid)
+
+            dispatch(getCustomerByEmail(profile.email))
+    }, [profile])
+
     
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    var decoded = jwt_decode(authenticatedUser.token);
-    profile.id=decoded.id;
+    // var decoded = jwt_decode(authenticatedUser.token);
+    // profile.id=decoded.id;
+    // profile.email=userLogindetails.email;
 
     const handleSubmit =(event) =>{
         event.preventDefault()
-    console.log('Inside HandleSubmit Userprofile.js')
+    console.log(`Dispatching createCustomer from Userprofile.js with profile: `,profile)
     dispatch(createCustomer(profile))
     navigate('/')
     };
 
-    console.log(`Printing from props`,JSON.stringify(props))
+    // console.log(`Printing from props`,JSON.stringify(props))
 
 
     return (
         <div>
-            Hello from userprofile.js
                 <br/>
                 
             <h2>Your Public Profile</h2>
@@ -87,16 +110,16 @@ const Userprofile = (props) => {
             <form className="profile-box">
             <div>
                 <h3> Profile Picture: </h3><Button>Choose File</Button>
-                <Avatar className={classes.avatar} src={profile.url}>
+                <Avatar className={classes.avatar} src={selectedCustomer.url ? selectedCustomer.url : profile.url}>
                         </Avatar>
             
             <div>
-            <TextField id="url" name="url" className ={classes.field} placeholder="Image"
+            <TextField id="url" name="url" className ={classes.field} placeholder={selectedCustomer.url ? selectedCustomer.url :'Image' }
                             value={profile.url} 
                             onChange={handleChange} variant="outlined">
                     
                     </TextField>
-                <TextField id="name" name="name" className ={classes.field} placeholder="Full Name"
+                <TextField id="name" name="name" className ={classes.field} placeholder={selectedCustomer.name ? selectedCustomer.name : 'Full Name'}
                             value={profile.name} 
                             onChange={handleChange} variant="outlined">
                     
@@ -108,7 +131,7 @@ const Userprofile = (props) => {
                             onChange={handleChange} variant="outlined">
                     
                     </TextField> */}
-                    {userLogindetails.email}
+                    {authenticatedUserDetails.email}
                     <br/><br/><br/>
                     <Divider />
 
@@ -127,23 +150,33 @@ const Userprofile = (props) => {
                     <Divider />
                     </FormControl> */}
 
-                    <TextField id ="address" name="address" className ={classes.field} value={profile.address} label="Address" variant="outlined" onChange={handleChange}/>
+                    <TextField id ="address" name="address" className ={classes.field} 
+                    placeholder={selectedCustomer.address ? selectedCustomer.address : 'Address'}
+                    value={profile.address} label="Address" variant="outlined" onChange={handleChange}/>
                     <br/><br/><br/>
                     <Divider />
 
-                    <TextField id ="city" name="city" className ={classes.field} value={profile.city} label="City" variant="outlined" onChange={handleChange}/>
+                    <TextField id ="city" name="city" className ={classes.field} 
+                    placeholder={selectedCustomer.city ? selectedCustomer.city : 'City'}
+                    value={profile.city} label="City" variant="outlined" onChange={handleChange}/>
                     <br/><br/><br/>
                     <Divider />
 
-                    <TextField id ="state" name="state" className ={classes.field} value={profile.state} label="State" variant="outlined" onChange={handleChange}/>
+                    <TextField id ="state" name="state" className ={classes.field} 
+                    placeholder={selectedCustomer.state ? selectedCustomer.state : 'State'}
+                    value={profile.state} label="State" variant="outlined" onChange={handleChange}/>
                     <br/><br/><br/>
                     <Divider />
 
-                    <TextField  id ="country" name="country" className ={classes.field} value={profile.country} label="Country" variant="outlined"onChange={handleChange} />
+                    <TextField  id ="country" name="country" className ={classes.field} 
+                    placeholder={selectedCustomer.country ? selectedCustomer.country : 'Country'}
+                    value={profile.country} label="Country" variant="outlined"onChange={handleChange} />
                     <br/><br/><br/>
                     <Divider />
 
-                    <TextField  id ="contact_no" name="contact_no" className ={classes.field} value={profile.contact_no} label="Contact No" variant="outlined" onChange={handleChange}/>
+                    <TextField  id ="contact_no" name="contact_no" className ={classes.field} 
+                    placeholder={selectedCustomer.contact_no ? selectedCustomer.contact_no : 'Contact Number'}
+                    value={profile.contact_no} label="Contact No" variant="outlined" onChange={handleChange}/>
                     <br/><br/><br/>
                     <Divider />
                     {/* <TextField
@@ -160,7 +193,9 @@ const Userprofile = (props) => {
                     <br/><br/><br/>
                     <Divider />
 
-                    <TextField  id ="about" name="about" className ={classes.field} value={profile.about} label="About" variant="outlined" onChange={handleChange} />
+                    <TextField  id ="about" name="about" className ={classes.field} 
+                    placeholder={selectedCustomer.about ? selectedCustomer.about : 'About'}
+                    value={profile.about} label="About" variant="outlined" onChange={handleChange} />
                     <br/><br/><br/>
 
                     <Button variant="contained" color="success" 
@@ -187,6 +222,9 @@ const mapStateToProps = (state) => {
   const mapDispatchToProps = dispatch => {
     return {
         createCustomer: (profile) => dispatch(createCustomer(profile)),
+        getCustomerByEmail: (email) => dispatch(getCustomerByEmail(email)),
+
+        
     }
   }
 

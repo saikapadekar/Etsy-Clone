@@ -63,6 +63,7 @@ const Product = (prod) => {
 
   const classes = useStyles();
   console.log(`Printing data for`,JSON.stringify(prod))
+  const{name,price,product}=prod;
 
   return (
     <div>
@@ -71,18 +72,18 @@ const Product = (prod) => {
             <Box sx={{ width: 350, height: 300, borderColor: "orange" }}>
               <Card className={classes.cardSize}>
                 <CardContent>
-                    <Link to={`/productview/${prod.id}`}>
+                    <Link to={`/productview/${product._id}`}>
                         <div key={prod.id} className="productStyle">
                           <CardMedia
                             component="img"
-                            image={prod.url}
+                            image={product.url}
                             className={classes.image}
                           />
                           <Grid container item xs={12} className={classes.name}>
-                            {prod.name} *
+                            {product.name} 
                           </Grid>
                           <Grid container item xs={12} className={classes.name}>
-                            {prod.price}
+                            {product.price}
                           </Grid>
                         </div>
                     </Link>

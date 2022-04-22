@@ -1,4 +1,4 @@
-import { GET_SELECTED_USER,    EDIT_PROFILE,    CREATE_CUSTOMER } from './customerTypes'
+import { GET_SELECTED_USER,    EDIT_PROFILE,    CREATE_CUSTOMER, GET_CUSTOMER } from './customerTypes'
 import axios from 'axios'
 import { setCookie } from 'react-use-cookie';
 
@@ -14,6 +14,7 @@ export const createCustomer = (data) => {
                 type: CREATE_CUSTOMER,
                 payload: response.data,
             });
+            
         } catch (error) {
             console.log(error);
         }
@@ -45,6 +46,19 @@ export const getSelectedUser = (userid) => (dispatch) => {
                 type : GET_SELECTED_USER,
                 payload : res.data[0]
             })
+        })
+        .catch(err => console.log(err) )
+    }
+
+export const getCustomerByEmail = (email) => (dispatch) => {
+    console.log("inside userActions getCustomerByEmail"+JSON.stringify(email));
+    axios.get(`http://localhost:7000/customers/email/${email}`)
+        .then(res => {
+            dispatch({
+                type : GET_CUSTOMER,
+                payload : res.data
+            })
+            console.log(`Writing payload getcustomerbyEmail`,res.data)
         })
         .catch(err => console.log(err) )
     }

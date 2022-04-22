@@ -19,7 +19,7 @@ import {useSelector} from 'react-redux'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { connect,useDispatch } from 'react-redux';
 import jwt_decode from "jwt-decode";
-import {getAuthenticatedShopData} from '../redux'
+import {getShopDataByUserId,getAuthenticatedUser} from '../redux'
 
 const useStyles = makeStyles({
     brand:{
@@ -87,23 +87,41 @@ const NavigationBar = () => {
     const dispatch=useDispatch();
     const user=useSelector(state=>state.user)
     const store_shop=useSelector(state=>state.shop)
-    const {shopdetails}=store_shop;
+    const {shopdetails, shopbyuserid}=store_shop;
     const {
       authenticatedUser,
       authenticated,
-      userLogindetails
+      userLogindetails,authenticatedUserDetails
     } = user;
-    
-    let flag=false; let shop_id=1;
-      if(typeof(authenticatedUser.token)!='undefined' )
-      {
-        var decoded = jwt_decode(authenticatedUser.token);
+    console.log(`Printing value from store User`, JSON.stringify(user))
+    console.log(`Printing value from store Shop`, JSON.stringify(store_shop))
 
-        shop_id=decoded.id;
-     }
+    // let userid=''
+    // if(authenticated==true){
+    //   userid=authenticatedUserDetails._id
+    // }
+    
+    // let flag=false; let shop_id=1;
+    //   if(typeof(authenticatedUser.token)!='undefined' )
+    //   {
+    //     var decoded = jwt_decode(authenticatedUser.token);
+
+    //     shop_id=decoded.id;
+    //  }
+
+
     useEffect(() => {
-      dispatch(getAuthenticatedShopData(shop_id))
-  }, [])
+
+      console.log(`Printing value of userid: `,authenticatedUserDetails._id)
+
+      if(authenticated==true && (JSON.stringify(authenticatedUserDetails)!='{}')){
+        console.log(`Dispatching getShopDataByUserId for userid: `, authenticatedUserDetails._id)
+
+      dispatch(getShopDataByUserId(authenticatedUserDetails._id))
+      }
+  }, [authenticatedUserDetails._id])
+
+      
 
     return (
         <div>
@@ -145,7 +163,7 @@ const NavigationBar = () => {
       <Menu {...bindMenu(popupState)}>
         <MenuItem onClick={popupState.close} component = {Link} to="/userprofile">Profile</MenuItem>
         <MenuItem onClick={popupState.close} component = {Link} to="/shopname">Sell On Etsy</MenuItem>
-        <MenuItem onClick={popupState.close} component = {Link} to={`/shop/${shopdetails.name}`}>My Shop</MenuItem>
+        <MenuItem onClick={popupState.close} component = {Link} to={`/shop/${shopbyuserid.name}`}>My Shop</MenuItem>
         <MenuItem onClick={popupState.close}><a href="/">Logout</a></MenuItem>
       </Menu>
     </React.Fragment>
@@ -173,7 +191,7 @@ const NavigationBar = () => {
 const mapDispatchToProps = dispatch => {
   return {
       
-    getAuthenticatedShopData: (shop_id) => dispatch(getAuthenticatedShopData(shop_id))
+    getShopDataByUserId: (shop_id) => dispatch(getShopDataByUserId(shop_id)),
 
   }
 }

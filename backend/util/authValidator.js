@@ -9,7 +9,7 @@ const validate = async (token) => {
     const userId = decoded.id;
     console.log(decoded)
 
-    const user = await User.findOne({ where: { id: userId } });
+    const user = await User.findOne({  _id: userId  });
     if (!user) {
         return false;
     }

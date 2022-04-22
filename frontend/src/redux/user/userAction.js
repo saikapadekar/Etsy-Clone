@@ -1,10 +1,10 @@
-import { LOGIN_USER, SIGNUP_USER ,ADD_LOGIN_DETAILS} from './userTypes'
+import { LOGIN_USER, SIGNUP_USER ,ADD_LOGIN_DETAILS,AUTHENTICATED_USER} from './userTypes'
 import axios from 'axios'
 import { setCookie } from 'react-use-cookie';
 
 
 export const loginUser = (newUser) => {
-    console.log("inside userActions loginUser");
+    console.log(`Printing userAction loginUser newUser: `,(newUser));
 
     return async (dispatch) => {
         try {
@@ -57,3 +57,22 @@ export const addLoginDetails = (user) => {
       payload: user
     }
   }
+
+
+export const getAuthenticatedUser = (email) => {
+    console.log("inside userActions getAuthenticatedUser for email: " +email);
+
+    return async (dispatch) => {
+        try {
+            const response = await axios
+                .post('http://localhost:7000/auth/authenticatedUser', {email});
+            dispatch({
+                type: AUTHENTICATED_USER,
+                payload: response.data,
+            });
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
+}

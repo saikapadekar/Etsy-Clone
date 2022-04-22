@@ -49,6 +49,7 @@ const Signup = () => {
         event.preventDefault()
         console.log('Inside HandleSubmit Signup.js')
         dispatch(signupUser(user))
+        navigate('/login')
     };
 
     return (

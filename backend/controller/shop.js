@@ -29,10 +29,10 @@ const createShop = async (req, res) => {
 
   // const t = await global.DB.transaction();
   try {
-    const createdRes = await Shop.create(shop);
+    const createdShop = await Shop.create(shop);
 
     const result = await Shop.findOne(
-      { where: { id: createdRes.id } } //todo handle media
+      { _id: createdShop.id  } //todo handle media
     );
 
     res.status(201).json(result);
@@ -55,9 +55,7 @@ const getShopByID = async (req, res) => {
     return;
   }
 
-  const shop = await Shop.findOne({
-    where: { id },
-  });
+  const shop = await Shop.findOne({  _id:  id });
   if (!shop) {
     res.status(404).send(errors.notFound);
     return;
@@ -67,8 +65,7 @@ const getShopByID = async (req, res) => {
 };
 
 const allShops = async (req, res) => {
-  const shops = await Shop.findAll();
-  //SELECT `id`, `name`, `createdAt`, `updatedAt` FROM `shops` AS `shops` WHERE `shops`.`id` = 'all';
+  const shops = await Shop.find();
   res.status(200).json(shops);
 };
 
@@ -80,9 +77,7 @@ const getShopByName = async (req, res) => {
   //   return;
   // }
 
-  const shop = await Shop.findOne({
-    where: { name },
-  });
+  const shop = await Shop.findOne({ name:  name   });
   if (shop) {
     res.status(404).json(shop);
     return;
@@ -99,9 +94,7 @@ const getShopByNameTwo = async (req, res) => {
   //   return;
   // }
 
-  const shop = await Shop.findOne({
-    where: { name },
-  });
+  const shop = await Shop.findOne({ name:  name  });
   if (shop) {
     res.status(200).json(shop);
     return;
@@ -110,10 +103,29 @@ const getShopByNameTwo = async (req, res) => {
   return;
 };
 
+const getShopByUserID = async (req, res) => {
+  console.log(`inside getShopByID,id: `, req.params);
+  const { userid } = req.params;
+  if (!userid || userid == 0) {
+    res.status(400).json(errors.badRequest);
+    return;
+  }
+
+  const shop = await Shop.findOne({  userid:  userid });
+  if (!shop) {
+    res.status(404).send(errors.notFound);
+    return;
+  }
+
+  res.status(200).json(shop);
+};
+
+
 module.exports = {
   createShop,
   getShopByID,
   allShops,
   getShopByName,
   getShopByNameTwo,
+  getShopByUserID
 };

@@ -96,6 +96,8 @@
 //     allowNull: false,
 //   },
 // });
+
+
 // const Buyer = global.DB.define('buyers', {
 //   id: {
 //     type: DataTypes.INTEGER,
@@ -232,17 +234,56 @@
 
 // module.exports = { User,Buyer,Shop,Product,Order,OrderItem, runMigration };
 
-const { Schema, model } = require('mongoose');
+const {mongoose, Schema, model, Types } = require('mongoose');
+// const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 const UserSchema = new Schema({
   email: String,
   password: String,
   role: {
     type: String,
-    enum: ['customer', 'restaurant'],
+    enum: ['customer'],
   },
 });
 
-const User = model('users', UserSchema);
+const BuyerSchema = new Schema({
+  userid:String,
+  url: String,
+  name: String,
+  email: String,
+  about: String,
+  gender: String,
+  dob:Date,
+  city: String,
+  state: String,
+  country: String,
+  contact_no: String,
+  address: String
+});
 
-module.exports = { User };
+const ShopSchema = new Schema({
+  userid:String,
+  url: String,
+  name: String,
+  owner_details: String
+});
+
+const ProductSchema = new Schema({
+  name: String,
+  url: String,
+  category: String,
+  description: String,
+  price: Number,
+  qty_available: Number,
+  shopId: String,
+  sold:Number
+});
+
+const User = model('users', UserSchema);
+const Buyer = model('customers', BuyerSchema);
+const Shop = model('shops', ShopSchema);
+const Product = model('products', ProductSchema);
+
+
+
+module.exports = { User, Buyer,Shop, Product };

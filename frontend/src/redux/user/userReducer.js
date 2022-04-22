@@ -1,10 +1,11 @@
-import { LOGIN_USER, SIGNUP_USER,ADD_LOGIN_DETAILS } from "./userTypes"
+import { LOGIN_USER, SIGNUP_USER,ADD_LOGIN_DETAILS,AUTHENTICATED_USER } from "./userTypes"
 
 
 const initialState = {
     authenticatedUser : {}, //for token
     authenticated : false, //to check if user is logged in or not
-    userLogindetails:{} //to store email and pwd
+    userLogindetails:{}, //to store email and pwd
+    authenticatedUserDetails:{}//to store userid
 }
 
 const userReducer = (state = initialState, action) =>{
@@ -26,6 +27,11 @@ const userReducer = (state = initialState, action) =>{
                 ...state,
                 userLogindetails:action.payload
               };
+        case AUTHENTICATED_USER :
+            return {
+                ...state,
+                authenticatedUserDetails:action.payload
+                };
         default : 
               return {
                   ...state

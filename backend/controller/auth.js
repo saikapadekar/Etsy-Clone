@@ -1,3 +1,5 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable eqeqeq */
 const jwt = require('jsonwebtoken');
 const emailValidator = require('email-validator');
 const { User } = require('../model');
@@ -12,8 +14,9 @@ const getToken = async (req, res) => {
     res.status(400).send('Bad Request');
     return;
   }
+  console.log(`Backend: Finding user with email: `,email)
 
-  const user = await User.findOne({ where: { email } });
+  const user = await User.findOne({ email:  email  });
 
   if (!user) {
     res.status(401).send('Unauthorized');
@@ -40,6 +43,7 @@ const getToken = async (req, res) => {
 
 const signUp = async (req, res) => {
   const { email, password, role } = req.body;
+  console.log(`Checking for email: `,email)
 
   // validate email and password
   if (!email || !password || !role) {
@@ -49,7 +53,7 @@ const signUp = async (req, res) => {
   if (
     !emailValidator.validate(email)
     || !validatePassword(password)
-    || !(role === 'customer' || role === 'owner')
+    || !(role === 'customer')
   ) {
     res.status(400).json({
       error: 'invalid email or password',
@@ -59,8 +63,10 @@ const signUp = async (req, res) => {
     return;
   }
 
-  const findUser = await User.findOne({ where: { email } });
+  var findUser = null;
+  findUser = await User.findOne({ email: email });
   if (findUser) {
+    console.log(`Found user:`,findUser)
     res.status(304).json({ message: 'User already exist. Please try login.' });
     return;
   }
@@ -90,41 +96,23 @@ const signUp = async (req, res) => {
 };
 
 const authenticatedUser  = async (req, res) => {
-  const email= req.body.email;
-  console.log(JSON.stringify("authenticatedUser function: "+email))
-  const getUser=User.findOne({ where: { email } });
+  console.log(`Backend: Inside authenticatedUser printing request body: `,(req.body))
+  const {email}= req.body;
+  console.log(("authenticatedUser function checking for email: "+email))
+  const getUser=await User.findOne({ email:  email  });
   if(getUser)
   {
-    res.end(JSON.stringify(getUser))
+    // res.end(JSON.stringify(getUser))
+    res.status(200).json(getUser)
   }
   else
       res.end({error : "Incorrect username or password"})
 }
 
-// const selectedUser = async (req, res) => {
-//   const { id } = req.params;
-//   if (!id || id === 0) {
-//     res.status(400).json(errors.badRequest);
-//     return;
-//   }
 
-//   if (id != req.headers.user) {
-//     res.status(401).json(errors.unauthorized);
-//     return;
-//   }
-
-//   const customer = await Customer.findOne({ where: { id } });
-//   if (!customer) {
-//     res.status(404).send(errors.notFound);
-//     return;
-//   }
-
-//   res.status(200).json(customer);
-// };
 
 module.exports = {
   getToken,
   signUp,
   authenticatedUser
-  // selectedUser
 };

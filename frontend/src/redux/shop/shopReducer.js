@@ -1,9 +1,10 @@
-import { CREATE_SHOP, GET_AUTHENTICATED_SHOP,GET_SHOP_BY_NAME,GET_SHOP_BY_NAME_TWO } from "./shopTypes"
+import { CREATE_SHOP, GET_AUTHENTICATED_SHOP,GET_SHOP_BY_NAME,GET_SHOP_BY_NAME_TWO,GET_SHOP_BY_USER_ID } from "./shopTypes"
 
 
 const initialState = {
     shopdetails:{},
-    shopbyname:{}
+    shopbyname:{},
+    shopbyuserid:{}
 }
 
 const shopReducer = (state = initialState, action) =>{
@@ -28,6 +29,11 @@ const shopReducer = (state = initialState, action) =>{
             return{
                 ...state,
                 shopbyname:action.payload
+            }
+        case GET_SHOP_BY_USER_ID:
+            return{
+                ...state,
+                shopbyuserid:action.payload
             }
         default : 
               return {

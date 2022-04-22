@@ -1,14 +1,14 @@
 const { default: axios } = require('axios');
 const { validationResult } = require('express-validator');
 const { Op } = require('sequelize');
-const {
-  Buyer
-} = require('../model');
+const {  Buyer} = require('../model');
 const errors = require('../util/errors');
 
 const createCustomer = async (req, res) => {
   const { user } = req.headers;
-  console.log(req.body);
+
+  console.log(`Creating customer with data: `,req.body);
+
   console.log(req.headers);//todo handle this-logged in user
 //   user=1;
 //   if (user !== req.body.id) {
@@ -29,7 +29,7 @@ const createCustomer = async (req, res) => {
   const customer = req.body;
   try {
     const createdCustomer = await Buyer.create(customer);
-    const result = await Buyer.findOne({ where: { id: createdCustomer.id } });//todo handle Media
+    const result = await Buyer.findOne( { _id: createdCustomer.id } );
 
     res.status(201).json(result);
     return;
@@ -66,7 +66,7 @@ const getCustomerByID = async (req, res) => {
     //   return;
     // }
   
-    const customer = await Buyer.findOne({ where: { id } });//todo handle media
+    const customer = await Buyer.findOne({ _id:  id  });//todo handle media
     if (!customer) {
       res.status(404).send(errors.notFound);
       return;
@@ -78,14 +78,15 @@ const getCustomerByID = async (req, res) => {
   const getCustomerByEmail = async (req, res) => {
     const { email } = req.params;
     console.log("Fetching customer with email:"+email);
-    console.log(req.headers.user);//undefined
+    // console.log(req.headers.user);//undefined
     if (!email || email === '') {
       res.status(400).json(errors.badRequest);
       return;
     }
   
   
-    const customer = await Buyer.findOne({ where: { email } });//todo handle media
+    const customer = await Buyer.findOne({ email:  email  });//todo handle media
+    console.log(`Printing customer if found:`,customer)
     if (!customer) {
       res.status(404).send(errors.notFound);
       return;
@@ -118,13 +119,15 @@ const getCustomerByID = async (req, res) => {
   
     const customer = req.body;
   
-    const dbRes = await Buyer.findOne({ where: { id } });
+    const dbRes = await Buyer.findOne({ _id:  id  });
     if (!dbRes) {
       res.status(404).json(errors.notFound);
       return;
     }
   
     try {
+      dbRes.userid = customer.userid;
+      dbRes.url = customer.url;
       dbRes.name = customer.name;
       dbRes.about = customer.about;
       dbRes.gender = customer.gender;
@@ -136,7 +139,7 @@ const getCustomerByID = async (req, res) => {
       dbRes.address = customer.address;//todo handle media
   
       const updatedRes = await dbRes.save();
-      const result = await Buyer.findOne({ where: { id: updatedRes.id } });//handle media
+      const result = await Buyer.findOne({ id: updatedRes.id } );//handle media
   
       res.status(200).json(result);
       return;

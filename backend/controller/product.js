@@ -1,11 +1,12 @@
 const { Product, Shop } = require("../model");
 const { validationResult } = require("express-validator");
 const errors = require("../util/errors");
+const { Types } = require('mongoose');
 const getPagination = require("../util/pagination");
 
 const getAllProducts = async (req, res) => {
   console.log(`inside getAllProducts`);
-  const products = await Product.findAll();
+  const products = await Product.find();
   res.status(200).json(products);
 };
 
@@ -34,7 +35,7 @@ const createProductForShop = async (req, res) => {
     return;
   }
 
-  const shop = await Shop.findOne({ where: { id: shopID } });
+  const shop = await Shop.findOne({ _id: shopID });
   if (!shop) {
     res.status(404).json({ ...errors.notFound, message: "shop not found" });
     return;
@@ -42,31 +43,25 @@ const createProductForShop = async (req, res) => {
 
   const product = req.body;
 
-  const t = await global.DB.transaction();
-  try {
     product.shopId = shopID;
-    const createdRes = await Product.create(product, { transaction: t });
+    console.log(`Printing data of product`,product)
 
-    //   if (product.media && product.media.length > 0) {
-    //     await createdRes.setMedia(product.media, { transaction: t });
-    //   }
+    try {
 
-    await t.commit();
-
-    const result = await Product.findOne(
-      { where: { id: createdRes.id } } //todo handle media
-    );
-    res.status(201).json(result);
-    return;
-  } catch (err) {
-    await t.rollback();
-    console.error(err);
-    if (err.original) {
-      res.status(500).json({ status: 500, message: err.original.sqlMessage });
-    } else {
-      res.status(500).json(errors.serverError);
+      const createdProd = await Product.create(product);
+      const result = await Product.findOne( { _id: createdProd.id } );
+  
+      res.status(201).json(result);
+      return;
+    } catch (err) {
+      console.error(err);
+      if (err.original) {
+        res.status(500).json({ status: 500, message: err.original.sqlMessage });
+      } else {
+        res.status(500).json(errors.serverError);
+      }
     }
-  }
+
 };
 const getProductsForShop = async (req, res) => {
   console.log(`Inside getProductsForShop, data: `, req.body);
@@ -82,12 +77,8 @@ const getProductsForShop = async (req, res) => {
 
   const { limit, offset } = getPagination(req.query.page, req.query.limit);
 
-  const productCount = await Product.count({ where: { shopId: shopID } });
-  const products = await Product.findAll({
-    where: { shopId: shopID },
-    limit,
-    offset,
-  });
+  const productCount = await Product.count({ shopId: shopID } );
+  const products = await Product.find({ shopId: shopID ,    limit,    offset,  });
 
   res.status(200).json({ total: productCount, nodes: products });
 };
@@ -105,7 +96,7 @@ const getProductsById = async (req, res) => {
   }
 
   const product = await Product.findOne({
-    where: { id: id }
+    _id: id 
   });
 
   res.status(200).json(product);
@@ -124,7 +115,7 @@ const deleteProductInShop = async (req, res) => {
   }
 
   const product = await Product.findOne({
-    where: { id: productID, shopId: shopID },
+    _id: productID, shopId: shopID ,
   });
   if (!product) {
     res
@@ -168,7 +159,7 @@ const updateProductInShop = async (req, res) => {
   }
 
   const dbRes = await Product.findOne({
-    where: { id: productID, shopId: shopID }, //todo Media
+    _id: productID, shopId: shopID
   });
   if (!dbRes) {
     res
@@ -200,7 +191,7 @@ const updateProductInShop = async (req, res) => {
     await t.commit();
 
     const result = await Product.findOne(
-      { where: { id: updatedRes.id } }, //todo handle Media
+      { _id: updatedRes.id  }, //todo handle Media
       { transaction: t }
     );
     res.status(200).json(result);

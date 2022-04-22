@@ -13,7 +13,7 @@ const router = express.Router();
 
 
  const bodyValidators = () => [
-    body('id').exists().isInt().not().isIn([0]),
+    // body('id').exists().isInt().not().isIn([0]),
     body('name').exists().isString(),
     // body('media').optional({ nullable: true }).isArray(),//todo handle media
   ];
@@ -71,6 +71,15 @@ router.get('/all', shopController.allShops);
  */
   router.get('/nametwo/:name', shopController.getShopByNameTwo);
 
+  /**
+ * Get Shop by UserID
+ * @route GET /shops/user/{userid}
+ * @group Shops
+ * @param {string} authorization.header.require
+ * @param {integer} userid.path.require
+ * @returns {Shop.model} 200 - Shop for given userid
+ */
+ router.get('/user/:userid', shopController.getShopByUserID);
 
 
  module.exports = router;

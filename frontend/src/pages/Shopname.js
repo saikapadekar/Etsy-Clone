@@ -33,16 +33,17 @@ const Shopname = () => {
     const {
         authenticatedUser,
         authenticated,
-        userLogindetails
+        userLogindetails,
+        authenticatedUserDetails
       } = user;
-    const [shop, setShop] = useState({ id: '', name: '',owner_details:''})
+    const [shop, setShop] = useState({ userid: '',url:'', name: '',owner_details:''})
     const dispatch=useDispatch();
     const navigate = useNavigate();
 
-    var decoded = jwt_decode(authenticatedUser.token);
+    // var decoded = jwt_decode(authenticatedUser.token);
 
-    shop.id=decoded.id;
-    shop.owner_details=userLogindetails.email;
+    // shop.id=decoded.id;
+    // shop.owner_details=userLogindetails.email;
 
     const checkAvailability=(event)=>{
 
@@ -72,6 +73,8 @@ const Shopname = () => {
     };
     
     const handleChange=(event)=>{
+      shop.userid=authenticatedUserDetails._id;
+      shop.owner_details=authenticatedUserDetails.email;
         setShop(
             {
                 ...shop,

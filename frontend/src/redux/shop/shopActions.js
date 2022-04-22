@@ -1,4 +1,4 @@
-import { CREATE_SHOP,GET_AUTHENTICATED_SHOP,GET_SHOP_BY_NAME,GET_SHOP_BY_NAME_TWO } from './shopTypes'
+import { CREATE_SHOP,GET_AUTHENTICATED_SHOP,GET_SHOP_BY_NAME,GET_SHOP_BY_NAME_TWO,GET_SHOP_BY_USER_ID } from './shopTypes'
 import axios from 'axios'
 
 
@@ -15,7 +15,7 @@ export const createShop = (data,history) => (dispatch) =>{
             history.push('/shop')
         })
         .catch((err) => {
-            // notify({ type: 'error', description: JSON.stringify(err.response.data.message) });
+            console.log(err)
         });
     }
 
@@ -33,7 +33,7 @@ export const getAuthenticatedShopData = (id) => (dispatch) =>{
             // history.push('/shop')
         })
         .catch((err) => {
-            // notify({ type: 'error', description: JSON.stringify(err.response.data.message) });
+            console.log(err)
         });
     }
 
@@ -51,7 +51,7 @@ export const getShopDataByName = (name) => (dispatch) =>{
             // history.push('/shop')
         })
         .catch((err) => {
-            // notify({ type: 'error', description: JSON.stringify(err.response.data.message) });
+            console.log(err)
         });
     }
 
@@ -64,10 +64,24 @@ export const getShopDataByNameTwo = (name) => (dispatch) =>{
             type: GET_SHOP_BY_NAME_TWO,
             payload:  res.data,
             })
-            // notify({ type: 'info', description: 'Created Shop' });
-            // history.push('/shop')
         })
         .catch((err) => {
-            // notify({ type: 'error', description: JSON.stringify(err.response.data.message) });
+            console.log(err)
+        });
+    }
+
+
+export const getShopDataByUserId = (userid) => (dispatch) =>{
+    console.log("Inside getShopDataByUserId name: "+JSON.stringify(userid));
+
+    axios.get(`http://localhost:7000/shops/user/${userid}`,userid)
+        .then(res => {
+            dispatch({
+            type: GET_SHOP_BY_USER_ID,
+            payload:  res.data,
+            })
+        })
+        .catch((err) => {
+            console.log(err)
         });
     }
