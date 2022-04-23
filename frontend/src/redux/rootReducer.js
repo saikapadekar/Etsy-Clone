@@ -5,6 +5,7 @@ import customerReducer from './customer/customerReducer'
 import shopReducer from './shop/shopReducer'
 import productReducer from './product/productReducer'
 import favoriteReducer from './favorite/favoriteReducer'
+import cartReducer from './cart/cartReducer'
 
 
 
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
     customer:customerReducer,
     shop:shopReducer,
     product:productReducer,
-    favorite:favoriteReducer
+    favorite:favoriteReducer,
+    cart:cartReducer
 })
 
 export default rootReducer

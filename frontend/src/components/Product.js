@@ -6,9 +6,11 @@ import FavoriteBorderIcon from "@material-ui/icons/FavoriteBorder";
 import Card from "react-bootstrap/Card";
 import { CardContent, CardMedia, Box, Button } from "@mui/material";
 import { connect,useDispatch,useSelector } from 'react-redux';
-import {insertfavorite} from '../redux'
+import {insertfavorite,insertoCart} from '../redux'
 import {  useNavigate } from 'react-router-dom';
-
+/**1. Handle cart qty
+ * 2. 
+ */
 const useStyles = makeStyles({
   avatar : {
       height :'200px',
@@ -51,7 +53,7 @@ const useStyles = makeStyles({
     textDecoration: "none",
   },
   button: {
-    color: "black",
+    color:'rgb(240, 92, 38)',
     fontFamily:
       "Graphik Webfont,-apple-system,Helvetica Neue,Droid Sans,Arial,sans-serif",
     fontWeight: "50",
@@ -68,8 +70,10 @@ const Product = (prod) => {
   console.log(`Printing data for`,JSON.stringify(prod))
   const{name,price,product}=prod;
 
-  // const [favorite, setfavorite] = useState({ userid:'',shopId:'',productId:'',url:'',name: '', description: '',price:'',qty_available:'',category:''})
   var favorite={ userid:'',shopId:'',productId:'',url:'',name: '', description: '',price:'',qty_available:'',category:''};
+  var cart={ userid:'',shopId:'',productId:'',name: '',price:'',qty:'',isGift:false,note:''};
+
+
   const user=useSelector(state=>state.user)
     const {
         authenticatedUser,
@@ -99,7 +103,22 @@ const Product = (prod) => {
       // navigate('/favorite')  
     }
   };
-
+  const addToCart =()=>{
+    console.log(`Inside addToCart`)
+    if(JSON.stringify(authenticatedUserDetails)!='{}')
+    {
+      cart={
+        userid:authenticatedUserDetails._id,
+        shopId:product.shopId,
+        productId:product._id,
+        name:product.name,
+        price:product.price,
+      }
+      console.log(`Dispatching insertoCart cart: `, cart)
+      dispatch(insertoCart(cart));
+      navigate('/cart')  
+    }
+  }
   return (
     <div>
         <Grid container className={classes.card}>
@@ -125,10 +144,9 @@ const Product = (prod) => {
                     <Grid container item xs={12}>
                         <Button
                           className={classes.button}
-                          component={Link}
-                          to="/buy"
+                          onClick={addToCart}
                         >
-                          Buy Now
+                          Add to Cart
                         </Button>
                        { (<Button
                           size="large"
@@ -151,7 +169,7 @@ const Product = (prod) => {
 const mapDispatchToProps = dispatch => {
   return {
     insertfavorite: (favorite) => dispatch(insertfavorite(favorite)),
-
+    insertoCart: (cart) => dispatch(insertoCart(cart)),
   }
 }
 

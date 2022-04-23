@@ -8,7 +8,7 @@ import Card from "react-bootstrap/Card";
 import { CardContent, CardMedia, Box, Button } from "@mui/material";
 import { connect,useDispatch,useSelector } from 'react-redux';
 import {  useNavigate, useParams } from 'react-router-dom';
-import {deletefavorite} from '../redux'
+import {deletefavorite,insertoCart} from '../redux'
 // remove from fav
 
 const useStyles = makeStyles({
@@ -52,13 +52,14 @@ const useStyles = makeStyles({
     maxWidth: "300px",
     textDecoration: "none",
   },
-//   button: {
-//     // color: "Orange",
-//     // fontFamily:
-//     //   "Graphik Webfont,-apple-system,Helvetica Neue,Droid Sans,Arial,sans-serif",
-//     // fontWeight: "50",
-//     // fontSize: "13px",
-//   },
+  button: {
+    color:'white',
+    backgroundColor:'rgb(240, 92, 38)'
+    // fontFamily:
+    //   "Graphik Webfont,-apple-system,Helvetica Neue,Droid Sans,Arial,sans-serif",
+    // fontWeight: "50",
+    // fontSize: "13px",
+  },
 });
 
 const ProductFav = (prod) => {
@@ -85,6 +86,24 @@ const ProductFav = (prod) => {
         dispatch(deletefavorite(data))
         navigate('/')
     };
+    var cart={ userid:'',shopId:'',productId:'',name: '',price:'',qty:'',isGift:false,note:''};
+
+    const addToCart =()=>{
+      console.log(`Inside addToCart`)
+      if(JSON.stringify(authenticatedUserDetails)!='{}')
+      {
+        cart={
+          userid:authenticatedUserDetails._id,
+          shopId:product.shopId,
+          productId:product._id,
+          name:product.name,
+          price:product.price,
+        }
+        console.log(`Dispatching insertoCart cart: `, cart)
+        dispatch(insertoCart(cart));
+        // navigate('/favorite')  
+      }
+    }
   return (
     <div>
         <Grid container className={classes.card}>
@@ -92,7 +111,7 @@ const ProductFav = (prod) => {
             <Box sx={{ width: 350, height: 300, borderColor: "orange" }}>
               <Card className={classes.cardSize}>
                 <CardContent>
-                    <Link to={`/productview/${product.productId}`}>
+                    <Link underline="none" variant='inherit'to={`/productview/${product.productId}`} >
                         <div key={prod.id} className="productStyle">
                           <CardMedia
                             component="img"
@@ -110,10 +129,11 @@ const ProductFav = (prod) => {
                     <Grid container item xs={12}>
                         <Button
                           className={classes.button}
+                          onClick={addToCart}
                           component={Link}
                           to="/buy"
                         >
-                          Buy Now
+                          Add to Cart
                         </Button>
                         {(<Button
                           size="large"
@@ -136,7 +156,7 @@ const ProductFav = (prod) => {
 const mapDispatchToProps = dispatch => {
   return {
     deletefavorite: (data) => dispatch(deletefavorite(data)),
-
+    insertoCart: (cart) => dispatch(insertoCart(cart)),
   }
 }
 

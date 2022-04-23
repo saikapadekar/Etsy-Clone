@@ -291,13 +291,25 @@ const FavSchema = new Schema({
   qty_available: Number,
 });
 
+const CartSchema = new Schema({
+  userid:String,
+  shopId: String,
+  productId:String,
+  name: String,
+  url: String,
+  price: Number,
+  qty: Number,
+  isGift:Boolean,
+  note:String
+});
+
 const User = model('users', UserSchema);
 const Buyer = model('customers', BuyerSchema);
 const Shop = model('shops', ShopSchema);
 const Product = model('products', ProductSchema);
 const Favorite = model('favorites', FavSchema);
+const Cart = model('cart', CartSchema);
 
 
 
-
-module.exports = { User, Buyer,Shop, Product, Favorite };
+module.exports = { User, Buyer,Shop, Product, Favorite, Cart };

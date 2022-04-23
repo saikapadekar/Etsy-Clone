@@ -34,7 +34,6 @@ const Userprofile = (props) => {
     const classes = useStyles();
     const customer=useSelector(state=>state.customer)
 
-    console.log(`Printing user value from store`,JSON.stringify(user))
     console.log(`Printing customer value from store`,JSON.stringify(customer))
     const {selectedCustomer} =customer;
     
@@ -45,20 +44,24 @@ const Userprofile = (props) => {
         userLogindetails,
         authenticatedUserDetails
       } = user;
+      console.log(`Printing user value from store`,JSON.stringify(user))
+      var flag=false;
 
       const [profile, setProfile] = useState({
         userid:'',
         url:'',
         name:'',
         email:'',
-        about:'',
-        gender:'',
-        dob:'',
+        address:'',
         city:'',
         state:'',
         country:'',
         contact_no:'',
-        address:'' })
+        about:'',
+        gender:'',
+        dob:''        
+         })
+         const [edit,setEdit]=useState({flag:false});
         
 
     const handleChange=(event)=>{
@@ -80,7 +83,7 @@ const Userprofile = (props) => {
             console.log(`Obtained userid:`, profile.userid)
 
             dispatch(getCustomerByEmail(profile.email))
-    }, [profile])
+    }, [edit])
 
     
     const dispatch = useDispatch();
@@ -89,12 +92,21 @@ const Userprofile = (props) => {
     // var decoded = jwt_decode(authenticatedUser.token);
     // profile.id=decoded.id;
     // profile.email=userLogindetails.email;
+    
 
     const handleSubmit =(event) =>{
         event.preventDefault()
     console.log(`Dispatching createCustomer from Userprofile.js with profile: `,profile)
     dispatch(createCustomer(profile))
     navigate('/')
+    setEdit({flag:false})
+    };
+
+    const editProfile =(event) =>{
+        event.preventDefault()
+        // flag=true;
+        console.log(`Editing profile`,profile, flag)
+        setEdit({flag:true})
     };
 
     // console.log(`Printing from props`,JSON.stringify(props))
@@ -106,7 +118,68 @@ const Userprofile = (props) => {
                 
             <h2>Your Public Profile</h2>
                 <h3>Everything on this page can be seen by anyone</h3><br/><br/>
-            <form className="profile-box">
+                <Button variant="contained" color="success" 
+                    onClick ={editProfile }
+                    >
+                    Edit Profile
+                    </Button>
+                    {(edit.flag==false )&& (<form className="profile-box">
+            <div>
+                <h3> Profile Picture: </h3><Button>Choose File</Button>
+                <Avatar className={classes.avatar} src={selectedCustomer.url ? selectedCustomer.url : profile.url}>
+                        </Avatar>
+            
+            <div>
+                <br/>
+                <h2>{selectedCustomer.name ? selectedCustomer.name : 'Full Name'}</h2>
+                    <br/><br/>  
+                    Email:<br/><br/>
+                    <h3>{authenticatedUserDetails.email}</h3>
+                    <Divider />
+
+                    <br/><br/>                    
+                    Address:<br/><br/>
+                    <h3>{selectedCustomer.address ? selectedCustomer.address : 'Address'}</h3>
+                    <Divider />
+
+                    <br/><br/>
+                    City:<br/><br/>
+                    <h3>{selectedCustomer.city ? selectedCustomer.city : 'City'}</h3>
+                    <Divider />
+
+                    <br/><br/>
+                    State:<br/><br/>
+                    <h3>{selectedCustomer.state ? selectedCustomer.state : 'State'}</h3>
+                    <Divider />
+
+                    <br/><br/>
+                    Country:<br/><br/>
+                    <h3>{selectedCustomer.country ? selectedCustomer.country : 'Country'}</h3>
+                    <Divider />
+
+                    <br/><br/>
+                    Contact Number:<br/><br/>
+                    <h3>{selectedCustomer.contact_no ? selectedCustomer.contact_no : 'Contact Number'}</h3>
+                    <Divider />
+
+                    <br/><br/>
+                    About:<br/><br/>
+                    <h3>{selectedCustomer.About ? selectedCustomer.About : 'About'}</h3>
+                    <Divider />
+
+                    <br/><br/>
+                    Gender:<br/><br/>
+                    <h3>{selectedCustomer.gender ? selectedCustomer.gender : 'Gender'}</h3>
+                    <Divider />
+
+                    <br/><br/>
+                    DOB:<br/><br/>
+                    <h3>{selectedCustomer.dob ? selectedCustomer.dob : 'Dob'}</h3>
+                    <Divider />
+            </div>
+            </div>
+            </form>)}
+            {(edit.flag==true )&& (<form className="profile-box">
             <div>
                 <h3> Profile Picture: </h3><Button>Choose File</Button>
                 <Avatar className={classes.avatar} src={selectedCustomer.url ? selectedCustomer.url : profile.url}>
@@ -118,7 +191,8 @@ const Userprofile = (props) => {
                             onChange={handleChange} variant="outlined">
                     
                     </TextField>
-                <TextField id="name" name="name" className ={classes.field} placeholder={selectedCustomer.name ? selectedCustomer.name : 'Full Name'}
+                <TextField id="name" name="name" className ={classes.field} 
+                placeholder={selectedCustomer.name ? selectedCustomer.name : 'Full Name'}
                             value={profile.name} 
                             onChange={handleChange} variant="outlined">
                     
@@ -205,7 +279,7 @@ const Userprofile = (props) => {
 
             </div>
             </div>
-            </form>
+            </form>)}
             </div>
     );
 };

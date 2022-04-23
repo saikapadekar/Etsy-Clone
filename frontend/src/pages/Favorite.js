@@ -20,44 +20,6 @@ const useStyles = makeStyles({
     main:{
         padding: '30px'
     },
-   nameLoc : {
-       position: 'absolute',
-       top: '240px',
-       left: '30px',
-       fontWeight: '800',
-       fontSize : '40px',
-       color : 'white'
-   }, 
-   shop : {
-       width:'1349px',
-       height:'250px',
-       objectFit: 'cover',
-       position: 'relative',
-       backgroundPosition: 'center'
-   },
-   details:{
-       fontFamily:'"Guardian-EgypTT",Charter,"Charter Bitstream",Cambria,"Noto Serif Light","Droid ',
-       fontWeight:'600px',
-       borderStyle:'ridge',
-       fontSize : '22px',
-
-   },
-   header:{
-       margin:'100px'
-   },
-   button:{
-       borderStyle:'solid',
-       width:'300px',
-       backgroundColor:'rgb(240, 92, 38)',
-       color:'white'
-   },
-   tile : {
-       width:'380px',
-       height:'410px'
-   },
-   image :{
-       margin:'50px'
-   }
 });
 
 
