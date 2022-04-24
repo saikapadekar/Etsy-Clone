@@ -1,4 +1,4 @@
-import {GET_PRODUCTS_FOR_SHOP,ADD_PRODUCT,GET_PRODUCTS_ALL,GET_PRODUCT} from './productTypes'
+import {GET_PRODUCTS_FOR_SHOP,ADD_PRODUCT,GET_PRODUCTS_ALL,GET_PRODUCT,GET_PRODUCT_BY_NAME} from './productTypes'
 import axios from 'axios'
 
 
@@ -67,5 +67,22 @@ export const getProductbyId = (id) => (dispatch) =>{
         })
         .catch((err) => {
             // notify({ type: 'error', description: JSON.stringify(err) });
+        });
+    }
+
+export const getProductbyName = (name) => (dispatch) =>{
+    console.log(`Inside getProductbyName, name: `,name);
+
+    return axios.get(`http://localhost:7000/products/prodbyname`,{params: {name}})
+        .then(res => {
+            dispatch({
+            type: GET_PRODUCT_BY_NAME,
+            payload:  res.data,
+            })
+        console.log(`printing response of getProductbyName`,res.data)
+
+        })
+        .catch((err) => {
+            console.log(err)
         });
     }

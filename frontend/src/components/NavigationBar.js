@@ -2,7 +2,7 @@
  * 1. Change URL for sell on etsy /shop/:shopname
  * 2. Dispatch method to get shop of logged in user
  */
-import React,{useEffect} from 'react';
+import React,{useEffect,useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Navbar} from 'react-bootstrap';
 import { Container } from 'react-bootstrap';
@@ -18,7 +18,10 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import {useSelector} from 'react-redux'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { connect,useDispatch } from 'react-redux';
-import {getShopDataByUserId} from '../redux'
+import {getShopDataByUserId,getProductbyName} from '../redux'
+import IconButton from '@mui/material/IconButton';
+import {  useNavigate } from 'react-router-dom';
+
 
 const useStyles = makeStyles({
     brand:{
@@ -84,6 +87,7 @@ const useStyles = makeStyles({
 const NavigationBar = () => {
     const classes = useStyles();
     const dispatch=useDispatch();
+    const navigate=useNavigate();
     const user=useSelector(state=>state.user)
     const store_shop=useSelector(state=>state.shop)
     const {shopdetails, shopbyuserid}=store_shop;
@@ -94,6 +98,30 @@ const NavigationBar = () => {
     } = user;
     console.log(`Printing value from store User`, JSON.stringify(user))
     console.log(`Printing value from store Shop`, JSON.stringify(store_shop))
+    const [searchInput, setsearchInput] = useState({ product_name:''})
+
+    
+    const handleChange=(event)=>{
+      setsearchInput(
+          {
+              ...searchInput,
+              [event.target.name] : event.target.value,
+              
+          }
+      )
+      console.log(`value of searchInput`,searchInput.product_name )
+  };
+
+  const handleSubmit=(event)=>{
+    var prod_name=searchInput.product_name;
+    event.preventDefault();
+    console.log(`Inside handleSubmit Navbar.js`)
+    dispatch(getProductbyName(prod_name))
+    .then(()=>{
+      navigate(`/${prod_name}`)
+    })
+};
+
 
     useEffect(() => {
 
@@ -115,16 +143,19 @@ const NavigationBar = () => {
                 <Container>
                 <Button className={classes.brand} component = {Link} to="/">Etsy</Button>
                 <InputBase
-                            id="item"
-                            name="item"
-                            type="name"
+                            id="product_name"
+                            name="product_name"
                             className={classes.item}
                             placeholder='Search for anything'
-                            // onChange={this.handleChange}
-                            startAdornment={<SearchIcon style={{color : '#2b2b2b'}} />}
-                            // onChange={this.handleSearch}
-                            // value={this.state.keyword} 
+                            onChange={handleChange}
+                            value={searchInput.product_name}
+                            startAdornment=
+                            {<IconButton type="submit" sx={{ p: '10px' }} aria-label="search" 
+                            onClick={handleSubmit}>
+                            <SearchIcon />
+                          </IconButton>}
                         />
+                        
                         <Button size="large" startIcon={<FavoriteIcon />} component = {Link} to="/favorite">
                         </Button>
                         {(!authenticated && <PopupState variant="popover" popupId="demo-popup-menu">
@@ -178,6 +209,8 @@ const mapDispatchToProps = dispatch => {
   return {
       
     getShopDataByUserId: (shop_id) => dispatch(getShopDataByUserId(shop_id)),
+    getProductbyName: () => dispatch(getProductbyName()),
+
 
   }
 }

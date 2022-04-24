@@ -59,6 +59,11 @@ const useStyles = makeStyles({
     fontWeight: "50",
     fontSize: "13px",
   },
+  details:{
+    borderStyle:'groove',
+    borderColor:'rgb(255, 221, 209)',
+    
+  }
 });
 
 const Product = (prod) => {
@@ -115,12 +120,14 @@ const Product = (prod) => {
         price:product.price,
       }
       console.log(`Dispatching insertoCart cart: `, cart)
-      dispatch(insertoCart(cart));
-      navigate('/cart')  
+      dispatch(insertoCart(cart)).
+      then(()=>{
+        navigate('/cart')  
+      })
     }
   }
   return (
-    <div>
+    <div className={classes.details}>
         <Grid container className={classes.card}>
           <Grid container item xs={12} sm={12}>
             <Box sx={{ width: 350, height: 300, borderColor: "orange" }}>

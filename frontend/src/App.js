@@ -15,7 +15,7 @@ import AddItem from './components/AddItem'
 import Productview from './pages/Productview';
 import Favorite from './pages/Favorite';
 import Cart from './pages/Cart';
-
+import HomeSearch from './pages/HomeSearch';
 // Things to do
 // 1. Add item page
 // 2. Product view page
@@ -30,6 +30,8 @@ function App(props) {
       {<NavigationBar/>}
       <Routes>
       <Route exact path="/" element={<Home/>} />
+      <Route exact path="/:prodName" element={<HomeSearch/>} />
+
 
       <Route exact path="/login" element={<Login/>} />
       <Route exact path="/signup" element={<Signup/>} />

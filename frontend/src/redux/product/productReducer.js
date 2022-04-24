@@ -1,9 +1,10 @@
-import {GET_PRODUCTS_FOR_SHOP,ADD_PRODUCT,GET_PRODUCTS_ALL,GET_PRODUCT} from './productTypes'
+import {GET_PRODUCTS_FOR_SHOP,ADD_PRODUCT,GET_PRODUCTS_ALL,GET_PRODUCT,GET_PRODUCT_BY_NAME} from './productTypes'
 
 const initialState = {
     products:{},
     product:{},
     shop_products:{},
+    productByName:{}
 }
 
 const productReducer = (state = initialState, action) =>{
@@ -27,6 +28,11 @@ const productReducer = (state = initialState, action) =>{
             return{
                 ...state,
                 product:action.payload
+            }
+        case GET_PRODUCT_BY_NAME:
+            return{
+                ...state,
+                productByName:action.payload
             }
         default : 
               return {

@@ -207,6 +207,26 @@ const updateProductInShop = async (req, res) => {
     }
   }
 };
+
+const getProductsByName = async (req, res) => {
+  console.log(`Inside getProductsByName, name: `, req.query);
+  let { name } = req.query;
+  // if (typeof id == "undefined") {
+  //   shopID = 1;
+  // }
+
+  if (!name || name == '') {
+    res.status(400).json(errors.badRequest);
+    return;
+  }
+
+  const product = await Product.find({
+    name: {$regex:name} 
+  });
+  console.log(product)
+
+  res.status(200).json(product);
+};
 //todo get products by pricerange
 module.exports = {
   getAllProducts,
@@ -214,5 +234,6 @@ module.exports = {
   getProductsForShop,
   deleteProductInShop,
   updateProductInShop,
-  getProductsById
+  getProductsById,
+  getProductsByName
 };

@@ -80,4 +80,17 @@ router.delete('/delete/:productID', productController.deleteProductInShop);
  */
  router.put('/update/:productID', productController.updateProductInShop);
 
+  /**
+ * Get product by id
+ * @route GET /products
+ * @group Product
+ * @param {string} authorization.header.require
+ * @param {string} prod_name.path.require
+ * @returns {Product} 200 - product
+ */
+router.get('/prodbyname', productController.getProductsByName);
+
+
+ 
+
 module.exports = router;

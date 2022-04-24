@@ -73,7 +73,6 @@ const Favorite = () => {
            </Grid>
            <Grid direction="row" container className={classes.main}>
                {/* For displaying products */}
-               Hello from Favorite.js
                <Grid
                     container
                     item

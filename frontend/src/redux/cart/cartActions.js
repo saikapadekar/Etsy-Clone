@@ -4,7 +4,7 @@ import axios from 'axios'
 export const insertoCart = (data) => (dispatch) =>{
     console.log(`Inside insertoCart :`,JSON.stringify(data) );
 
-    axios.post(`http://localhost:7000/cart/insert`,data)
+    return axios.post(`http://localhost:7000/cart/insert`,data)
         .then(res => {
             console.log("INSERT_TO_CART RESPONSE: ",res.data);
             dispatch({

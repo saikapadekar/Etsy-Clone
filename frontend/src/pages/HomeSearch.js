@@ -4,8 +4,9 @@ import PinkBox from "../components/PinkBox";
 import Product from '../components/Product';
 import Grid from "@material-ui/core/Grid";
 import { makeStyles } from "@material-ui/core/styles"
-import {getAllShopProducts} from '../redux'
+import {getProductbyName} from '../redux'
 import { Col } from "react-bootstrap";
+import { useParams } from 'react-router-dom';
 
 
 const useStyles = makeStyles({
@@ -14,32 +15,28 @@ const useStyles = makeStyles({
     },
 });
 
-const Home = () => {
+const HomeSearch = () => {
 
-    const user=useSelector(state=>state.user)
-    console.log(`Printing user value from store`,JSON.stringify(user))
-    const {
-        token,
-        authenticated
-      } = user;
+    const prodName=useParams();
+    console.log(`Received product name`,prodName)
     const classes = useStyles();
     const store_products=useSelector(state=>state.product)
-    const {products}=store_products; //to display as individual product card
+    const {productByName}=store_products; //to display as individual product card
     const dispatch=useDispatch();
 
     console.log(`Printing all product nodes`);
-    console.log(JSON.stringify(products));
+    console.log(JSON.stringify(productByName));
     var flag=false;
-    if (JSON.stringify(products) !== "{}") {
+    if (JSON.stringify(productByName) !== "{}") {
        flag = true;
     }
 
     useEffect(() => {
-    console.log(`dispatching getAllShopProducts`)
-    dispatch(getAllShopProducts())
-
-}, [])
-    return (
+    console.log(`dispatching getProductbyName`,prodName)
+    dispatch(getProductbyName(prodName))
+    }, [])
+    
+    return(
         <div>
             <PinkBox/>
             <br />
@@ -67,14 +64,14 @@ const Home = () => {
                     xs={12}
                 >
                     {flag &&
-                    (products?.map((prod) => {
+                    (productByName?.map((prod) => {
                     console.log(`Should print product cards`, prod.name);
                     return (
                         <Col md={3}>
                         {" "}
                         <Product
-                            key={prod._id}
-                            id={prod._id}
+                            key={prod.id}
+                            id={prod.id}
                             name={prod.name}
                             price={prod.price}
                             url={prod.url}
@@ -85,14 +82,16 @@ const Home = () => {
                     }))}
                 </Grid>
         </Grid>
+            
         </div>
-    );
+    )
 };
+
 
 const mapDispatchToProps = dispatch => {
     return {
-      getAllShopProducts: () => dispatch(getAllShopProducts()),
+        getProductbyName: (prodName) => dispatch(getProductbyName(prodName)),
     }
   }
   
-export default connect(mapDispatchToProps)(Home);
+export default connect(mapDispatchToProps)(HomeSearch);
