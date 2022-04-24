@@ -2,7 +2,8 @@ import {INSERT_TO_CART,GET_CART_BY_USER_ID,DELETE_FROM_CART,UPDATE_PRODUCT_FROM_
 
 const initialState = {
     cart:{},
-    userCart:{}
+    userCart:{},
+    cartProduct:{}
 }
 
 const cartReducer = (state = initialState, action) =>{
@@ -18,6 +19,11 @@ const cartReducer = (state = initialState, action) =>{
                 userCart:action.payload
             }
         case DELETE_FROM_CART:
+            return{
+                ...state,
+                cartProduct:action.payload
+            }
+        case UPDATE_PRODUCT_FROM_CART:
             return{
                 ...state
             }

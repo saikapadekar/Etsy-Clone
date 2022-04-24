@@ -46,7 +46,7 @@ const [, ...updateValidators] = bodyValidators();
  * @route GET /shops/all
  * @group Shops
  * @param {string} authorization.header.require
- * @returns {Array.<Shop>} 200 - List of restaurant info
+ * @returns {Array.<Shop>} 200 - 
  */
 router.get('/all', shopController.allShops);
 

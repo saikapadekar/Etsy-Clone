@@ -32,4 +32,14 @@ const router = express.Router({ mergeParams: true });
  */
  router.post('/delete',cartController.deleteFromCart);
 
+
+  /**
+ * Update cart by productId
+ * @route PUT /cart/edit/
+ * @group Cart
+ * @param {Cart.model} Cart.body.require
+ * @returns {Cart.model} 200 - Updated Customer
+ */
+router.put('/edit', cartController.updateCartProduct);
+
 module.exports = router;

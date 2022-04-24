@@ -282,7 +282,10 @@ const ProductSchema = new Schema({
 const FavSchema = new Schema({
   userid:String,
   shopId: String,
-  productId:String,
+  productId: {
+    type: String,
+    unique: true 
+  },
   name: String,
   url: String,
   category: String,
@@ -294,13 +297,34 @@ const FavSchema = new Schema({
 const CartSchema = new Schema({
   userid:String,
   shopId: String,
-  productId:String,
+  productId: {
+    type: String,
+    unique: true 
+  },
   name: String,
-  url: String,
   price: Number,
   qty: Number,
   isGift:Boolean,
   note:String
+});
+const OrderItemSchema = new Schema({
+  shopId: String,
+  productId: {
+    type: String,
+    unique: true 
+  },
+  name: String,
+  price: Number,
+  qty: Number,
+  isGift:Boolean,
+  note:String
+});
+
+const OrderSchema = new Schema({
+  userid:String,
+  date: Date,
+  orderitems: [OrderItemSchema],
+  amount: Number  
 });
 
 const User = model('users', UserSchema);
@@ -309,7 +333,8 @@ const Shop = model('shops', ShopSchema);
 const Product = model('products', ProductSchema);
 const Favorite = model('favorites', FavSchema);
 const Cart = model('cart', CartSchema);
+const Order = model('orders', OrderSchema);
 
 
 
-module.exports = { User, Buyer,Shop, Product, Favorite, Cart };
+module.exports = { User, Buyer,Shop, Product, Favorite, Cart, Order };

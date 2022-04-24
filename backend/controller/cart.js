@@ -45,31 +45,72 @@ const insertoCart = async (req, res) => {
 };
 
 
-const getCartByUserId = async (req, res) => {
-
-    const { userid } = req.params;
-  
+const getCartByUserId = async (req, res) => 
+{
+    const { userid } = req.params;  
     console.log(`inside getCartByUserId: `,userid);
     const cart = await Cart.find({userid: userid});
     res.status(200).json(cart);
-  };
+};
 
-  const deleteFromCart = async (req, res) => {
-    const { userid,productId } = req.body;
+const deleteFromCart = async (req, res) => 
+    {
+        const { userid,productId } = req.body;
+
+        console.log(`inside deleteFromCart: `,req.body);
+        const deleted=await Cart.deleteOne({userid: userid, productId:productId})
+        if (deleted) {
+        res.status(200).send();
+        return;
+        }
+        res.status(404).send();
+        return;
+    };
+
+
+const updateCartProduct = async (req, res) => {
+
+    const cart = req.body;
+
+    console.log(`Backend: Inside updateCartProduct req: `, cart)
+
+    const {userid,productId,shopId}=cart;
   
-    console.log(`inside deleteFromCart: `,req.body);
-    const deleted=await Cart.deleteOne({userid: userid, productId:productId})
-    if (deleted) {
-      res.status(200).send();
+    const dbRes = await Cart.findOne({ productId:  productId  });
+    if (!dbRes) {
+      res.status(404).json(errors.notFound);
       return;
     }
-    res.status(404).send();
-    return;
-  };
   
+    try {
+      dbRes.userid = cart.userid;
+      dbRes.name = cart.name;
+      dbRes.shopId = cart.shopId;
+      dbRes.productId = cart.productId;
+      dbRes.price = cart.price;
+      dbRes.qty = cart.qty;
+      dbRes.isGift = cart.isGift;
+      dbRes.note = cart.note;
+  
+      const updatedRes = await dbRes.save();
+      const result = await Cart.findOne({ productId:  productId, userid:userid } );
+  
+      res.status(200).json(result);
+      return;
+    } catch (err) {
+      console.error(err);
+      if (err.original) {
+        res.status(500).json({ status: 500, message: err.original.sqlMessage });
+      } else {
+        res.status(500).json(errors.serverError);
+      }
+    }
+  };
+
 
 module.exports = {
     insertoCart,
     getCartByUserId,
-    deleteFromCart
+    deleteFromCart,
+    updateCartProduct
   };

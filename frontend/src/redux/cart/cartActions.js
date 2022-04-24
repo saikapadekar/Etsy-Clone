@@ -48,3 +48,19 @@ export const deleteFromCart = (data) => (dispatch) =>{
             console.log(err);
         });
     }
+
+export const updateCartProduct=(data)=>(dispatch)=>{
+    console.log(`Inside updateCartProducts :`,JSON.stringify(data) );
+
+    axios.put(`http://localhost:7000/cart/edit`,data)
+        .then(res => {
+            console.log("UPDATE_PRODUCT_FROM_CART RESPONSE: ",res.data);
+            dispatch({
+            type: UPDATE_PRODUCT_FROM_CART,
+            payload:  res.data,
+            })
+        })
+        .catch((err) => {
+            console.log(err);
+        });
+}

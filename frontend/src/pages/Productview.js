@@ -110,7 +110,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
                     <div>
                     <h3>Price:</h3>
                     <div className={classes.details}>
-                    {product.price}
+                    $ {product.price}
                     </div>
                     </div>
 

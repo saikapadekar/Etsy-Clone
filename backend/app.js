@@ -14,6 +14,8 @@ const shopRouter = require('./routes/shop.routes');
 const productRouter = require('./routes/product.routes');
 const favoriteRouter = require('./routes/favorite.routes');
 const cartRouter = require('./routes/cart.routes')
+const orderRouter = require('./routes/order.routes')
+
 
 
 const app = express();
@@ -42,6 +44,8 @@ app.use('/shops', shopRouter);
 app.use('/products',productRouter);
 app.use('/favorites',favoriteRouter);
 app.use('/cart',cartRouter);
+app.use('/orders',orderRouter);
+
 
 
 

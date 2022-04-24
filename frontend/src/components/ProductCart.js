@@ -3,12 +3,13 @@ import Grid from "@material-ui/core/Grid";
 import { makeStyles } from '@material-ui/core/styles';
 import { Link } from "react-router-dom";
 import { Button } from "@mui/material";
-import { connect,useDispatch,useSelector } from 'react-redux';
-import {  useNavigate, useParams } from 'react-router-dom';
+import { connect,useDispatch } from 'react-redux';
+import {  useNavigate } from 'react-router-dom';
 import {deleteFromCart} from '../redux'
 import TextField from '@material-ui/core/TextField'
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import {updateCartProduct} from '../redux'
 
 
 // name, price, qty, gift, note, remove
@@ -53,8 +54,10 @@ const useStyles = makeStyles({
     console.log(`ProductCart product: `,JSON.stringify(product))//object of cart
 
     var data={userid:product.userid,productId:product.productId}
-    const [cart_var, setCartvar] = useState({ qty:'',isGift:false,note:''})
+    const [cart_var, setCartvar] = useState({ qty:'',note:''})
     const [gift, setGift] = useState({ isGift:false})
+    var cart={ userid:'',shopId:'',productId:'',name: '',price:'',qty:'',isGift:false,note:''};
+
 
 
     const handleChange = (event) =>{
@@ -76,15 +79,23 @@ const useStyles = makeStyles({
         dispatch(deleteFromCart(data))
         navigate('/')
     };
+    const editProductFromCart=(event)=>{
+        event.preventDefault();
+        console.log(`Called from useEffect return ProductCart.js`)
+            cart={
+                userid:product.userid,
+                shopId:product.shopId,
+                productId:product.productId,
+                name: product.name,
+                price:product.price,
+                qty:cart_var.qty,
+                isGift:gift.isGift,
+                note:cart_var.note
+            }
+            console.log(`Dispatching updateCartProduct`, cart)
+            dispatch(updateCartProduct(cart))
 
-    useEffect(()=>{
-        console.log(`Called useEffect from ProductCart.js`)
-
-        return()=>{
-            console.log(`Called from useEffect return ProductCart.js`)
-        }
-    })
-    
+    }    
 
     return(
         <div>
@@ -109,7 +120,7 @@ const useStyles = makeStyles({
                 </Grid>
                 <Grid container  sm={1}></Grid>
 
-                <Grid container sm={2}>
+                <Grid container sm={1}>
                     <TextField id="note" name="note"
                         placeholder='Notes'
                         value={cart_var.note} 
@@ -120,6 +131,9 @@ const useStyles = makeStyles({
                 <Grid container  sm={1}>
 
                 <FormControlLabel control={<Checkbox />} label="Gift" value={gift.isGift} onChange={handleChange}/>
+                </Grid>
+                <Grid container  sm={1}>
+                    <Button variant="inherit" className={classes.button} onClick={editProductFromCart}> Edit</Button>
                 </Grid>
                 <Grid container  sm={1}>
                     <Button variant="inherit" className={classes.button} onClick={removeFromCart}> Remove</Button>
@@ -133,6 +147,7 @@ const useStyles = makeStyles({
 const mapDispatchToProps = dispatch => {
     return {
         deleteFromCart: (data) => dispatch(deleteFromCart(data)),
+        updateCartProduct:(cart)=> dispatch(updateCartProduct(cart))
   
     }
   }

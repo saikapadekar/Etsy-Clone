@@ -122,7 +122,7 @@ const ProductFav = (prod) => {
                             {product.name} 
                           </Grid>
                           <Grid container item xs={12} className={classes.name}>
-                            {product.price}
+                            $ {product.price}
                           </Grid>
                         </div>
                     </Link>

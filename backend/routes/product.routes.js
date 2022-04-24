@@ -57,7 +57,7 @@ const router = express.Router({ mergeParams: true });
  * @param {string} authorization.header.require//todo handle shopid from path
  * @param {integer} page.query.require
  * @param {integer} limit.query.require
- * @returns {Array.<Product>} 200 - List of dishes info
+ * @returns {Array.<Product>} 200 
  */
   router.get('/getallitem/', productController.getAllProducts);
 
@@ -75,7 +75,6 @@ router.delete('/delete/:productID', productController.deleteProductInShop);
  * @route PUT /products
  * @group Products
  * @param {string} authorization.header.require
- * @param {integer} dishID.path.require
  * @param {Product.model} Product.body.require
  * @returns {Product.model} 200 - Updated Product
  */
