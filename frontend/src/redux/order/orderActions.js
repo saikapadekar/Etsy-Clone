@@ -4,7 +4,7 @@ import axios from 'axios'
 export const getOrderById = (orderid) => (dispatch) =>{
     console.log(`Inside getOrderById :`,(orderid) );
 
-    return axios.get(`http://localhost:7000/orders/getall/${orderid}`)
+    return axios.get(`${window.BACKEND_API_URL}/orders/getall/${orderid}`)
         .then(res => {
             console.log("GET_ORDER_BY_ID RESPONSE: ",res.data);
             dispatch({
@@ -20,7 +20,7 @@ export const getOrderById = (orderid) => (dispatch) =>{
 export const createOrder = (userid) => (dispatch) =>{
     console.log(`Inside createOrder :`,(userid) );
 
-    return axios.post(`http://localhost:7000/orders/createorder/${userid}`)
+    return axios.post(`${window.BACKEND_API_URL}/orders/createorder/${userid}`)
         .then(res => {
             console.log("CREATE_ORDER RESPONSE: ",res.data);
             dispatch({
@@ -36,7 +36,7 @@ export const createOrder = (userid) => (dispatch) =>{
 export const getOrdersByUserId = (userid,limit,offset)=>(dispatch) =>{
     console.log(`Inside createOrder :`,(userid) );
 
-    return axios.get(`http://localhost:7000/orders/getall/user/${userid}`,{ params: {limit, offset}})
+    return axios.get(`${window.BACKEND_API_URL}/orders/getall/user/${userid}`,{ params: {limit, offset}})
         .then(res => {
             console.log("GET_ALL_ORDERS_FOR_USERID RESPONSE: ",res.data);
             dispatch({

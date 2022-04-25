@@ -54,7 +54,7 @@ const Shopname = () => {
 
         axios.defaults.withCredentials = true;
         axios
-        .get(`http://localhost:7000/shops/name/${shop.name}`, shop.name)
+        .get(`${window.BACKEND_API_URL}/shops/name/${shop.name}`, shop.name)
         .then((response) => {
             console.log("Status Code : ", response.status);
             if (response.status === 200) {

@@ -9,7 +9,7 @@ export const createCustomer = (data) => {
     return async (dispatch) => {
         try {
             const response = await axios
-                .post(`http://localhost:7000/customers/createcustomer`,data);
+                .post(`${window.BACKEND_API_URL}/customers/createcustomer`,data);
             dispatch({
                 type: CREATE_CUSTOMER,
                 payload: response.data,
@@ -24,7 +24,7 @@ export const createCustomer = (data) => {
 export const editProfile = (userid,userDetails) => (dispatch) => {
     console.log("Inside editProfile userAction"+JSON.stringify(userDetails));
 
-    axios.post(`http://localhost:7000/customers/edit/${userid}`, userDetails)
+    axios.post(`${window.BACKEND_API_URL}/customers/edit/${userid}`, userDetails)
         .then(res => {
             dispatch({
                 type : EDIT_PROFILE,
@@ -40,7 +40,7 @@ export const editProfile = (userid,userDetails) => (dispatch) => {
 
 export const getSelectedUser = (userid) => (dispatch) => {
     console.log("inside userActions getSelectedUser"+JSON.stringify(userid));
-    axios.get(`http://localhost:7000/customers/${userid}`)
+    axios.get(`${window.BACKEND_API_URL}/customers/${userid}`)
         .then(res => {
             dispatch({
                 type : GET_SELECTED_USER,
@@ -52,7 +52,7 @@ export const getSelectedUser = (userid) => (dispatch) => {
 
 export const getCustomerByEmail = (email) => (dispatch) => {
     console.log("inside userActions getCustomerByEmail"+JSON.stringify(email));
-    axios.get(`http://localhost:7000/customers/email/${email}`)
+    axios.get(`${window.BACKEND_API_URL}/customers/email/${email}`)
         .then(res => {
             dispatch({
                 type : GET_CUSTOMER,

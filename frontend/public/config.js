@@ -1,1 +1,1 @@
-window.BACKEND_API_URL = 'http://backend:3000';
+window.BACKEND_API_URL = 'http://3.233.213.161:7000';

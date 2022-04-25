@@ -4,7 +4,7 @@ import axios from 'axios'
 export const insertoCart = (data) => (dispatch) =>{
     console.log(`Inside insertoCart :`,JSON.stringify(data) );
 
-    return axios.post(`http://localhost:7000/cart/insert`,data)
+    return axios.post(`${window.BACKEND_API_URL}/cart/insert`,data)
         .then(res => {
             console.log("INSERT_TO_CART RESPONSE: ",res.data);
             dispatch({
@@ -20,7 +20,7 @@ export const insertoCart = (data) => (dispatch) =>{
 export const getCartByUserid = (userid) => (dispatch) =>{
     console.log(`Inside getCartByUserid :`,(userid) );
 
-    axios.get(`http://localhost:7000/cart/getall/${userid}`)
+    axios.get(`${window.BACKEND_API_URL}/cart/getall/${userid}`)
         .then(res => {
             console.log("GET_CART_BY_USER_ID RESPONSE: ",res.data);
             dispatch({
@@ -36,7 +36,7 @@ export const getCartByUserid = (userid) => (dispatch) =>{
 export const deleteFromCart = (data) => (dispatch) =>{
     console.log(`Inside deleteFromCart :`,JSON.stringify(data) );
 
-    axios.post(`http://localhost:7000/cart/delete`,data)
+    axios.post(`${window.BACKEND_API_URL}/cart/delete`,data)
         .then(res => {
             console.log("DELETE_FROM_CART RESPONSE: ",res.data);
             dispatch({
@@ -52,7 +52,7 @@ export const deleteFromCart = (data) => (dispatch) =>{
 export const updateCartProduct=(data)=>(dispatch)=>{
     console.log(`Inside updateCartProducts :`,JSON.stringify(data) );
 
-    axios.put(`http://localhost:7000/cart/edit`,data)
+    axios.put(`${window.BACKEND_API_URL}/cart/edit`,data)
         .then(res => {
             console.log("UPDATE_PRODUCT_FROM_CART RESPONSE: ",res.data);
             dispatch({

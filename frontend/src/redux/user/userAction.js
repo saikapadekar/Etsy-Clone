@@ -9,7 +9,7 @@ export const loginUser = (newUser) => {
     return async (dispatch) => {
         try {
             const response = await axios
-                .post('http://localhost:7000/auth/login', newUser);
+                .post(`${window.BACKEND_API_URL}/auth/login`, newUser);
             dispatch({
                 type: LOGIN_USER,
                 payload: response.data,
@@ -37,7 +37,7 @@ export const signupUser = (newUser) => {
         console.log();
         try {
             const response = await axios
-                .post('http://localhost:7000/auth/signup', newUser);
+                .post(`${window.BACKEND_API_URL}/auth/signup`, newUser);
             dispatch({
                 type: SIGNUP_USER,
                 payload: response.data,
@@ -65,7 +65,7 @@ export const getAuthenticatedUser = (email) => {
     return async (dispatch) => {
         try {
             const response = await axios
-                .post('http://localhost:7000/auth/authenticatedUser', {email});
+                .post(`${window.BACKEND_API_URL}/auth/authenticatedUser`, {email});
             dispatch({
                 type: AUTHENTICATED_USER,
                 payload: response.data,
