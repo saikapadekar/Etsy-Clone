@@ -54,6 +54,12 @@ const useStyles = makeStyles({
     console.log(`Printing data for`,JSON.stringify(prod))
     const{product}=prod;
     console.log(`order_id`,product._id)
+    let newD = new Date(product.date);
+
+    newD = newD.toLocaleString("en-US", {
+        timeZone: "America/Los_Angeles"
+      });
+
     var flag=false;var order_qty=0;
     if((product.orderitems).length!=0)
     {
@@ -83,7 +89,7 @@ const useStyles = makeStyles({
                 </Grid>
 
                 <Grid container sm={1}>
-                date{product.date}
+                {newD}
                 </Grid>
 
                 <Grid container  sm={1}>

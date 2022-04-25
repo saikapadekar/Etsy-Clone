@@ -79,8 +79,12 @@ const OrderProduct = (prod) => {
         userLogindetails,
         authenticatedUserDetails
       } = user;
-      
-
+    var gift='No';  
+console.log(`Value of isGift`,product.isGift)
+if(product.isGift)
+{
+    gift='Yes'
+}
   return (
     <div className={classes.details}>
         <Grid container className={classes.card}>
@@ -101,10 +105,13 @@ const OrderProduct = (prod) => {
                             
                           </Grid>
                           <Grid container item xs={12} className={classes.name}>
-                            $ {product.price}  
+                          <Grid sm={6}>$ {product.price} </Grid>
+                          <Grid sm={6}>Qty: {product.qty} </Grid>
+                              
                           </Grid>
                           <Grid container item xs={12} className={classes.name}>
-                            Qty: {product.qty}
+                          <Grid sm={6}>Gift: {gift}  </Grid>
+                          <Grid sm={6}>Note: {product.note}</Grid>
                           </Grid>
                         </div>
                     </Link>

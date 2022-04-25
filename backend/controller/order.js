@@ -8,6 +8,7 @@ const { Types } = require('mongoose');
 const { getPagination } = require('u-server-utils');
 const { Order, Cart } = require('../model');
 const errors = require('../util/errors');
+const moment = require('moment-timezone');
 
 
 const getOrderById = async (req, res) => {
@@ -33,8 +34,20 @@ const createOrder = async (req, res) => {
 
   const { userid } = req.params;
   console.log(`Backend: inside createOrder`, userid)
+  // let dateTime = Date.now()
+  const dateTime=moment().tz("America/Los_Angeles").format();
+  // let dateTime=new Date().toISOString()
+
+
+//   var today = new Date();
+// var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+// var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+// var dateTime = date+' '+time;
+  console.log(dateTime)
+
 
   const cartItems = await Cart.find({userid: userid});
+  // cartItems.date=timestamp;
   console.log(`Printing cartItems`,cartItems)
 
   if (!cartItems || cartItems.length === 0) {
@@ -61,12 +74,13 @@ const createOrder = async (req, res) => {
 
       var order={
         userid:userid,
-        date: '', //to handle
+        date: dateTime, //to handle
         orderitems: orderItems,
         amount: orderAmount  
       }
       try {
         const createdOrder = await Order.create(order);
+        // createdOrder.date=timestamp;
 
         const result = await Order.findOne( { _id: createdOrder.id } );
 
