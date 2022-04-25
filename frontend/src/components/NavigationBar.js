@@ -181,6 +181,7 @@ const NavigationBar = () => {
         <MenuItem onClick={popupState.close} component = {Link} to="/userprofile">Profile</MenuItem>
         <MenuItem onClick={popupState.close} component = {Link} to="/shopname">Sell On Etsy</MenuItem>
         <MenuItem onClick={popupState.close} component = {Link} to={`/shop/${shopbyuserid.name}`}>My Shop</MenuItem>
+        <MenuItem onClick={popupState.close} component = {Link} to="/orders">My Purchases</MenuItem>
         <MenuItem onClick={popupState.close}><a href="/">Logout</a></MenuItem>
       </Menu>
     </React.Fragment>

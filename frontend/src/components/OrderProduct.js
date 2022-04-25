@@ -65,19 +65,12 @@ const useStyles = makeStyles({
   }
 });
 
-const Product = (prod) => {
+const OrderProduct = (prod) => {
 
   const classes = useStyles();
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   console.log(`Printing data for`,JSON.stringify(prod))
   const{name,price,product}=prod;
-
-  var favorite={ userid:'',shopId:'',productId:'',url:'',name: '', description: '',price:'',qty_available:'',category:''};
-  var cart={ userid:'',url:'',shopId:'',productId:'',name: '',shopname:'',price:'',qty:'',isGift:false,note:''};
-  const store_shop=useSelector(state=>state.shop)
-  const {shopdetails, shopbyuserid}=store_shop;
 
   const user=useSelector(state=>state.user)
     const {
@@ -87,50 +80,7 @@ const Product = (prod) => {
         authenticatedUserDetails
       } = user;
       
-  const insertFav = () =>{
-    //Should be able to add only if user is logged in
-    console.log(`Inside insert fav`)
-    if(JSON.stringify(authenticatedUserDetails)!='{}')
-    {
-      favorite={
-        userid:authenticatedUserDetails._id,
-        shopId:product.shopId,
-        productId:product._id,
-        url:product.url,
-        name:product.name,
-        description:product.description,
-        price:product.price,
-        qty_available:product.qty_available,
-        category:product.category
-      }
-      console.log(`Dispatching insertFavorite fav: `, favorite)
-      dispatch(insertfavorite(favorite));
-      // navigate('/favorite')  
-    }
-  };
-  const addToCart =()=>{
-    console.log(`Inside addToCart`)
-    if(JSON.stringify(authenticatedUserDetails)!='{}')
-    {
-      cart={        
-        userid:authenticatedUserDetails._id,
-        url:product.url,
-        shopId:product.shopId,
-        productId:product._id,
-        name:product.name,
-        shopname:shopbyuserid.name,
-        price:product.price,
-        qty:1,
-        isGift:false,
-        note:''
-      }
-      console.log(`Dispatching insertoCart cart: `, cart)
-      dispatch(insertoCart(cart)).
-      then(()=>{
-        navigate('/cart')  
-      })
-    }
-  }
+
   return (
     <div className={classes.details}>
         <Grid container className={classes.card}>
@@ -146,29 +96,18 @@ const Product = (prod) => {
                             className={classes.image}
                           />
                           <Grid container item xs={12} className={classes.name}>
-                            {product.name} 
+                              <Grid sm={6}>{product.name} </Grid>
+                              <Grid sm={6}>{product.shopname}</Grid>
+                            
                           </Grid>
                           <Grid container item xs={12} className={classes.name}>
-                            $ {product.price}
+                            $ {product.price}  
+                          </Grid>
+                          <Grid container item xs={12} className={classes.name}>
+                            Qty: {product.qty}
                           </Grid>
                         </div>
                     </Link>
-                    <Grid container item xs={12}>
-                        <Button
-                          className={classes.button}
-                          onClick={addToCart}
-                        >
-                          Add to Cart
-                        </Button>
-                       { (<Button
-                          size="large"
-                          startIcon={<FavoriteBorderIcon></FavoriteBorderIcon>}
-                          className={classes.button}
-                          // component={Link}
-                          // to="/fav"
-                          onClick={insertFav}
-                        ></Button>)}
-                    </Grid>
                 </CardContent>
               </Card>
             </Box>
@@ -186,4 +125,4 @@ const mapDispatchToProps = dispatch => {
 }
 
 
-export default connect(mapDispatchToProps)(Product);
+export default connect(mapDispatchToProps)(OrderProduct);

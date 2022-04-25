@@ -35,6 +35,7 @@ const createOrder = async (req, res) => {
   console.log(`Backend: inside createOrder`, userid)
 
   const cartItems = await Cart.find({userid: userid});
+  console.log(`Printing cartItems`,cartItems)
 
   if (!cartItems || cartItems.length === 0) {
     res.status(404).json({ ...errors.notFound, message: 'you have no items in cart' });
@@ -47,10 +48,11 @@ const createOrder = async (req, res) => {
     });
 
     const orderItems = cartItems.map((item) => ({
-        
+        url:item.url,
         shopId: item.shopId,
         productId: item.productId,
         name: item.name,
+        shopname:item.shopname,
         price: item.price,
         qty: item.qty,
         isGift:item.isGift,
@@ -77,8 +79,32 @@ const createOrder = async (req, res) => {
 
 };
 
+const getOrdersByUserId = async (req, res) => {
+  const {userid}=req.params;
+  console.log(`Backend: getOrdersByUserId for user:`, userid)
+
+  const { limit, offset } = getPagination(req.query.page, req.query.limit);
+  // if(!limit)
+  // {
+  //   limit=10;
+  // }
+  // if(!offset)
+  // {
+  //   offset=0;
+  // }
+  console.log(`limit:`, limit)
+  console.log(`offset:`, offset)
+
+  const orders = await Order.find({userid}).sort({ date: -1 }).skip(offset).limit(limit);
+
+  res.status(200).json(orders);
+  return;
+
+};
+
 
 module.exports = {
     getOrderById,
-    createOrder
+    createOrder,
+    getOrdersByUserId
 };

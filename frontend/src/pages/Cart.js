@@ -10,12 +10,12 @@
  import React, { useEffect } from 'react';
  import { connect,useDispatch } from 'react-redux';
  import {useSelector} from 'react-redux'
- import {getCartByUserid} from '../redux'
+ import {getCartByUserid,createOrder} from '../redux'
  import { makeStyles } from '@material-ui/core/styles';
  import Grid from '@material-ui/core/Grid'
  import { Col } from "react-bootstrap";
  import ProductCart from '../components/ProductCart';
- import { Navigate } from "react-router-dom";
+ import { Navigate, useNavigate } from "react-router-dom";
 import { Button } from '@material-ui/core';
 import { Link } from 'react-router-dom'
 
@@ -35,6 +35,7 @@ import { Link } from 'react-router-dom'
 const Cart = () => {
     const classes = useStyles();
     const dispatch=useDispatch();
+    const navigate=useNavigate();
     const user=useSelector(state=>state.user)
     const {
         authenticatedUser,
@@ -84,6 +85,14 @@ const Cart = () => {
     {
         redirectVar = <Navigate to="/login"/>;
     }
+    const handleSubmit=(event)=>{
+        event.preventDefault()
+        console.log(`Inside handleSubmit placing an order`)
+        dispatch(createOrder(authenticatedUserDetails._id))
+        .then(()=>{
+            navigate('/orders')
+        })
+    }
 
     return(
         <div>
@@ -110,7 +119,12 @@ const Cart = () => {
                     }))}
            
            </Grid>
-           <Button variant="contained" className={classes.button}  component = {Link} to="/order">Place an Order</Button>
+           <Button variant="contained" 
+           className={classes.button}
+           onClick={handleSubmit}  
+        //    component = {Link} 
+        //    to="/order"
+           >Place an Order</Button>
         </div>
     )
 };

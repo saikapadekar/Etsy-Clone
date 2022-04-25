@@ -17,7 +17,7 @@ import jwt_decode from "jwt-decode";
 
 const AddItem = (props) => {
 
-    const [item, setItem] = useState({ shopId:'',url:'',name: '', description: '',price:'',qty_available:'',category:'',sold:0})
+    const [item, setItem] = useState({ shopname:'',shopId:'',url:'',name: '', description: '',price:'',qty_available:'',category:'',sold:0})
     const { shopname } = useParams();
     console.log(`Received shopname from URL params`,shopname)
 
@@ -45,6 +45,7 @@ const AddItem = (props) => {
 
     const handleChange=(event)=>{
         item.shopId=shopbyname._id  //To set shop_id(Product is inserted for specific shop)
+        item.shopname=shopname
         setItem(
             {
                 ...item,

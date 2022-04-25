@@ -296,24 +296,25 @@ const FavSchema = new Schema({
 
 const CartSchema = new Schema({
   userid:String,
+  url:'',
   shopId: String,
   productId: {
     type: String,
     unique: true 
   },
   name: String,
+  shopname:String,
   price: Number,
   qty: Number,
   isGift:Boolean,
   note:String
 });
 const OrderItemSchema = new Schema({
+  url:String,
   shopId: String,
-  productId: {
-    type: String,
-    unique: true 
-  },
+  productId: String,
   name: String,
+  shopname:String,
   price: Number,
   qty: Number,
   isGift:Boolean,

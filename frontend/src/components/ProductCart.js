@@ -10,6 +10,7 @@ import TextField from '@material-ui/core/TextField'
 import Checkbox from '@mui/material/Checkbox';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import {updateCartProduct} from '../redux'
+import {useSelector} from 'react-redux'
 
 
 // name, price, qty, gift, note, remove
@@ -56,8 +57,10 @@ const useStyles = makeStyles({
     var data={userid:product.userid,productId:product.productId}
     const [cart_var, setCartvar] = useState({ qty:'',note:''})
     const [gift, setGift] = useState({ isGift:false})
-    var cart={ userid:'',shopId:'',productId:'',name: '',price:'',qty:'',isGift:false,note:''};
-
+    var cart={ url:'',userid:'',shopId:'',productId:'',name: '',shopname:'',price:'',qty:'',isGift:false,note:''};
+    
+    const store_shop=useSelector(state=>state.shop)
+    const {shopdetails, shopbyuserid}=store_shop;
 
 
     const handleChange = (event) =>{
@@ -66,14 +69,17 @@ const useStyles = makeStyles({
                 ...cart_var,
                 [event.target.name] : event.target.value,              
             })
-            setGift({
-                isGift:!(gift.isGift)
-            })
+            
             console.log(`Value of cart is now: `, cart_var)
-            console.log(`Value of gift is now: `, gift)
-
-
     };
+    const handleGift = (event)=>{
+        setGift({
+            isGift:event.target.checked
+            
+        })
+        console.log(`Value of gift is now: `, gift)
+
+    }
     const removeFromCart = () =>{
         console.log(`Dispatching deleteFromCart for data: `, data)
         dispatch(deleteFromCart(data))
@@ -84,9 +90,11 @@ const useStyles = makeStyles({
         console.log(`Called from useEffect return ProductCart.js`)
             cart={
                 userid:product.userid,
+                url:product.url,
                 shopId:product.shopId,
                 productId:product.productId,
                 name: product.name,
+                shopname:shopbyuserid.name,
                 price:product.price,
                 qty:cart_var.qty,
                 isGift:gift.isGift,
@@ -130,7 +138,7 @@ const useStyles = makeStyles({
                 </Grid>
                 <Grid container  sm={1}>
 
-                <FormControlLabel control={<Checkbox />} label="Gift" value={gift.isGift} onChange={handleChange}/>
+                <FormControlLabel control={<Checkbox />} label="Gift" value={gift.isGift} onChange={handleGift}/>
                 </Grid>
                 <Grid container  sm={1}>
                     <Button variant="inherit" className={classes.button} onClick={editProductFromCart}> Edit</Button>

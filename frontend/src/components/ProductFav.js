@@ -9,6 +9,7 @@ import { CardContent, CardMedia, Box, Button } from "@mui/material";
 import { connect,useDispatch,useSelector } from 'react-redux';
 import {  useNavigate, useParams } from 'react-router-dom';
 import {deletefavorite,insertoCart} from '../redux'
+import { ADD_PRODUCT } from '../redux/product/productTypes';
 // remove from fav
 
 const useStyles = makeStyles({
@@ -86,7 +87,7 @@ const ProductFav = (prod) => {
         dispatch(deletefavorite(data))
         navigate('/')
     };
-    var cart={ userid:'',shopId:'',productId:'',name: '',price:'',qty:'',isGift:false,note:''};
+    var cart={ url:'',userid:'',shopId:'',productId:'',name: '',price:'',qty:'',isGift:false,note:''};
 
     const addToCart =()=>{
       console.log(`Inside addToCart`)
@@ -95,6 +96,7 @@ const ProductFav = (prod) => {
         cart={
           userid:authenticatedUserDetails._id,
           shopId:product.shopId,
+          url:product.url,
           productId:product._id,
           name:product.name,
           price:product.price,

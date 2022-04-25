@@ -22,7 +22,7 @@ export const getCartByUserid = (userid) => (dispatch) =>{
 
     axios.get(`http://localhost:7000/cart/getall/${userid}`)
         .then(res => {
-            console.log("GET_CART_BY_USER_ID RESPONSE: ",res.userid);
+            console.log("GET_CART_BY_USER_ID RESPONSE: ",res.data);
             dispatch({
             type: GET_CART_BY_USER_ID,
             payload:  res.data,

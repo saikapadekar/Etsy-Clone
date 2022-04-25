@@ -16,6 +16,8 @@ import Productview from './pages/Productview';
 import Favorite from './pages/Favorite';
 import Cart from './pages/Cart';
 import HomeSearch from './pages/HomeSearch';
+import Order from './pages/Order';
+import Orders from './pages/Orders';
 // Things to do
 // 1. Add item page
 // 2. Product view page
@@ -44,6 +46,10 @@ function App(props) {
       <Route exact path="/productview/:product_id" element={<Productview/>} />
       <Route exact path="/favorite" element={<Favorite/>} />
       <Route exact path="/cart" element={<Cart/>} />
+      <Route exact path="/orders" element={<Orders/>} />
+
+      <Route exact path="/orders/:orderid" element={<Order/>} />
+
 
 
 

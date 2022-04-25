@@ -84,9 +84,11 @@ const updateCartProduct = async (req, res) => {
   
     try {
       dbRes.userid = cart.userid;
-      dbRes.name = cart.name;
+      dbRes.url = cart.url;
       dbRes.shopId = cart.shopId;
       dbRes.productId = cart.productId;
+      dbRes.name = cart.name;
+      dbRes.shopname = cart.shopname;    
       dbRes.price = cart.price;
       dbRes.qty = cart.qty;
       dbRes.isGift = cart.isGift;
