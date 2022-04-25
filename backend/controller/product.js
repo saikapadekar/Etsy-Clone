@@ -3,6 +3,8 @@ const { validationResult } = require("express-validator");
 const errors = require("../util/errors");
 const { Types } = require('mongoose');
 const getPagination = require("../util/pagination");
+const { makeRequest } = require('../util/kafka/client');
+
 
 const getAllProducts = async (req, res) => {
   console.log(`inside getAllProducts`);
@@ -43,24 +45,24 @@ const createProductForShop = async (req, res) => {
 
   const product = req.body;
 
-    product.shopId = shopID;
-    console.log(`Printing data of product`,product)
+  product.shopId = shopID;
+  console.log(`Printing data of product`, product)
 
-    try {
+  try {
 
-      const createdProd = await Product.create(product);
-      const result = await Product.findOne( { _id: createdProd.id } );
-  
-      res.status(201).json(result);
-      return;
-    } catch (err) {
-      console.error(err);
-      if (err.original) {
-        res.status(500).json({ status: 500, message: err.original.sqlMessage });
-      } else {
-        res.status(500).json(errors.serverError);
-      }
+    const createdProd = await Product.create(product);
+    const result = await Product.findOne({ _id: createdProd.id });
+
+    res.status(201).json(result);
+    return;
+  } catch (err) {
+    console.error(err);
+    if (err.original) {
+      res.status(500).json({ status: 500, message: err.original.sqlMessage });
+    } else {
+      res.status(500).json(errors.serverError);
     }
+  }
 
 };
 const getProductsForShop = async (req, res) => {
@@ -77,8 +79,8 @@ const getProductsForShop = async (req, res) => {
 
   const { limit, offset } = getPagination(req.query.page, req.query.limit);
 
-  const productCount = await Product.count({ shopId: shopID } );
-  const products = await Product.find({ shopId: shopID ,    limit,    offset,  });
+  const productCount = await Product.count({ shopId: shopID });
+  const products = await Product.find({ shopId: shopID, limit, offset, });
 
   res.status(200).json({ total: productCount, nodes: products });
 };
@@ -96,7 +98,7 @@ const getProductsById = async (req, res) => {
   }
 
   const product = await Product.findOne({
-    _id: id 
+    _id: id
   });
   console.log(product)
 
@@ -116,7 +118,7 @@ const deleteProductInShop = async (req, res) => {
   }
 
   const product = await Product.findOne({
-    _id: productID, shopId: shopID ,
+    _id: productID, shopId: shopID,
   });
   if (!product) {
     res
@@ -192,7 +194,7 @@ const updateProductInShop = async (req, res) => {
     await t.commit();
 
     const result = await Product.findOne(
-      { _id: updatedRes.id  }, //todo handle Media
+      { _id: updatedRes.id }, //todo handle Media
       { transaction: t }
     );
     res.status(200).json(result);
@@ -220,12 +222,14 @@ const getProductsByName = async (req, res) => {
     return;
   }
 
-  const product = await Product.find({
-    name: {$regex:name} 
-  });
-  console.log(product)
+  makeRequest("product.search", null, async () => {
+    const product = await Product.find({
+      name: { $regex: name }
+    });
+    console.log(product)
 
-  res.status(200).json(product);
+    res.status(200).json(product);
+  })
 };
 //todo get products by pricerange
 module.exports = {

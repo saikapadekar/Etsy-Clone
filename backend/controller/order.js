@@ -9,6 +9,7 @@ const { getPagination } = require('u-server-utils');
 const { Order, Cart } = require('../model');
 const errors = require('../util/errors');
 const moment = require('moment-timezone');
+const { makeRequest } = require('../util/kafka/client');
 
 
 const getOrderById = async (req, res) => {
@@ -78,19 +79,21 @@ const createOrder = async (req, res) => {
         orderitems: orderItems,
         amount: orderAmount  
       }
-      try {
-        const createdOrder = await Order.create(order);
-        // createdOrder.date=timestamp;
 
-        const result = await Order.findOne( { _id: createdOrder.id } );
-
-        res.status(201).json(result);
-        return;
-      }
-      catch(err){
-        res.status(500).json(errors.serverError);
-      }
-
+      makeRequest("order.create", order, async () => {
+        try {
+          const createdOrder = await Order.create(order);
+          // createdOrder.date=timestamp;
+  
+          const result = await Order.findOne( { _id: createdOrder.id } );
+  
+          res.status(201).json(result);
+          return;
+        }
+        catch(err){
+          res.status(500).json(errors.serverError);
+        }  
+      })
 };
 
 const getOrdersByUserId = async (req, res) => {
