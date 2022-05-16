@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const emailValidator = require('email-validator');
 const { User } = require('../model');
 const { getPasswordHash, validatePassword, validatePassHash } = require('../util/passwords');
-const errors = require('../util/errors');
 const JWT_SECRET = 'myetsysuperdupersecret';
 
 const getToken = async (req, res) => {
@@ -103,7 +102,7 @@ const authenticatedUser  = async (req, res) => {
   if(getUser)
   {
     // res.end(JSON.stringify(getUser))
-    res.status(200).json(getUser)
+    res.status(200).json({getUser})
   }
   else
       res.end({error : "Incorrect username or password"})

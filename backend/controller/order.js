@@ -9,47 +9,46 @@ const { getPagination } = require('u-server-utils');
 const { Order, Cart } = require('../model');
 const errors = require('../util/errors');
 const moment = require('moment-timezone');
-const { makeRequest } = require('../util/kafka/client');
 
 
 const getOrderById = async (req, res) => {
-    const { id } = req.params;  
-    console.log(`Backend: inside getOrderById`, id)
-    // console.log(`Backend: inside getOrderById printing req`, req)
+  const { id } = req.params;
+  console.log(`Backend: inside getOrderById`, id)
+  // console.log(`Backend: inside getOrderById printing req`, req)
 
 
-    
-    console.log(`inside getOrderById: `,id);
-    const order = await Order.findOne({ _id: id });
 
-    if (!order) {
-        res.status(404).json(errors.notFound);
-        return;
-      }
+  console.log(`inside getOrderById: `, id);
+  const order = await Order.findOne({ _id: id });
 
-    res.status(200).json(order);
-  
-  };
+  if (!order) {
+    res.status(404).json(errors.notFound);
+    return;
+  }
+
+  res.status(200).json(order);
+
+};
 
 const createOrder = async (req, res) => {
 
   const { userid } = req.params;
   console.log(`Backend: inside createOrder`, userid)
   // let dateTime = Date.now()
-  const dateTime=moment().tz("America/Los_Angeles").format();
+  const dateTime = moment().tz("America/Los_Angeles").format();
   // let dateTime=new Date().toISOString()
 
 
-//   var today = new Date();
-// var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-// var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-// var dateTime = date+' '+time;
+  //   var today = new Date();
+  // var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  // var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  // var dateTime = date+' '+time;
   console.log(dateTime)
 
 
-  const cartItems = await Cart.find({userid: userid});
+  const cartItems = await Cart.find({ userid: userid });
   // cartItems.date=timestamp;
-  console.log(`Printing cartItems`,cartItems)
+  console.log(`Printing cartItems`, cartItems)
 
   if (!cartItems || cartItems.length === 0) {
     res.status(404).json({ ...errors.notFound, message: 'you have no items in cart' });
@@ -57,47 +56,48 @@ const createOrder = async (req, res) => {
   }
 
   let orderAmount = 0;
-    cartItems.forEach((item) => {
-      orderAmount += item.price * item.qty;
-    });
+  cartItems.forEach((item) => {
+    orderAmount += item.price * item.qty;
+  });
 
-    const orderItems = cartItems.map((item) => ({
-        url:item.url,
-        shopId: item.shopId,
-        productId: item.productId,
-        name: item.name,
-        shopname:item.shopname,
-        price: item.price,
-        qty: item.qty,
-        isGift:item.isGift,
-        note: item.note,
-      }));
+  const orderItems = cartItems.map((item) => ({
+    url: item.url,
+    shopId: item.shopId,
+    productId: item.productId,
+    name: item.name,
+    shopname: item.shopname,
+    price: item.price,
+    qty: item.qty,
+    isGift: item.isGift,
+    note: item.note,
+  }));
 
-      var order={
-        userid:userid,
-        date: dateTime, //to handle
-        orderitems: orderItems,
-        amount: orderAmount  
-      }
+  var order = {
+    userid: userid,
+    date: dateTime, //to handle
+    orderitems: orderItems,
+    amount: orderAmount
+  }
 
-      makeRequest("order.create", order, async () => {
-        try {
-          const createdOrder = await Order.create(order);
-          // createdOrder.date=timestamp;
   
-          const result = await Order.findOne( { _id: createdOrder.id } );
-  
-          res.status(201).json(result);
-          return;
-        }
-        catch(err){
-          res.status(500).json(errors.serverError);
-        }  
-      })
+  try {
+    const createdOrder = await Order.create(order);
+    // createdOrder.date=timestamp;
+    console.log(createOrder)
+
+    const result = await Order.findOne({ _id: createdOrder.id });
+
+    res.status(201).json(result);
+    return;
+  }
+  catch (err) {
+    res.status(500).json(errors.serverError);
+  }
+  // })
 };
 
 const getOrdersByUserId = async (req, res) => {
-  const {userid}=req.params;
+  const { userid } = req.params;
   console.log(`Backend: getOrdersByUserId for user:`, userid)
 
   const { limit, offset } = getPagination(req.query.page, req.query.limit);
@@ -112,7 +112,7 @@ const getOrdersByUserId = async (req, res) => {
   console.log(`limit:`, limit)
   console.log(`offset:`, offset)
 
-  const orders = await Order.find({userid}).sort({ date: -1 }).skip(offset).limit(limit);
+  const orders = await Order.find({ userid }).sort({ date: -1 }).skip(offset).limit(limit);
 
   res.status(200).json(orders);
   return;
@@ -121,7 +121,7 @@ const getOrdersByUserId = async (req, res) => {
 
 
 module.exports = {
-    getOrderById,
-    createOrder,
-    getOrdersByUserId
+  getOrderById,
+  createOrder,
+  getOrdersByUserId
 };

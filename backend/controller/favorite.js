@@ -32,7 +32,8 @@ const insertFavorite = async (req, res) => {
 
         const createdFav = await Favorite.create(favorite);
         const result = await Favorite.findOne( { _id: createdFav.id } );
-    
+        console.log("SENT TO KAFKA")
+        console.log(createdFav)
         res.status(201).json(result);
         return;
       } catch (err) {

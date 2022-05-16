@@ -299,8 +299,7 @@ const CartSchema = new Schema({
   url:'',
   shopId: String,
   productId: {
-    type: String,
-    unique: true 
+    type: String
   },
   name: String,
   shopname:String,

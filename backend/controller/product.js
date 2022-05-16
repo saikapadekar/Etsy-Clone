@@ -3,7 +3,6 @@ const { validationResult } = require("express-validator");
 const errors = require("../util/errors");
 const { Types } = require('mongoose');
 const getPagination = require("../util/pagination");
-const { makeRequest } = require('../util/kafka/client');
 
 
 const getAllProducts = async (req, res) => {
@@ -222,14 +221,15 @@ const getProductsByName = async (req, res) => {
     return;
   }
 
-  makeRequest("product.search", null, async () => {
     const product = await Product.find({
       name: { $regex: name }
     });
+
+    console.log("RECEIVED FROM KAFKA")
     console.log(product)
 
     res.status(200).json(product);
-  })
+  // })
 };
 //todo get products by pricerange
 module.exports = {

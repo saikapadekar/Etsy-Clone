@@ -1,6 +1,0 @@
-{
-  "development": {
-    "database_conn": "mongodb+srv://etsyadmin:etsyadminpass@lab2.sdi1q.mongodb.net/etsy?retryWrites=true&w=majority",
-    "kafka_host": "kafka:9092"
-  }
-}
