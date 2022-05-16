@@ -1,1 +1,1 @@
-window.BACKEND_API_URL = 'http://3.233.213.161:7000';
+window.BACKEND_API_URL = 'http://localhost:7000';

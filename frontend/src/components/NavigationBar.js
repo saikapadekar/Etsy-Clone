@@ -98,22 +98,18 @@ const NavigationBar = () => {
     } = user;
     console.log(`Printing value from store User`, JSON.stringify(user))
     console.log(`Printing value from store Shop`, JSON.stringify(store_shop))
-    const [searchInput, setsearchInput] = useState({ product_name:''})
+    const [searchInput, setsearchInput] = useState('')
 
     
     const handleChange=(event)=>{
       setsearchInput(
-          {
-              ...searchInput,
-              [event.target.name] : event.target.value,
-              
-          }
+          event.target.value
       )
       console.log(`value of searchInput`,searchInput.product_name )
   };
 
   const handleSubmit=(event)=>{
-    var prod_name=searchInput.product_name;
+    var prod_name=searchInput;
     event.preventDefault();
     console.log(`Inside handleSubmit Navbar.js`)
     dispatch(getProductbyName(prod_name))

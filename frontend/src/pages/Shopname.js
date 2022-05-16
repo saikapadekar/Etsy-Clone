@@ -57,7 +57,7 @@ const Shopname = () => {
         .get(`${window.BACKEND_API_URL}/shops/name/${shop.name}`, shop.name)
         .then((response) => {
             console.log("Status Code : ", response.status);
-            if (response.status === 200) {
+            if (response.status == 200) {
             console.log("creating new shop");
             dispatch(createShop(shop))
             alert(`Shop Name is Available`);

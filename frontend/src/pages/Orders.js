@@ -52,7 +52,7 @@ const Orders = () => {
     console.log(`Received nodes for userOrders: `,JSON.stringify(allorders))
     var order_flag=false;
     // const [pagination,setpagination]=useState({limit:2});
-    const [limit,setLimit]=useState('');
+    const [limit,setLimit]=useState(2);
 
 
     if(JSON.stringify(allorders)!='{}')
