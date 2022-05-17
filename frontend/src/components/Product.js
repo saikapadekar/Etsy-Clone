@@ -70,6 +70,8 @@ const Product = (prod) => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const id_user=localStorage.getItem('user_id');
+
 
   console.log(`Printing data for`,JSON.stringify(prod))
   const{name,price,product}=prod;
@@ -93,7 +95,7 @@ const Product = (prod) => {
     if(JSON.stringify(authenticatedUserDetails)!='{}')
     {
       favorite={
-        userid:authenticatedUserDetails._id,
+        userid:id_user,
         shopId:product.shopId,
         productId:product._id,
         url:product.url,
@@ -113,7 +115,7 @@ const Product = (prod) => {
     if(JSON.stringify(authenticatedUserDetails)!='{}')
     {
       cart={        
-        userid:authenticatedUserDetails._id,
+        userid:id_user,
         url:product.url,
         shopId:product.shopId,
         productId:product._id,

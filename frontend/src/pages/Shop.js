@@ -69,6 +69,7 @@ const Shop = () => {
     const store_shop=useSelector(state=>state.shop)
     const store_products=useSelector(state=>state.product)
 
+    const id_user=localStorage.getItem('user_id');
 
     console.log(`Printing user value from store`,JSON.stringify(user))
     console.log(`Printing shop value from store`,JSON.stringify(store_shop))
@@ -90,7 +91,7 @@ const Shop = () => {
      if(JSON.stringify(authenticatedUserDetails)!='{}' && typeof(shopbyname._id)!='undefined')
      {
          // var decoded = jwt_decode(authenticatedUser.token);
-         if(authenticatedUserDetails._id==shopbyname.userid)
+         if(id_user==shopbyname.userid)
              {
                  flag=true;
                  console.log('Logged in user is owner of shop')
@@ -117,12 +118,12 @@ const Shop = () => {
 
     return (
         <div>
-                <h1>Welcome to: {shopbyname.name}
+                <h1>Welcome to: {shopbyname?.name}
                     </h1>
             <Grid container className={classes.card}>
                     <Grid container item md={1}>
                     <div>
-                    <img src={shopbyname.url} alt={shopname} className={classes.tile} />
+                    <img src={shopbyname?.url} alt={shopname} className={classes.tile} />
 
                     <br/><br/>
                     Upload a different shop photo.

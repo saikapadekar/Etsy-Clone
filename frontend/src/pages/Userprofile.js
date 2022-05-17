@@ -31,6 +31,7 @@ const useStyles = makeStyles({
 });
 
 const Userprofile = (props) => {
+    var email=localStorage.getItem("email");
     const classes = useStyles();
     const customer=useSelector(state=>state.customer)
 
@@ -45,6 +46,9 @@ const Userprofile = (props) => {
         authenticatedUserDetails
       } = user;
       console.log(`Printing user value from store`,JSON.stringify(user))
+      const {getUser}=authenticatedUserDetails;
+      console.log(`check here userid`,getUser?._id)
+      localStorage.setItem('user_id',getUser?._id)
       var flag=false;
 
       const [profile, setProfile] = useState({
@@ -65,8 +69,8 @@ const Userprofile = (props) => {
         
 
     const handleChange=(event)=>{
-        profile.email=authenticatedUserDetails.email
-        profile.userid=authenticatedUserDetails._id
+        profile.email=email
+        profile.userid=getUser._id
         setProfile(
             {
                 ...profile,
@@ -77,12 +81,12 @@ const Userprofile = (props) => {
     };
 
     useEffect(() => {
-            profile.email=authenticatedUserDetails.email
-            profile.userid=authenticatedUserDetails._id
-            console.log("Dispatching getCustomerByEmail" +profile.email)
-            console.log(`Obtained userid:`, profile.userid)
+            email=localStorage.getItem("email");
+            profile.userid=getUser?._id
+            profile.email=email
+            console.log(`Obtained user:`, email, getUser?._id)
 
-            dispatch(getCustomerByEmail(profile.email))
+            dispatch(getCustomerByEmail(email))
     }, [edit])
 
     
@@ -98,7 +102,10 @@ const Userprofile = (props) => {
         event.preventDefault()
     console.log(`Dispatching createCustomer from Userprofile.js with profile: `,profile)
     dispatch(createCustomer(profile))
-    navigate('/')
+    .then(()=>{
+        navigate('/userprofile')
+
+    })
     setEdit({flag:false})
     };
 
@@ -126,55 +133,55 @@ const Userprofile = (props) => {
                     {(edit.flag==false )&& (<form className="profile-box">
             <div>
                 <h3> Profile Picture: </h3><Button>Choose File</Button>
-                <Avatar className={classes.avatar} src={selectedCustomer.url ? selectedCustomer.url : profile.url}>
+                <Avatar className={classes.avatar} src={selectedCustomer ? selectedCustomer.url : profile.url}>
                         </Avatar>
             
             <div>
                 <br/>
-                <h2>{selectedCustomer.name ? selectedCustomer.name : 'Full Name'}</h2>
+                <h2>{selectedCustomer ? selectedCustomer.name : 'Full Name'}</h2>
                     <br/><br/>  
                     Email:<br/><br/>
-                    <h3>{authenticatedUserDetails.email}</h3>
+                    <h3>{email}</h3>
                     <Divider />
 
                     <br/><br/>                    
                     Address:<br/><br/>
-                    <h3>{selectedCustomer.address ? selectedCustomer.address : 'Address'}</h3>
+                    <h3>{selectedCustomer ? selectedCustomer.address : 'Address'}</h3>
                     <Divider />
 
                     <br/><br/>
                     City:<br/><br/>
-                    <h3>{selectedCustomer.city ? selectedCustomer.city : 'City'}</h3>
+                    <h3>{selectedCustomer? selectedCustomer.city : 'City'}</h3>
                     <Divider />
 
                     <br/><br/>
                     State:<br/><br/>
-                    <h3>{selectedCustomer.state ? selectedCustomer.state : 'State'}</h3>
+                    <h3>{selectedCustomer ? selectedCustomer.state : 'State'}</h3>
                     <Divider />
 
                     <br/><br/>
                     Country:<br/><br/>
-                    <h3>{selectedCustomer.country ? selectedCustomer.country : 'Country'}</h3>
+                    <h3>{selectedCustomer? selectedCustomer.country : 'Country'}</h3>
                     <Divider />
 
                     <br/><br/>
                     Contact Number:<br/><br/>
-                    <h3>{selectedCustomer.contact_no ? selectedCustomer.contact_no : 'Contact Number'}</h3>
+                    <h3>{selectedCustomer? selectedCustomer.contact_no : 'Contact Number'}</h3>
                     <Divider />
 
                     <br/><br/>
                     About:<br/><br/>
-                    <h3>{selectedCustomer.About ? selectedCustomer.About : 'About'}</h3>
+                    <h3>{selectedCustomer? selectedCustomer.About : 'About'}</h3>
                     <Divider />
 
                     <br/><br/>
                     Gender:<br/><br/>
-                    <h3>{selectedCustomer.gender ? selectedCustomer.gender : 'Gender'}</h3>
+                    <h3>{selectedCustomer? selectedCustomer.gender : 'Gender'}</h3>
                     <Divider />
 
                     <br/><br/>
                     DOB:<br/><br/>
-                    <h3>{selectedCustomer.dob ? selectedCustomer.dob : 'Dob'}</h3>
+                    <h3>{selectedCustomer ? selectedCustomer.dob : 'Dob'}</h3>
                     <Divider />
             </div>
             </div>
@@ -182,17 +189,17 @@ const Userprofile = (props) => {
             {(edit.flag==true )&& (<form className="profile-box">
             <div>
                 <h3> Profile Picture: </h3><Button>Choose File</Button>
-                <Avatar className={classes.avatar} src={selectedCustomer.url ? selectedCustomer.url : profile.url}>
+                <Avatar className={classes.avatar} src={selectedCustomer? selectedCustomer.url : profile.url}>
                         </Avatar>
             
             <div>
-            <TextField id="url" name="url" className ={classes.field} placeholder={selectedCustomer.url ? selectedCustomer.url :'Image' }
+            <TextField id="url" name="url" className ={classes.field} placeholder={selectedCustomer? selectedCustomer.url :'Image' }
                             value={profile.url} 
                             onChange={handleChange} variant="outlined">
                     
                     </TextField>
                 <TextField id="name" name="name" className ={classes.field} 
-                placeholder={selectedCustomer.name ? selectedCustomer.name : 'Full Name'}
+                placeholder={selectedCustomer? selectedCustomer.name : 'Full Name'}
                             value={profile.name} 
                             onChange={handleChange} variant="outlined">
                     
@@ -224,31 +231,31 @@ const Userprofile = (props) => {
                     </FormControl> */}
 
                     <TextField id ="address" name="address" className ={classes.field} 
-                    placeholder={selectedCustomer.address ? selectedCustomer.address : 'Address'}
+                    placeholder={selectedCustomer? selectedCustomer.address : 'Address'}
                     value={profile.address} label="Address" variant="outlined" onChange={handleChange}/>
                     <br/><br/><br/>
                     <Divider />
 
                     <TextField id ="city" name="city" className ={classes.field} 
-                    placeholder={selectedCustomer.city ? selectedCustomer.city : 'City'}
+                    placeholder={selectedCustomer ? selectedCustomer.city : 'City'}
                     value={profile.city} label="City" variant="outlined" onChange={handleChange}/>
                     <br/><br/><br/>
                     <Divider />
 
                     <TextField id ="state" name="state" className ={classes.field} 
-                    placeholder={selectedCustomer.state ? selectedCustomer.state : 'State'}
+                    placeholder={selectedCustomer ? selectedCustomer.state : 'State'}
                     value={profile.state} label="State" variant="outlined" onChange={handleChange}/>
                     <br/><br/><br/>
                     <Divider />
 
                     <TextField  id ="country" name="country" className ={classes.field} 
-                    placeholder={selectedCustomer.country ? selectedCustomer.country : 'Country'}
+                    placeholder={selectedCustomer ? selectedCustomer.country : 'Country'}
                     value={profile.country} label="Country" variant="outlined"onChange={handleChange} />
                     <br/><br/><br/>
                     <Divider />
 
                     <TextField  id ="contact_no" name="contact_no" className ={classes.field} 
-                    placeholder={selectedCustomer.contact_no ? selectedCustomer.contact_no : 'Contact Number'}
+                    placeholder={selectedCustomer? selectedCustomer.contact_no : 'Contact Number'}
                     value={profile.contact_no} label="Contact No" variant="outlined" onChange={handleChange}/>
                     <br/><br/><br/>
                     <Divider />
@@ -267,7 +274,7 @@ const Userprofile = (props) => {
                     <Divider />
 
                     <TextField  id ="about" name="about" className ={classes.field} 
-                    placeholder={selectedCustomer.about ? selectedCustomer.about : 'About'}
+                    placeholder={selectedCustomer ? selectedCustomer.about : 'About'}
                     value={profile.about} label="About" variant="outlined" onChange={handleChange} />
                     <br/><br/><br/>
 

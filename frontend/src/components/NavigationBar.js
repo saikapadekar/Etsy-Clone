@@ -96,6 +96,8 @@ const NavigationBar = () => {
       authenticated,
       userLogindetails,authenticatedUserDetails
     } = user;
+    const {getUser}=authenticatedUserDetails;
+
     console.log(`Printing value from store User`, JSON.stringify(user))
     console.log(`Printing value from store Shop`, JSON.stringify(store_shop))
     const [searchInput, setsearchInput] = useState('')
@@ -121,13 +123,14 @@ const NavigationBar = () => {
 
     useEffect(() => {
 
-      console.log(`Printing value of userid: `,authenticatedUserDetails._id)
+
       console.log(`UseEffect called from NavigationBar.js`)
 
       if(authenticated==true && (JSON.stringify(authenticatedUserDetails)!='{}')){
-        console.log(`Dispatching getShopDataByUserId for userid: `, authenticatedUserDetails._id)
+        console.log(`Dispatching getShopDataByUserId for userid: `, getUser._id)
+        localStorage.setItem('user_id',getUser._id)
 
-      dispatch(getShopDataByUserId(authenticatedUserDetails._id))
+      dispatch(getShopDataByUserId(getUser._id))
       }
   },[authenticated])
 

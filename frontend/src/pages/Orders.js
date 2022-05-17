@@ -48,6 +48,8 @@ const Orders = () => {
       } = user;
       const orders=useSelector(state=>state.order)
       const {allorders} = orders;
+      const id_user=localStorage.getItem('user_id');
+
 
     console.log(`Received nodes for userOrders: `,JSON.stringify(allorders))
     var order_flag=false;
@@ -75,7 +77,7 @@ const Orders = () => {
         if(JSON.stringify(authenticatedUserDetails)!='{}')
         {
             order_flag=true;
-            const userid=authenticatedUserDetails._id;
+            const userid=id_user;
             console.log(`Dispatching getOrdersByUserId for userid: `, userid)
             dispatch(getOrdersByUserId(userid,limit,0));
         }
@@ -84,7 +86,7 @@ const Orders = () => {
     const handleSubmit= (event)=>{
         event.preventDefault();
         console.log(`Changing pageSize`,limit)
-        dispatch(getOrdersByUserId(authenticatedUserDetails._id,limit,0))
+        dispatch(getOrdersByUserId(id_user,limit,0))
         .then(()=>{
             navigate('/orders')
         })

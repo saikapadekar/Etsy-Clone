@@ -44,6 +44,18 @@ const [, ...updateValidators] = bodyValidators();
  */
 router.post('/createcustomer', ...bodyValidators(), customerController.createCustomer);
 
+
+/**
+ * Create a Customer
+ * @route POST /customers
+ * @group Customers
+ * @param {string} authorization.header.require
+ * @param {Buyer.model} Buyer.body.require
+ * @returns {Buyer.model} 201 - Fetched Customer
+ */
+ router.post('/customerbyemail', ...bodyValidators(), customerController.CustomerByEmail);
+
+
 /**
  * Get Customer by ID
  * @route GET /customers/{id}

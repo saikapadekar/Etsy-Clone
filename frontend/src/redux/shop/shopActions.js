@@ -5,7 +5,7 @@ import axios from 'axios'
 export const createShop = (data,history) => (dispatch) =>{
     console.log("Inside createShop userAction"+JSON.stringify(data));
 
-    axios.post(`${window.BACKEND_API_URL}/shops/createshop`,data)
+    return axios.post(`${window.BACKEND_API_URL}/shops/createshop`,data)
         .then(res => {
             dispatch({
             type: CREATE_SHOP,
@@ -23,7 +23,7 @@ export const createShop = (data,history) => (dispatch) =>{
 export const getAuthenticatedShopData = (id) => (dispatch) =>{
     console.log("Inside getAuthenticatedShopData userAction id: "+JSON.stringify(id));
 
-    axios.get(`${window.BACKEND_API_URL}/shops/${id}`,id)
+    return axios.get(`${window.BACKEND_API_URL}/shops/${id}`,id)
         .then(res => {
             dispatch({
             type: GET_AUTHENTICATED_SHOP,
@@ -41,7 +41,7 @@ export const getAuthenticatedShopData = (id) => (dispatch) =>{
 export const getShopDataByName = (name) => (dispatch) =>{
     console.log("Inside getShopDataByName name: "+JSON.stringify(name));
 
-    axios.get(`${window.BACKEND_API_URL}/shops/name/${name}`,name)
+    return axios.get(`${window.BACKEND_API_URL}/shops/name/${name}`,name)
         .then(res => {
             dispatch({
             type: GET_SHOP_BY_NAME,

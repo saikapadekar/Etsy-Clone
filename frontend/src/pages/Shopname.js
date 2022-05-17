@@ -39,7 +39,9 @@ const Shopname = () => {
     const [shop, setShop] = useState({ userid: '',url:'', name: '',owner_details:''})
     const dispatch=useDispatch();
     const navigate = useNavigate();
-
+    const id_user=localStorage.getItem('user_id');
+      var email=localStorage.getItem('email');
+      console.log(`on shopname page`, email, id_user)
     // var decoded = jwt_decode(authenticatedUser.token);
 
     // shop.id=decoded.id;
@@ -58,10 +60,16 @@ const Shopname = () => {
         .then((response) => {
             console.log("Status Code : ", response.status);
             if (response.status == 200) {
-            console.log("creating new shop");
-            dispatch(createShop(shop))
+              shop.url='https://cmpe273-lab.s3.us-east-2.amazonaws.com/rose.webp';
+              shop.userid=id_user;
+
+            console.log(`creating new shop`,shop);
             alert(`Shop Name is Available`);
+            dispatch(createShop(shop))
+            .then(()=>{
             navigate(`/shop/${shop.name}`)
+            })
+
             }
         })
         .catch((e) => {
@@ -73,8 +81,9 @@ const Shopname = () => {
     };
     
     const handleChange=(event)=>{
-      shop.userid=authenticatedUserDetails._id;
-      shop.owner_details=authenticatedUserDetails.email;
+      shop.url='https://cmpe273-lab.s3.us-east-2.amazonaws.com/rose.webp';
+      shop.userid=id_user;
+      shop.owner_details=email;
         setShop(
             {
                 ...shop,

@@ -36,6 +36,7 @@ const Favorite = () => {
       } = user;
    const user_favs=useSelector(state=>state.favorite)
 //    console.log(`Received nodes for user_favs: `,JSON.stringify(user_favs))
+const id_user=localStorage.getItem('user_id');
 
    const {userfavs} = user_favs;
    console.log(`Received nodes for userfavs: `,JSON.stringify(userfavs))
@@ -61,7 +62,7 @@ const Favorite = () => {
        if(JSON.stringify(authenticatedUserDetails)!='{}')
        {
            fav_flag=true;
-           const userid=authenticatedUserDetails._id;
+           const userid=id_user;
            dispatch(getfavoriteByUserid(userid));
        }
    },[fav_flag])

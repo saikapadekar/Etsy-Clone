@@ -46,6 +46,7 @@ const Cart = () => {
     const user_cart=useSelector(state=>state.cart)
     const {userCart} = user_cart;
     const customer=useSelector(state=>state.customer)
+    const id_user=localStorage.getItem('user_id');
 
     console.log(`Printing customer value from store`,JSON.stringify(customer))
     const {selectedCustomer} =customer;
@@ -73,7 +74,7 @@ const Cart = () => {
         if(JSON.stringify(authenticatedUserDetails)!='{}')
         {
             cart_flag=true;
-            const userid=authenticatedUserDetails._id;
+            const userid=id_user;
             console.log(`Dispatching getCartByUserid for userid: `, userid)
             dispatch(getCartByUserid(userid));
         }
@@ -88,7 +89,7 @@ const Cart = () => {
     const handleSubmit=(event)=>{
         event.preventDefault()
         console.log(`Inside handleSubmit placing an order`)
-        dispatch(createOrder(authenticatedUserDetails._id))
+        dispatch(createOrder(id_user))
         .then(()=>{
             navigate('/orders')
         })

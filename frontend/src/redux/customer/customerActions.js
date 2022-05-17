@@ -52,7 +52,7 @@ export const getSelectedUser = (userid) => (dispatch) => {
 
 export const getCustomerByEmail = (email) => (dispatch) => {
     console.log("inside userActions getCustomerByEmail"+JSON.stringify(email));
-    axios.get(`${window.BACKEND_API_URL}/customers/email/${email}`)
+    axios.post(`${window.BACKEND_API_URL}/customers/customerbyemail`,{email})
         .then(res => {
             dispatch({
                 type : GET_CUSTOMER,

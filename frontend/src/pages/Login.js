@@ -36,6 +36,9 @@ const handleSubmit =(event) => {
     dispatch(loginUser(user))
 
     dispatch(getAuthenticatedUser(user.email))
+    .then(()=>{
+        localStorage.setItem('email',user.email)
+    })
     setAuthenticated(true)
     navigate('/')
 };

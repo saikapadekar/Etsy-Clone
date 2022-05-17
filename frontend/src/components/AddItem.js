@@ -36,6 +36,8 @@ const AddItem = (props) => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate();
+    const id_user=localStorage.getItem('user_id');
+
 
     useEffect(() => {
         dispatch(getShopDataByNameTwo(shopname))
@@ -57,7 +59,7 @@ const AddItem = (props) => {
     if(JSON.stringify(authenticatedUserDetails)!='{}' && typeof(shopbyname._id)!='undefined')
     {
         // var decoded = jwt_decode(authenticatedUser.token);
-        if(authenticatedUserDetails._id==shopbyname.userid)
+        if(id_user==shopbyname.userid)
             {
                 flag=true;
                 console.log('Logged in user is owner of shop')

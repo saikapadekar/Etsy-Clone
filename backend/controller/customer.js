@@ -43,6 +43,28 @@ const createCustomer = async (req, res) => {
   }
 };
 
+const CustomerByEmail = async (req, res) => {
+
+
+  console.log(`Fetching customer with email: `,req.body);
+  const {email}=req.body;
+
+
+  try {
+    const result = await Buyer.findOne( { email: email } );
+
+    res.status(201).json(result);
+    return;
+  } catch (err) {
+    console.error(err);
+    if (err.original) {
+      res.status(500).json({ status: 500, message: err.original.sqlMessage });
+    } else {
+      res.status(500).json(errors.serverError);
+    }
+  }
+};
+
 const getCustomerByID = async (req, res) => {
     let { id } = req.params;
     console.log(`Inside getCustomerByID, data: `,req.params)
@@ -157,5 +179,6 @@ module.exports = {
   createCustomer,
   getCustomerByID,
   updateCustomerByID,
-  getCustomerByEmail
+  getCustomerByEmail,
+  CustomerByEmail
 };

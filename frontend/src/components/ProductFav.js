@@ -72,6 +72,7 @@ const ProductFav = (prod) => {
   console.log(`Printing data for`,JSON.stringify(prod))
   const{name,price,product}=prod;
   console.log(`ProductFav product: `,JSON.stringify(product))//object of favorite
+  const id_user=localStorage.getItem('user_id');
 
     const user=useSelector(state=>state.user)
     const {
@@ -94,7 +95,7 @@ const ProductFav = (prod) => {
       if(JSON.stringify(authenticatedUserDetails)!='{}')
       {
         cart={
-          userid:authenticatedUserDetails._id,
+          userid:id_user,
           shopId:product.shopId,
           url:product.url,
           productId:product._id,
