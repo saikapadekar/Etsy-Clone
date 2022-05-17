@@ -58,7 +58,7 @@ export const getShopDataByName = (name) => (dispatch) =>{
 export const getShopDataByNameTwo = (name) => (dispatch) =>{
     console.log("Inside getShopDataByNameTwo name: "+JSON.stringify(name));
 
-    axios.get(`${window.BACKEND_API_URL}/shops/nametwo/${name}`,name)
+    return axios.get(`${window.BACKEND_API_URL}/shops/nametwo/${name}`,name)
         .then(res => {
             dispatch({
             type: GET_SHOP_BY_NAME_TWO,
@@ -74,7 +74,7 @@ export const getShopDataByNameTwo = (name) => (dispatch) =>{
 export const getShopDataByUserId = (userid) => (dispatch) =>{
     console.log("Inside getShopDataByUserId name: "+JSON.stringify(userid));
 
-    axios.get(`${window.BACKEND_API_URL}/shops/user/${userid}`,userid)
+    return axios.get(`${window.BACKEND_API_URL}/shops/user/${userid}`,userid)
         .then(res => {
             dispatch({
             type: GET_SHOP_BY_USER_ID,

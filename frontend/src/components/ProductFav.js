@@ -86,7 +86,10 @@ const ProductFav = (prod) => {
     const removeFav = () =>{
         console.log(`Dispatching deletefavorite for data: `, data)
         dispatch(deletefavorite(data))
+        .then(()=>{
         navigate('/')
+
+        })
     };
     var cart={ url:'',userid:'',shopId:'',productId:'',name: '',price:'',qty:'',isGift:false,note:''};
 
@@ -103,8 +106,11 @@ const ProductFav = (prod) => {
           price:product.price,
         }
         console.log(`Dispatching insertoCart cart: `, cart)
-        dispatch(insertoCart(cart));
-        // navigate('/favorite')  
+        dispatch(insertoCart(cart))
+        .then(()=>{
+        navigate('/favorite')  
+
+        })
       }
     }
   return (

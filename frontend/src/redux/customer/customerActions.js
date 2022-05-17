@@ -24,7 +24,7 @@ export const createCustomer = (data) => {
 export const editProfile = (userid,userDetails) => (dispatch) => {
     console.log("Inside editProfile userAction"+JSON.stringify(userDetails));
 
-    axios.post(`${window.BACKEND_API_URL}/customers/edit/${userid}`, userDetails)
+    return axios.post(`${window.BACKEND_API_URL}/customers/edit/${userid}`, userDetails)
         .then(res => {
             dispatch({
                 type : EDIT_PROFILE,
@@ -40,7 +40,7 @@ export const editProfile = (userid,userDetails) => (dispatch) => {
 
 export const getSelectedUser = (userid) => (dispatch) => {
     console.log("inside userActions getSelectedUser"+JSON.stringify(userid));
-    axios.get(`${window.BACKEND_API_URL}/customers/${userid}`)
+    return axios.get(`${window.BACKEND_API_URL}/customers/${userid}`)
         .then(res => {
             dispatch({
                 type : GET_SELECTED_USER,
@@ -52,7 +52,7 @@ export const getSelectedUser = (userid) => (dispatch) => {
 
 export const getCustomerByEmail = (email) => (dispatch) => {
     console.log("inside userActions getCustomerByEmail"+JSON.stringify(email));
-    axios.post(`${window.BACKEND_API_URL}/customers/customerbyemail`,{email})
+    return axios.post(`${window.BACKEND_API_URL}/customers/customerbyemail`,{email})
         .then(res => {
             dispatch({
                 type : GET_CUSTOMER,

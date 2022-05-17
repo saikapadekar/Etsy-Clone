@@ -20,7 +20,7 @@ export const insertoCart = (data) => (dispatch) =>{
 export const getCartByUserid = (userid) => (dispatch) =>{
     console.log(`Inside getCartByUserid :`,(userid) );
 
-    axios.get(`${window.BACKEND_API_URL}/cart/getall/${userid}`)
+    return axios.get(`${window.BACKEND_API_URL}/cart/getall/${userid}`)
         .then(res => {
             console.log("GET_CART_BY_USER_ID RESPONSE: ",res.data);
             dispatch({
@@ -36,7 +36,7 @@ export const getCartByUserid = (userid) => (dispatch) =>{
 export const deleteFromCart = (data) => (dispatch) =>{
     console.log(`Inside deleteFromCart :`,JSON.stringify(data) );
 
-    axios.post(`${window.BACKEND_API_URL}/cart/delete`,data)
+    return axios.post(`${window.BACKEND_API_URL}/cart/delete`,data)
         .then(res => {
             console.log("DELETE_FROM_CART RESPONSE: ",res.data);
             dispatch({
@@ -52,7 +52,7 @@ export const deleteFromCart = (data) => (dispatch) =>{
 export const updateCartProduct=(data)=>(dispatch)=>{
     console.log(`Inside updateCartProducts :`,JSON.stringify(data) );
 
-    axios.put(`${window.BACKEND_API_URL}/cart/edit`,data)
+    return axios.put(`${window.BACKEND_API_URL}/cart/edit`,data)
         .then(res => {
             console.log("UPDATE_PRODUCT_FROM_CART RESPONSE: ",res.data);
             dispatch({

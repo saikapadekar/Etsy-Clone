@@ -106,8 +106,11 @@ const Product = (prod) => {
         category:product.category
       }
       console.log(`Dispatching insertFavorite fav: `, favorite)
-      dispatch(insertfavorite(favorite));
-      // navigate('/favorite')  
+      dispatch(insertfavorite(favorite))
+      .then(()=>{
+      navigate('/favorite')  
+
+      })
     }
   };
   const addToCart =()=>{
@@ -127,8 +130,8 @@ const Product = (prod) => {
         note:''
       }
       console.log(`Dispatching insertoCart cart: `, cart)
-      dispatch(insertoCart(cart)).
-      then(()=>{
+      dispatch(insertoCart(cart))
+      .then(()=>{
         navigate('/cart')  
       })
     }

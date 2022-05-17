@@ -83,7 +83,10 @@ const useStyles = makeStyles({
     const removeFromCart = () =>{
         console.log(`Dispatching deleteFromCart for data: `, data)
         dispatch(deleteFromCart(data))
-        navigate('/')
+        .then(()=>{
+            navigate('/')
+
+        })
     };
     const editProductFromCart=(event)=>{
         event.preventDefault();
@@ -102,6 +105,9 @@ const useStyles = makeStyles({
             }
             console.log(`Dispatching updateCartProduct`, cart)
             dispatch(updateCartProduct(cart))
+            .then(()=>{
+                alert(`Cart Value updated`)
+            })
 
     }    
 

@@ -5,7 +5,7 @@ import axios from 'axios'
 export const getAllShopProducts = () => (dispatch) =>{
         console.log("Inside getAllShopProducts ");
     
-        axios.get(`${window.BACKEND_API_URL}/products/getallitem`)
+        return axios.get(`${window.BACKEND_API_URL}/products/getallitem`)
             .then(res => {
                 dispatch({
                 type: GET_PRODUCTS_ALL,
@@ -22,7 +22,7 @@ export const getAllShopProducts = () => (dispatch) =>{
 export const insertShopProduct = (data) => (dispatch) =>{
     console.log(`Inside insertShopProduct :`,JSON.stringify(data) );
 
-    axios.post(`${window.BACKEND_API_URL}/products/insert`,data)
+    return axios.post(`${window.BACKEND_API_URL}/products/insert`,data)
         .then(res => {
             console.log("ADDPRODUCT RESPONSE: ",res.data);
             dispatch({
@@ -41,7 +41,7 @@ export const insertShopProduct = (data) => (dispatch) =>{
 export const getShopProducts = (id) => (dispatch) =>{
     console.log(`Inside getShopProducts by Shop id: `,id);
 
-    axios.get(`${window.BACKEND_API_URL}/products/getall/${id}`,id)
+    return axios.get(`${window.BACKEND_API_URL}/products/getall/${id}`,id)
         .then(res => {
             dispatch({
             type: GET_PRODUCTS_FOR_SHOP,
@@ -56,7 +56,7 @@ export const getShopProducts = (id) => (dispatch) =>{
 export const getProductbyId = (id) => (dispatch) =>{
     console.log(`Inside getProductbyId-new, Shop id: `,id);
 
-    axios.get(`${window.BACKEND_API_URL}/products/product/${id}`,id)
+    return axios.get(`${window.BACKEND_API_URL}/products/product/${id}`,id)
         .then(res => {
             dispatch({
             type: GET_PRODUCT,

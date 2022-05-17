@@ -4,7 +4,7 @@ import axios from 'axios'
 export const insertfavorite = (data) => (dispatch) =>{
     console.log(`Inside insertfavorite :`,JSON.stringify(data) );
 
-    axios.post(`${window.BACKEND_API_URL}/favorites/insert`,data)
+    return axios.post(`${window.BACKEND_API_URL}/favorites/insert`,data)
         .then(res => {
             console.log("INSERT_FAVORITE RESPONSE: ",res.data);
             dispatch({
@@ -20,7 +20,7 @@ export const insertfavorite = (data) => (dispatch) =>{
 export const getfavoriteByUserid = (userid) => (dispatch) =>{
     console.log(`Inside getfavoriteByUserid :`,(userid) );
 
-    axios.get(`${window.BACKEND_API_URL}/favorites/getall/${userid}`)
+    return axios.get(`${window.BACKEND_API_URL}/favorites/getall/${userid}`)
         .then(res => {
             console.log("GET_FAVORITE_BY_USER_ID RESPONSE: ",res.userid);
             dispatch({
@@ -36,7 +36,7 @@ export const getfavoriteByUserid = (userid) => (dispatch) =>{
 export const deletefavorite = (data) => (dispatch) =>{
     console.log(`Inside insertfavorite :`,JSON.stringify(data) );
 
-    axios.post(`${window.BACKEND_API_URL}/favorites/delete`,data)
+    return axios.post(`${window.BACKEND_API_URL}/favorites/delete`,data)
         .then(res => {
             console.log("DELETE_FAVORITE RESPONSE: ",res.data);
             dispatch({
