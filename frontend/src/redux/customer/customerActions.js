@@ -1,7 +1,8 @@
 import { GET_SELECTED_USER,    EDIT_PROFILE,    CREATE_CUSTOMER, GET_CUSTOMER } from './customerTypes'
 import axios from 'axios'
 import { setCookie } from 'react-use-cookie';
-
+import { createCustomer as createCustomerQ } from '../../mutations/mutations';
+import query from '../../utils/graphql/query';
 
 export const createCustomer = (data) => {
     console.log("Inside createCustomer userAction"+JSON.stringify(data));
@@ -20,6 +21,24 @@ export const createCustomer = (data) => {
         }
     }
 }
+
+// export const createCustomer = (data) => {
+//     console.log("Inside createCustomer customerAction"+JSON.stringify(data));
+
+//     return async (dispatch) => {
+//         return query(createCustomerQ, { customer: data })
+//         .then((response)=>{
+//             dispatch({
+//                 type: CREATE_CUSTOMER,
+//                 payload: response.data,
+//             });
+
+//         })
+//         .catch((err) => {
+//             console.log(err)
+//           });
+//     }
+// }
 
 export const editProfile = (userid,userDetails) => (dispatch) => {
     console.log("Inside editProfile userAction"+JSON.stringify(userDetails));

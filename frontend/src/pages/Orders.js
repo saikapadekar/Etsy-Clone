@@ -109,7 +109,7 @@ const Orders = () => {
     return (
         <div>
             {redirectVar}
-            <h1>{selectedCustomer.name}'s Orders</h1>
+            <h1>Malcolm's Orders</h1>
             <div className={classes.outer}>
                 <h2>Order_id &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;Amount
                     &emsp;&emsp;&emsp;&emsp;Quantity

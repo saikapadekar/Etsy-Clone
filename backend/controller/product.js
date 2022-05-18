@@ -12,9 +12,14 @@ const getAllProducts = async (req, res) => {
 };
 
 const createProductForShop = async (req, res) => {
-  console.log(`inside createProductForShop backend`);
-  console.log(`printing req data`, req.body);
-  console.log(req.params);
+  // console.log(`inside createProductForShop backend`);
+  // console.log(`printing req data`, req.body);
+  // console.log(req.params);
+
+  console.log(`Inside createItem Mutation`)
+  console.log(`Args for Item Mutation`, req.body)
+  console.log(`Inside createItem Request`)
+
   let shopID = req.body.shopId;
   if (typeof shopID != "undefined") {
     console.log(`Got shopID: `, shopID);

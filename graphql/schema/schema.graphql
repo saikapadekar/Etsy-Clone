@@ -1,0 +1,106 @@
+type Customer {
+    userid:String,
+  url: String,
+  name: String,
+  email: String,
+  about: String,
+  gender: String,
+  dob:String,
+  city: String,
+  state: String,
+  country: String,
+  contact_no: String,
+  address: String
+  }
+
+  input CustomerReq {
+    userid:String,
+  url: String,
+  name: String,
+  email: String,
+  about: String,
+  gender: String,
+  dob:String,
+  city: String,
+  state: String,
+  country: String,
+  contact_no: String,
+  address: String
+  }
+
+  type Shop{
+    userid:String,
+  url: String,
+  name: String,
+  owner_details: String
+  }
+
+  type Product{
+    name: String,
+  url: String,
+  category: String,
+  description: String,
+  price: Int,
+  qty_available: Int,
+  shopId: String,
+  sold:Int
+  }
+
+  type Fav{
+    userid:String,
+  shopId: String,
+  productId: String,
+  name: String,
+  url: String,
+  category: String,
+  description: String,
+  price: Int,
+  qty_available: Int,
+  }
+
+  type Cart{
+    userid:String,
+  url:String,
+  shopId: String,
+  productId: String,
+  name: String,
+  shopname:String,
+  price: Int,
+  qty: Int,
+  isGift:Boolean,
+  note:String
+  }
+
+  type OrderItem{
+    url:String,
+  shopId: String,
+  productId: String,  
+  name: String,
+  shopname:String,
+  price: Int,
+  qty: Int,
+  isGift:Boolean,
+  note:String
+  }
+
+  type Order{
+    userid:String,
+  date: String,
+  orderitems: [OrderItem],
+  amount: Int  
+  }
+
+
+type Mutation {
+  createCustomer(customer: CustomerReq!): Customer
+}
+
+type Query{
+    customer(_id: String!): Customer
+}
+
+
+schema {
+  query: Query
+  mutation: Mutation
+}

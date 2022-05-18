@@ -98,7 +98,7 @@ const Cart = () => {
     return(
         <div>
             {redirectVar}
-            <h1>{selectedCustomer.name}'s Cart</h1>
+            <h1>Malcolm's Cart</h1>
 
             <Grid container className={classes.main} spacing={3}>
            {/* For individual product */}

@@ -44,6 +44,11 @@ const signUp = async (req, res) => {
   const { email, password, role } = req.body;
   console.log(`Checking for email: `,email)
 
+  console.log(`Inside Signup User Mutation`)
+  console.log(`Args for User Mutation`, email, password, role)
+  console.log(`Inside SignUp Post Request`)
+
+
   // validate email and password
   if (!email || !password || !role) {
     res.status(400).send('Bad Request');
@@ -90,6 +95,9 @@ const signUp = async (req, res) => {
     JWT_SECRET,
     { expiresIn: '1d' },
   );
+
+ 
+
 
   res.json({ token: accessToken });
 };

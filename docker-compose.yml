@@ -34,6 +34,25 @@ services:
     networks: 
       - etsy
 
+  graphql:
+    depends_on: 
+      - backend
+    build:
+      context: ./graphql
+      dockerfile: Dockerfile
+    ports:
+      - 3001:3001
+    volumes: 
+      - type: bind
+        source: ./graphql
+        target: /app
+      - type: bind
+        source: ./graphql/node_modules
+        target: /app/node_modules
+    restart: unless-stopped
+    networks: 
+      - etsy
+
   frontend:
     depends_on: 
       - backend
